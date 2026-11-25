@@ -749,7 +749,12 @@ const Local = {
   async profiles() { return LS.get('oi_users', []).map(pub); },
   async assignments() { const me = LS.get('oi_me'), u = LS.get('oi_users', []).find(x => x.id === me); return LS.get('oi_asg', []).filter(a => (u && u.role === 'teacher') || !a.user_id || a.user_id === me); },
   async addAssignment(a) { const l = LS.get('oi_asg', []); l.push({ ...a, id: uid(), created_at: new Date().toISOString() }); LS.set('oi_asg', l); },
-  async delAssignment(id) { LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.id !== id)); }
+  async delAssignment(id) { LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.id !== id)); },
+  async delStudent(id) {
+    LS.set('oi_users', LS.get('oi_users', []).filter(u => u.id !== id || u.role === 'teacher'));
+    LS.set('oi_att', LS.get('oi_att', []).filter(a => a.user_id !== id)); LS.set('oi_tests', LS.get('oi_tests', []).filter(a => a.user_id !== id));
+    LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.user_id !== id));
+  }
 };
 const SB = {
   mode: 'supabase', tok: null, rt: null, exp: 0, uid: null,
@@ -802,7 +807,8 @@ const SB = {
   profiles() { return this.all('profiles?select=*&order=full_name.asc'); },
   assignments() { return this.all('assignments?select=*&order=created_at.desc'); },
   addAssignment(a) { return this.rest('assignments', { method: 'POST', body: a, prefer: 'return=minimal' }); },
-  delAssignment(id) { return this.rest('assignments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); }
+  delAssignment(id) { return this.rest('assignments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); },
+  delStudent(id) { return this.rest('rpc/delete_student', { method: 'POST', body: { sid: id } }); }
 };
 const DB = CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY ? SB : Local;
 
@@ -1185,7 +1191,7 @@ function teacherRender() {
       a.filter(x => !x.correct).forEach(x => { const k = x.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
       const last = {}; a.forEach(x => last[x.qid] = x);
       const bad = Object.values(last).filter(x => !x.correct && OI.byId[x.qid]).slice(-15).reverse();
-      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
+      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><div class="actions"><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
       ${OI.TOPICS.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
       <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате жоқ.</p>'}</div>
       <div class="card"><h2>Шешілмеген қателер (соңғы 15)</h2>${bad.length ? bad.map(x => { const p = OI.byId[x.qid]; return `<div class="row col"><div class="meta">${esc(topicName(p.topic))} · ${p.level}</div>${mathHtml(p)}<span>Жауабы: <b>${esc(x.chosen)}</b> · Дұрысы: <b>${esc(p.truth)}</b></span><span class="why">${esc(OI.TAGS[x.tag] || '')}</span></div>`; }).join('') : '<p class="m">Жоқ.</p>'}</div>`;
@@ -1207,6 +1213,12 @@ function teacherRender() {
     const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
     dl('oi-math-test-results.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
   };
+  if ($('#ds')) $('#ds').onclick = guard(async () => {
+    const st = students.find(x => x.id === TS.sel); if (!st) return;
+    if (!confirm(st.full_name + ' оқушысын және оның барлық нәтижесін өшіресіз бе? Қайтару мүмкін емес.')) return;
+    await DB.delStudent(st.id); toast('Оқушы өшірілді.');
+    TS.sel = ''; TS.data.students = (await DB.profiles()).filter(p => p.role !== 'teacher'); TS.data.att = await DB.allAttempts(); TS.data.tests = await DB.allTests(); TS.data.asg = await DB.assignments(); teacherRender();
+  });
   if ($('#rf')) $('#rf').onclick = () => VIEWS.teacher();
   if ($('#ss')) $('#ss').onchange = e => { TS.sel = e.target.value; teacherRender(); };
   if ($('#af2')) $('#af2').onsubmit = guard(async e => { e.preventDefault(); await DB.addAssignment({ user_id: $('#as').value || null, topic: +$('#at').value, level: $('#al').value, count: +$('#ac').value || 10, note: $('#an').value.trim() }); toast('Тапсырма берілді.'); TS.data.asg = await DB.assignments(); teacherRender(); });
