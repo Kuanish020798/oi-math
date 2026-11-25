@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OI MATH · Тригонометриялық теңсіздіктер</title>
+<link rel="icon" href="data:,">
+<style>:root{--bg:#f4f6fb;--c:#fff;--t:#1c2233;--m:#6a7388;--p:#3b5bdb;--pl:#e7ecff;--b:#dde2ee;--ok:#12805c;--okb:#e3f7ee;--no:#c0392b;--nob:#fdecea;--warn:#fff4d6;--arc:#16a34a}
+@media(prefers-color-scheme:dark){:root{--bg:#10131c;--c:#1a1f2e;--t:#e9ecf5;--m:#98a2b8;--p:#8ea2ff;--pl:#26304f;--b:#2c3550;--ok:#4cd6a0;--okb:#14352b;--no:#ff8a7a;--nob:#3b1d1a;--warn:#3a3114;--arc:#34d399}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--t);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:880px;margin:0 auto;padding:0 12px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;flex-wrap:wrap}
+.brand b{font-size:20px;color:var(--p);margin-right:8px}.brand span{color:var(--m);font-size:14px}
+.who{font-size:14px;color:var(--m)}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;position:sticky;top:0;background:var(--bg);z-index:5;-webkit-overflow-scrolling:touch}
+.nav a{white-space:nowrap;padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--t);background:var(--c);border:1px solid var(--b);font-size:14px}
+.nav a.on{background:var(--p);color:#fff;border-color:var(--p)}
+.card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:16px;margin:0 0 14px}
+h1{font-size:24px;margin:4px 0 8px}h2{font-size:19px;margin:0 0 10px}h3{font-size:16px;margin:16px 0 6px;color:var(--p)}
+p{margin:6px 0}.m{color:var(--m);font-size:14px}
+button,.btn{background:var(--p);color:#fff;border:1px solid var(--p);border-radius:10px;padding:11px 16px;font:inherit;font-weight:600;cursor:pointer;margin:4px 6px 4px 0;text-decoration:none;display:inline-block}
+button.g,.btn.g{background:transparent;color:var(--p)}button.sm{padding:6px 10px;font-size:14px}
+button:disabled{opacity:.6;cursor:default}button.lnk{background:none;border:0;color:var(--p);padding:0 0 0 8px;font-weight:600}
+button.pri{width:100%}
+input,select{width:100%;padding:11px;margin:4px 0 10px;border:1px solid var(--b);border-radius:10px;background:var(--bg);color:var(--t);font:inherit}
+input[type=range]{padding:0;margin:8px 0}label{display:block;font-size:14px;color:var(--m)}label.blk{margin-top:10px}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 12px}
+.auth{max-width:420px;margin:30px auto}.auth h1{text-align:center;color:var(--p);font-size:30px}.auth .m{text-align:center}
+.tabs{display:flex;gap:6px;margin:12px 0}.tabs button{flex:1;background:var(--c);color:var(--t);border-color:var(--b)}.tabs button.on{background:var(--p);color:#fff}
+.t2{flex-wrap:wrap}.t2 button{flex:1 1 140px}
+.err{color:var(--no);font-size:14px}.demo{background:var(--warn);border-radius:10px;padding:10px 12px;font-size:14px;margin:8px 0}
+.hero{background:linear-gradient(135deg,var(--pl),var(--c))}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.kpis div{flex:1 1 110px;background:var(--bg);border-radius:12px;padding:10px;text-align:center}
+.kpis b{display:block;font-size:26px;color:var(--p)}.kpis span{font-size:13px;color:var(--m)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tile{display:block;background:var(--bg);border:1px solid var(--b);border-radius:12px;padding:12px;text-decoration:none;color:var(--t)}
+.tile b{display:block;color:var(--p)}.tile span{font-size:14px;color:var(--m)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--b)}.row.col{flex-direction:column;align-items:flex-start}
+.toc{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.toc a{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--b);text-decoration:none;color:var(--t)}.toc a.on{background:var(--p);color:#fff}
+.fm li{margin:4px 0;font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:17px}
+.ex{background:var(--pl);border-radius:12px;padding:10px 14px}.warn{background:var(--warn);border-radius:12px;padding:10px 10px 10px 30px}
+.actions{margin-top:12px}
+.mth{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:22px;margin:8px 0;padding:10px 14px;background:var(--bg);border-radius:10px;overflow-x:auto}
+.sys{display:flex;align-items:center;gap:6px;font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:21px;margin:8px 0;padding:6px 14px;background:var(--bg);border-radius:10px}.sys .br{font-size:56px;font-weight:200;line-height:1}
+.meta{font-size:13px;color:var(--m)}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{background:var(--c);color:var(--t);border:1.5px solid var(--b);text-align:left;font-weight:500;font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:18px;margin:0;width:100%}
+.opt.on{border-color:var(--p);background:var(--pl)}.opt.good{border-color:var(--ok);background:var(--okb)}.opt.badc{border-color:var(--no);background:var(--nob)}
+.good{background:var(--okb);border-left:4px solid var(--ok);padding:10px 12px;border-radius:8px;margin-top:10px}
+.bad{background:var(--nob);border-left:4px solid var(--no);padding:10px 12px;border-radius:8px;margin-top:10px}
+.why{color:var(--t);font-size:15px}
+.hint{background:var(--warn);border-radius:10px;padding:8px 12px;margin-top:8px;font-size:15px}
+.steps li{margin:6px 0}details{margin-top:10px}summary{cursor:pointer;color:var(--p);font-weight:600}
+.okc{border-left:4px solid var(--ok)}.noc{border-left:4px solid var(--no)}
+.bar{position:sticky;top:44px;z-index:4;background:var(--bg);padding:8px 0;display:flex;justify-content:space-between;font-weight:700}
+.big{font-size:48px;font-weight:800;color:var(--ok)}
+.tw{overflow-x:auto}table.ft{border-collapse:collapse;width:100%;font-size:14px}.ft th,.ft td{border:1px solid var(--b);padding:6px 8px;text-align:center;white-space:nowrap}.ft th{background:var(--pl)}
+td.lo{background:var(--nob)}td.mid{background:var(--warn)}td.hi{background:var(--okb)}td.na{color:var(--m)}
+.bar2{display:grid;grid-template-columns:1fr 46px;gap:2px 8px;align-items:center;margin:8px 0}.bar2 .lbl{grid-column:1/3;font-size:14px}.trk{background:var(--bg);border-radius:6px;height:12px;overflow:hidden}.fill{height:100%}.fill.hi{background:var(--ok)}.fill.mid{background:#e0a100}.fill.lo{background:var(--no)}.fill.na{background:var(--b)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.viz{width:100%;height:auto;background:var(--bg);border-radius:12px;touch-action:none}
+#circ{cursor:grab}
+.viz .ax{stroke:var(--m);stroke-width:1}.viz .ax2{stroke:var(--p);stroke-width:1.5}.viz .cr{fill:none;stroke:var(--m);stroke-width:1.5}
+.viz .arc{fill:none;stroke:var(--arc);stroke-width:9;stroke-linecap:butt;opacity:.55}
+.viz .hl{stroke:var(--arc);stroke-width:7;opacity:.7}
+.viz .aux{stroke:#e8590c;stroke-width:1.5;stroke-dasharray:5 4}
+.viz .rad{stroke:var(--p);stroke-width:2}.viz .ray{stroke:var(--p);stroke-width:1.2;stroke-dasharray:3 3}
+.viz .pj.s{stroke:#d6336c;stroke-width:2}.viz .pj.c{stroke:#1c7ed6;stroke-width:2}
+.viz .pt{fill:var(--p);stroke:#fff;stroke-width:2}.viz .mk{fill:#e8590c}
+.viz .lb{fill:var(--m);font-size:11px}.viz .gr{fill:none;stroke:var(--p);stroke-width:2.2}.viz .shade{fill:var(--arc);opacity:.22}
+.vals{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0;font-size:15px}.vals i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}.c1{background:#d6336c}.c2{background:#1c7ed6}.vals .yes b{color:var(--ok)}.vals .no b{color:var(--no)}
+.sol{background:var(--pl);padding:10px 12px;border-radius:10px;font-size:15px}.quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.quick button{margin:0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--p);color:#fff;padding:12px 18px;border-radius:10px;z-index:99;max-width:90vw;font-size:15px}.toast.bad{background:var(--no)}
+@media(max-width:520px){.mth{font-size:19px}.opt{font-size:16px}.kpis b{font-size:22px}}
+</style></head>
+<body><div id="app"></div>
+<!-- ============ БАПТАУ ============
+ Supabase қосу үшін төмендегі екі жолды толтырыңыз (README қараңыз).
+ Бос қалса, платформа демо режимде жұмыс істейді (деректер тек осы құрылғыда). -->
+<script>window.OI_CONFIG={SUPABASE_URL:"",SUPABASE_ANON_KEY:"",TEACHER_CODE:"oi-teacher"};</script>
+<script>/* OI engine: шешімдерді торда (π/72) есептеу, форматтау, тексеру, дистракторлар */
+(function () {
+'use strict';
+const OI = globalThis.OI = globalThis.OI || {};
+const PI = Math.PI, D = 72, N2 = 2 * D, EPS = 1e-9, R2 = Math.SQRT2 / 2, R3 = Math.sqrt(3);
+const sin = Math.sin, cos = Math.cos;
+const tg = x => Math.abs(cos(x)) < 1e-9 ? NaN : Math.tan(x);
+const ctg = x => Math.abs(sin(x)) < 1e-9 ? NaN : cos(x) / sin(x);
+OI.fn = { sin, cos, tg, ctg }; OI.D = D; OI.PI = PI;
+const CMP = {
+  '>': (a, c) => a > c + EPS, '≥': (a, c) => a >= c - EPS,
+  '<': (a, c) => a < c - EPS, '≤': (a, c) => a <= c + EPS
+};
+OI.CMP = CMP;
+const B = { '0': 0, '1/2': .5, '1/4': .25, '3/4': .75, '√2/2': R2, '√3/2': R3 / 2, '1': 1, '√3': R3, '√3/3': R3 / 3, '2': 2, '3': 3, '√2': Math.SQRT2 };
+const val = t => t[0] === '−' ? -B[t.slice(1)] : B[t];
+OI.val = val;
+
+OI.ineq = (g, txt, op, ctxt, T, cn) => {
+  const c = cn !== undefined ? cn : val(ctxt);
+  return {
+    g, op, c, T, lines: [txt + ' ' + op + ' ' + ctxt],
+    f: x => { const v = g(x); return v === v && CMP[op](v, c); },
+    dom: x => { const v = g(x); return v === v; }
+  };
+};
+OI.and = (...cs) => ({
+  T: Math.max(...cs.map(c => c.T)), parts: cs, lines: cs.flatMap(c => c.lines),
+  f: x => cs.every(c => c.f(x)), dom: x => cs.every(c => c.dom(x))
+});
+const tr = (c, h) => ({ ...c, f: x => c.f(h(x)), dom: x => c.dom(h(x)) });
+
+const xAt = i => i * PI / (2 * D);
+const atoms = c => { const a = new Array(2 * N2 + 1); for (let i = 0; i < a.length; i++) a[i] = !!c.f(xAt(i)); return a; };
+OI.atoms = atoms;
+
+const gcd = (a, b) => b ? gcd(b, a % b) : a;
+const fmtK = k => {
+  if (k === 0) return '0';
+  const g = gcd(k, D), n = k / g, d = D / g;
+  const num = n === 1 ? 'π' : n + 'π';
+  return d === 1 ? num : num + '/' + d;
+};
+OI.fmtK = fmtK;
+
+function domIvs(a) {
+  const out = []; let i = 0;
+  while (i < a.length) {
+    if (!a[i]) { i++; continue; }
+    let j = i; while (j + 1 < a.length && a[j + 1]) j++;
+    out.push({ l: i % 2 === 0 ? i / 2 : (i - 1) / 2, lc: i % 2 === 0, r: j % 2 === 0 ? j / 2 : (j + 1) / 2, rc: j % 2 === 0, single: i === j && i % 2 === 0 });
+    i = j + 1;
+  }
+  return out;
+}
+const ivS = v => v.single ? `{${fmtK(v.l)}}` : `${v.lc ? '[' : '('}${fmtK(v.l)}; ${fmtK(v.r)}${v.rc ? ']' : ')'}`;
+const domStr = a => { const v = domIvs(a); return v.length ? v.map(ivS).join(' ∪ ') : '∅'; };
+
+function genStr(a, T) {
+  const Nt = T === 2 * PI ? N2 : D, M = 2 * Nt, tn = T === 2 * PI ? '2πn' : 'πn';
+  const s = a.slice(0, M);
+  if (s.every(Boolean)) return 'x ∈ R';
+  if (!s.some(Boolean)) return '∅';
+  const term = k => k === 0 ? tn : `${fmtK(k)} + ${tn}`;
+  const out = [];
+  for (let st = 0; st < M; st++) {
+    if (s[st] && !s[(st + M - 1) % M]) {
+      let e = st; while (s[(e + 1) % M]) e++;
+      const l = st % 2 === 0 ? st / 2 : (st - 1) / 2, lc = st % 2 === 0;
+      const r = e % 2 === 0 ? e / 2 : (e + 1) / 2, rc = e % 2 === 0;
+      out.push(st === e && st % 2 === 0 ? `{${term(l)}}` : `${lc ? '[' : '('}${term(l)}; ${term(r)}${rc ? ']' : ')'}`);
+    }
+  }
+  return out.join(' ∪ ');
+}
+OI.domStr = domStr; OI.genStr = genStr;
+
+/* оқушы жауабын талдау (тек [0;2π] режимі) */
+function ek(t) {
+  t = t.replace(/\s+/g, '').replace(/pi|Pi|PI|п|П/g, 'π').replace(/[−–—]/g, '-').replace(/\*/g, '');
+  if (t === '0') return 0;
+  let m = t.match(/^(\d+)?π(?:\/(\d+))?$/);
+  let n, d;
+  if (m) { n = m[1] ? +m[1] : 1; d = m[2] ? +m[2] : 1; }
+  else { m = t.match(/^(\d+)\/(\d+)π$/); if (!m) return null; n = +m[1]; d = +m[2]; }
+  const k = n * D / d; return Number.isInteger(k) && k >= 0 && k <= N2 ? k : null;
+}
+OI.parseDom = function (str) {
+  str = String(str).trim();
+  if (!str) return null;
+  if (/^(∅|жоқ|empty)$/i.test(str)) return '∅';
+  const pieces = str.replace(/∪|U|u|V|v|немесе|или/g, '|').split('|').map(s => s.trim()).filter(Boolean);
+  const ivs = [];
+  for (const p of pieces) {
+    let m = p.match(/^\{(.+)\}$/) || p.match(/^x=(.+)$/);
+    if (m) { const k = ek(m[1]); if (k === null) return null; ivs.push({ l: k, r: k, single: true }); continue; }
+    m = p.match(/^([\[\(])(.+?)[;,](.+?)([\]\)])$/);
+    if (!m) return null;
+    const l = ek(m[2]), r = ek(m[3]); if (l === null || r === null || l > r) return null;
+    if (l === r) { if (m[1] === '[' && m[4] === ']') ivs.push({ l, r, single: true }); else return null; continue; }
+    ivs.push({ l, r, lc: m[1] === '[', rc: m[4] === ']', single: false });
+  }
+  ivs.sort((x, y) => x.l - y.l);
+  return ivs.map(ivS).join(' ∪ ');
+};
+
+/* тексеру: шешім тек тор нүктелерінде өзгереді және (gen режимінде) период дұрыс */
+function verify(c, mode) {
+  const a = atoms(c);
+  for (let i = 1; i < a.length; i += 2) {
+    for (let t = 1; t <= 15; t++) {
+      const x = ((i - 1) / 2 + t / 16) * PI / D;
+      if (!!c.f(x) !== a[i]) return false;
+    }
+  }
+  for (let i = 0; i < a.length; i += 2) {
+    const x = xAt(i);
+    if (i > 0 && !!c.f(x - 1e-4) !== a[i - 1]) return false;
+    if (i < a.length - 1 && !!c.f(x + 1e-4) !== a[i + 1]) return false;
+  }
+  if (mode === 'gen') for (let t = 0; t < 400; t++) {
+    const x = 0.0011 + t * 0.0157;
+    if (!!c.f(x) !== !!c.f(x + c.T)) return false;
+  }
+  return true;
+}
+OI.verify = verify;
+
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+OI.rng = id => mulberry32(hash(id));
+const shuffle = (arr, r) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+OI.TAGS = {
+  compl: 'Бұл жауап — қарама-қарсы аралық (толықтауыш). Теңсіздік белгісін қайта қара: шеңберде қай доға (осьтен жоғары/төмен, оң/сол жақ) қажет екенін анықта.',
+  strict: 'Шеткі нүктелердің жақшасы қате. Қатаң теңсіздікте (>, <) нүкте кірмейді — дөңгелек жақша; қатаң емес (≥, ≤) теңсіздікте кіреді — шаршы жақша. Анықталмаған нүктелер (tg, ctg үшін) әрқашан дөңгелек жақшада.',
+  mirror: 'Нүктені шеңберде симметриялы орынға қойып алғансың. Мысалы, sin x = a үшін екі нүкте: α және π − α; cos x = a үшін: α және −α (яғни 2π − α).',
+  root: 'Шекаралық нүктелер (түбірлер) қате табылған. Алдымен теңдеуді шеш, түбірлерін шеңберде белгіле, содан кейін ғана доғаны таңда.',
+  table: 'Арк-функцияның кестелік мәні шатасқан. arcsin, arccos, arctg, arcctg мәндерін формулалар бөлімінен қайта тексер.',
+  partial: 'Шешімнің бір бөлігі ұмытылған: [0; 2π] кесіндісінде шешім бірнеше аралықтан тұруы мүмкін. Шеңберді толық айналып шық.',
+  arg: 'Аргументі күрделі (kx немесе x ± b). Алдымен t = kx + b деп алып, t үшін шеш, содан кейін x-ке оралу керек: b-ны алып тастап, k-ға бөл.',
+  period: 'Периодты қате жазғансың. sin, cos үшін период 2π, tg, ctg үшін π; sin 2x, |sin x| сияқтылар үшін период азаяды.'
+};
+
+function cands(c, mode, extras) {
+  const a = atoms(c), M = mode === 'gen' ? 2 * (c.T === 2 * PI ? N2 : D) : a.length, cyc = mode === 'gen';
+  const fmt = arr => mode === 'dom' ? domStr(arr) : genStr(arr, c.T);
+  const domAt = i => c.dom(xAt(i));
+  const out = [];
+  const add = (arr, tag) => out.push({ s: fmt(arr), tag });
+  add(a.map((v, i) => domAt(i) ? !v : false), 'compl');
+  const s = a.slice(0, M);
+  const flip = s.map((v, i) => {
+    if (i % 2) return v;
+    const l = cyc ? s[(i + M - 1) % M] : s[i - 1], r = cyc ? s[(i + 1) % M] : s[i + 1];
+    const b = (l !== undefined && l !== v) || (r !== undefined && r !== v);
+    return b && domAt(i) ? !v : v;
+  });
+  add(a.map((v, i) => i < M ? flip[i] : v), 'strict');
+  add(atoms(tr(c, x => -x)), 'mirror');
+  add(atoms(tr(c, x => PI - x)), 'mirror');
+  add(atoms(tr(c, x => x + PI / 2)), 'root');
+  add(atoms(tr(c, x => x + PI)), 'root');
+  add(atoms(tr(c, x => x - PI / 6)), 'root');
+  if (mode === 'dom') {
+    const rs = domIvs(a);
+    if (rs.length >= 2) {
+      const drop = (idx) => { const b = a.slice(); let i = 0, k = -1; while (i < b.length) { if (!a[i]) { i++; continue; } let j = i; while (j + 1 < a.length && a[j + 1]) j++; k++; if (k === idx) for (let t = i; t <= j; t++) b[t] = false; i = j + 1; } return b; };
+      add(drop(0), 'partial'); add(drop(rs.length - 1), 'partial');
+    }
+  }
+  for (const e of extras || []) add(atoms(e.c), e.tag);
+  const truth = fmt(a);
+  if (mode === 'gen') {
+    out.push({ s: truth.replace(/2πn/g, 'πn'), tag: 'period' });
+    out.push({ s: truth.replace(/(?<!2)πn/g, '2πn'), tag: 'period' });
+  }
+  const seen = new Map();
+  for (const o of out) if (o.s !== truth && !seen.has(o.s)) seen.set(o.s, o.tag);
+  return { truth, map: seen };
+}
+
+OI.build = function (p) {
+  const c = p.cond;
+  if (!verify(c, p.mode)) return null;
+  const a = atoms(c), rnd = OI.rng(p.id);
+  const { truth, map } = cands(c, p.mode, p.extras);
+  const pool = shuffle([...map.entries()], rnd);
+  const picked = [], tags = new Set();
+  for (const [s, t] of pool) if (!tags.has(t) && picked.length < 3) { picked.push([s, t]); tags.add(t); }
+  for (const [s, t] of pool) if (picked.length < 3 && !picked.find(x => x[0] === s)) picked.push([s, t]);
+  if (picked.length < 3) {
+    for (const sh of [6, 12, 18, 24, 30]) {
+      const s = p.mode === 'dom' ? domStr(atoms(tr(c, x => x - sh * PI / D))) : genStr(atoms(tr(c, x => x - sh * PI / D)), c.T);
+      if (s !== truth && !picked.find(x => x[0] === s)) picked.push([s, 'root']);
+      if (picked.length >= 3) break;
+    }
+  }
+  if (picked.length < 3) return null;
+  const opts = shuffle([[truth, null], ...picked], rnd);
+  const ans = opts.findIndex(o => o[1] === null);
+  // автоматты қадамдар
+  const ivs = domIvs(a);
+  const ks = new Set([0, N2]);
+  ivs.forEach(v => { ks.add(v.l); ks.add(v.r); });
+  for (let i = 0; i < a.length; i += 2) if (!c.dom(xAt(i))) ks.add(i / 2);
+  const ksl = [...ks].sort((x, y) => x - y);
+  const inner = ksl.filter(k => k !== 0 && k !== N2);
+  const steps = [].concat(p.s1 || []);
+  if (c.parts) steps.push('Әр теңсіздікті жеке шешеміз: ' + c.parts.map(q => q.lines[0] + '  ⇒  ' + domStr(atoms(q))).join(';   ') + '. Енді шеңберде ортақ бөлікті (қиылысуды) аламыз.');
+  steps.push(inner.length ? `Шекаралық нүктелер [0; 2π] кесіндісінде: ${inner.map(fmtK).join(', ')}. Олар кесіндіні аралықтарға бөледі.` : 'Бұл теңсіздікте [0; 2π] кесіндісінің ішінде шекаралық нүкте жоқ.');
+  const tests = [];
+  for (let i = 0; i + 1 < ksl.length; i++) tests.push(`(${fmtK(ksl[i])}; ${fmtK(ksl[i + 1])}) — ${a[ksl[i] + ksl[i + 1]] ? '✓ орындалады' : '✗ орындалмайды'}`);
+  steps.push('Әр аралықтан бір нүкте алып, теңсіздікке қоямыз: ' + tests.join(';  ') + '.');
+  steps.push('Шекаралық нүктелерді жеке тексереміз (қатаң/қатаң емес белгіге қарай) және орындалатын аралықтарды біріктіреміз.');
+  if (p.mode === 'dom') steps.push('Жауабы: ' + domStr(a));
+  else steps.push(`Жауабы (n ∈ Z, период ${c.T === 2 * PI ? '2π' : 'π'}): ${truth}`);
+  const hints = [p.h1 || 'Алгоритм: 1) теңсіздікті қарапайым түрге келтір; 2) сәйкес теңдеудің түбірлерін тап — олар шеңберді доғаларға бөледі; 3) әр доғадан нүкте алып тексер.'];
+  hints.push(inner.length ? `Шекаралық нүктелер саны: ${inner.length}. Олар: ${inner.map(fmtK).join(', ')}. Енді әр аралықты тексер.` : 'Шекаралық нүктелер [0; 2π] ішінде жоқ: шешім не бүкіл кесінді, не бос жиын, не жеке нүктелер.');
+  return {
+    id: p.id, topic: p.topic, level: p.level, mode: p.mode, cond: c, lines: c.lines, kind: p.kind || 'other',
+    options: opts.map(o => o[0]), tagsByOpt: opts.map(o => o[1]), ans, truth, steps, hints, tagMap: map
+  };
+};
+})();
+
+;
+/* OI bank: 8 тақырып, әрқайсысында ≥20 есеп (A/B/C). Жауаптары торда есептеледі және тексеріледі. */
+(function () {
+'use strict';
+const OI = globalThis.OI;
+const { fn, ineq, and } = OI;
+const { sin, cos, tg, ctg } = fn;
+const PI = Math.PI, TP = 2 * PI, R3 = Math.sqrt(3);
+
+OI.TOPICS = [
+  { id: 1, name: 'sin x теңсіздіктері' },
+  { id: 2, name: 'cos x теңсіздіктері' },
+  { id: 3, name: 'tg x теңсіздіктері' },
+  { id: 4, name: 'ctg x теңсіздіктері' },
+  { id: 5, name: 'Күрделі аргументті теңсіздіктер' },
+  { id: 6, name: 'Квадрат, модуль, түрлендіру' },
+  { id: 7, name: 'Теңсіздіктер жүйесі' },
+  { id: 8, name: 'Жалпы шешім және период (n ∈ Z)' }
+];
+
+const ASIN = { '0': '0', '1/2': 'π/6', '√2/2': 'π/4', '√3/2': 'π/3', '1': 'π/2' };
+const ACOS = { '0': 'π/2', '1/2': 'π/3', '√2/2': 'π/4', '√3/2': 'π/6', '1': '0' };
+const ACOSN = { '0': 'π/2', '1/2': '2π/3', '√2/2': '3π/4', '√3/2': '5π/6', '1': 'π' };
+const ATG = { '0': '0', '√3/3': 'π/6', '1': 'π/4', '√3': 'π/3' };
+const ACTG = { '0': 'π/2', '√3': 'π/6', '1': 'π/4', '√3/3': 'π/3' };
+const ACTGN = { '0': 'π/2', '√3': '5π/6', '1': '3π/4', '√3/3': '2π/3' };
+OI.ALPHA = { ASIN, ACOS, ACOSN, ATG, ACTG, ACTGN };
+const alpha = (name, c) => {
+  const neg = c[0] === '−', b = neg ? c.slice(1) : c;
+  if (name === 'sin') return neg && b !== '0' ? '−' + ASIN[b] : ASIN[b];
+  if (name === 'tg') return neg && b !== '0' ? '−' + ATG[b] : ATG[b];
+  if (name === 'cos') return neg ? ACOSN[b] : ACOS[b];
+  return neg ? ACTGN[b] : ACTG[b];
+};
+const ARC = { sin: 'arcsin', cos: 'arccos', tg: 'arctg', ctg: 'arcctg' };
+const F = { sin, cos, tg, ctg };
+const TT = { sin: TP, cos: TP, tg: PI, ctg: PI };
+const H = {
+  sin: 'sin x — шеңбердегі нүктенің ординатасы (Oy осі). y = a түзуін жүргіз: ол шеңберді қай екі нүктеде қияды? Белгіге қарай түзудің жоғарғы немесе төменгі жағындағы доғаны ал.',
+  cos: 'cos x — абсцисса (Ox осі). x = a түзуін жүргіз: ол шеңберді қай екі нүктеде қияды? Белгіге қарай оң немесе сол жақтағы доғаны ал.',
+  tg: 'tg x тангенстер осінде (x = 1 түзуі) өлшенеді. Осьте a нүктесін белгіле, центрден сол нүкте арқылы түзу жүргіз: шеңберді қиған нүкте — доғаның шеті. Тангенс π/2 мен 3π/2 нүктелерінде анықталмаған.',
+  ctg: 'ctg x котангенстер осінде (y = 1 түзуі) өлшенеді. Осьте a нүктесін белгіле, центрден өтетін түзу жүргіз. Котангенс 0, π, 2π нүктелерінде анықталмаған.'
+};
+
+const list = [];
+const cnt = {};
+function reg(topic, level, mode, cond, o = {}) {
+  const k = topic + level; cnt[k] = (cnt[k] || 0) + 1;
+  const id = `t${topic}${level}${String(cnt[k]).padStart(2, '0')}`;
+  list.push({ id, topic, level, mode, cond, kind: o.kind, s1: o.s1, h1: o.h1 || (o.s1 ? 'Бағыт: ' + o.s1 : H[o.kind]), extras: o.extras });
+}
+
+/* ---- 1–4: қарапайым ---- */
+const PAIRS = {
+  sin: [['>', '1/2'], ['<', '1/2'], ['≥', '√2/2'], ['≤', '√2/2'], ['>', '−√3/2'], ['<', '−1/2'], ['≥', '√3/2'], ['≤', '−√2/2'], ['>', '0'], ['<', '0'], ['≥', '−1/2'], ['≤', '√3/2']],
+  cos: [['>', '1/2'], ['<', '−1/2'], ['≥', '√2/2'], ['≤', '−√2/2'], ['>', '−√3/2'], ['<', '√3/2'], ['≥', '0'], ['≤', '0'], ['>', '−1/2'], ['<', '1/2'], ['≥', '√3/2'], ['≤', '−√3/2']],
+  tg: [['>', '1'], ['<', '1'], ['≥', '√3/3'], ['≤', '√3/3'], ['>', '−√3'], ['<', '−1'], ['≥', '√3'], ['≤', '−√3/3'], ['>', '0'], ['<', '0'], ['≥', '−1'], ['≤', '√3']],
+  ctg: [['>', '√3'], ['<', '1'], ['≥', '√3/3'], ['≤', '1'], ['>', '−1'], ['<', '−√3'], ['≥', '0'], ['≤', '0'], ['>', '−√3/3'], ['<', '√3/3'], ['≥', '−√3'], ['≤', '√3']]
+};
+['sin', 'cos', 'tg', 'ctg'].forEach((name, ti) => {
+  const topic = ti + 1;
+  PAIRS[name].forEach(([op, c]) => {
+    reg(topic, 'A', 'dom', ineq(F[name], name + ' x', op, c, TT[name]), {
+      kind: name,
+      s1: `Сәйкес теңдеуді қарастырамыз: ${name} x = ${c}. Негізгі мән: α = ${ARC[name]}(${c}) = ${alpha(name, c)}. Осы нүкте шеңберде доғаның шеті болады.`
+    });
+  });
+});
+const BL = {
+  1: [
+    ['sin (x + π/6)', x => sin(x + PI / 6), '<', '1/2', 't = x + π/6 деп белгілейміз: sin t < 1/2 шешеміз, соңында x = t − π/6.'],
+    ['sin (x − π/3)', x => sin(x - PI / 3), '≥', '√2/2', 't = x − π/3 деп белгілейміз: sin t ≥ √2/2 шешеміз, соңында x = t + π/3.'],
+    ['−sin x', x => -sin(x), '>', '1/2', 'Екі жағын −1-ге көбейтеміз, белгі өзгереді: sin x < −1/2.'],
+    ['2 sin x', x => 2 * sin(x), '≤', '√3', 'Екі жағын 2-ге бөлеміз: sin x ≤ √3/2.'],
+    ['2 sin x − 1', x => 2 * sin(x) - 1, '≥', '0', '1-ді оң жаққа шығарып, 2-ге бөлеміз: sin x ≥ 1/2.'],
+    ['sin x + 1', x => sin(x) + 1, '<', '1/2', '1-ді оң жаққа шығарамыз: sin x < −1/2.']
+  ],
+  2: [
+    ['cos (x + π/3)', x => cos(x + PI / 3), '>', '√2/2', 't = x + π/3 деп белгілейміз: cos t > √2/2 шешеміз, соңында x = t − π/3.'],
+    ['cos (x − π/4)', x => cos(x - PI / 4), '≤', '1/2', 't = x − π/4 деп белгілейміз: cos t ≤ 1/2 шешеміз, соңында x = t + π/4.'],
+    ['−cos x', x => -cos(x), '<', '√2/2', 'Екі жағын −1-ге көбейтеміз, белгі өзгереді: cos x > −√2/2.'],
+    ['2 cos x', x => 2 * cos(x), '≥', '1', 'Екі жағын 2-ге бөлеміз: cos x ≥ 1/2.'],
+    ['2 cos x + 1', x => 2 * cos(x) + 1, '<', '0', '1-ді оң жаққа шығарып, 2-ге бөлеміз: cos x < −1/2.'],
+    ['cos x − √3/2', x => cos(x) - R3 / 2, '>', '0', '√3/2-ні оң жаққа шығарамыз: cos x > √3/2.']
+  ],
+  3: [
+    ['tg (x + π/4)', x => tg(x + PI / 4), '≥', '1', 't = x + π/4 деп белгілейміз: tg t ≥ 1 шешеміз, соңында x = t − π/4.'],
+    ['tg (x − π/6)', x => tg(x - PI / 6), '<', '√3/3', 't = x − π/6 деп белгілейміз: tg t < √3/3 шешеміз, соңында x = t + π/6.'],
+    ['−tg x', x => -tg(x), '>', '1', 'Екі жағын −1-ге көбейтеміз, белгі өзгереді: tg x < −1.'],
+    ['2 tg x', x => 2 * tg(x), '≤', '2', 'Екі жағын 2-ге бөлеміз: tg x ≤ 1.'],
+    ['tg x − √3', x => tg(x) - R3, '≥', '0', '√3-ті оң жаққа шығарамыз: tg x ≥ √3.'],
+    ['√3 tg x + 1', x => R3 * tg(x) + 1, '>', '0', '1-ді оң жаққа шығарып, √3-ке бөлеміз: tg x > −1/√3 = −√3/3.']
+  ],
+  4: [
+    ['ctg (x + π/4)', x => ctg(x + PI / 4), '>', '1', 't = x + π/4 деп белгілейміз: ctg t > 1 шешеміз, соңында x = t − π/4.'],
+    ['ctg (x − π/3)', x => ctg(x - PI / 3), '≤', '√3/3', 't = x − π/3 деп белгілейміз: ctg t ≤ √3/3 шешеміз, соңында x = t + π/3.'],
+    ['−ctg x', x => -ctg(x), '≥', '1', 'Екі жағын −1-ге көбейтеміз, белгі өзгереді: ctg x ≤ −1.'],
+    ['3 ctg x', x => 3 * ctg(x), '<', '√3', 'Екі жағын 3-ке бөлеміз: ctg x < √3/3.'],
+    ['ctg x + 1', x => ctg(x) + 1, '>', '0', '1-ді оң жаққа шығарамыз: ctg x > −1.'],
+    ['√3 ctg x − 3', x => R3 * ctg(x) - 3, '≤', '0', '3-ті оң жаққа шығарып, √3-ке бөлеміз: ctg x ≤ √3.']
+  ]
+};
+const NM = { 1: 'sin', 2: 'cos', 3: 'tg', 4: 'ctg' };
+for (const t of [1, 2, 3, 4]) BL[t].forEach(([txt, g, op, c, s1]) => reg(t, 'B', 'dom', ineq(g, txt, op, c, TT[NM[t]]), { s1, kind: NM[t] }));
+
+const sq = (f) => x => f(x) * f(x);
+const CL = {
+  1: [
+    [and(ineq(sin, 'sin x', '>', '−1/2', TP), ineq(sin, 'sin x', '≤', '√2/2', TP)), 'Қос теңсіздікті жүйе ретінде жазамыз: sin x > −1/2 және sin x ≤ √2/2.'],
+    [ineq(x => Math.abs(sin(x)), '|sin x|', '<', '1/2', PI), '|sin x| < 1/2 ⇔ −1/2 < sin x < 1/2.'],
+    [ineq(x => Math.abs(sin(x)), '|sin x|', '≥', '√3/2', PI), '|sin x| ≥ √3/2 ⇔ sin x ≥ √3/2 немесе sin x ≤ −√3/2.'],
+    [ineq(x => 2 * sq(sin)(x) - sin(x) - 1, '2sin²x − sin x − 1', '≥', '0', TP), 't = sin x деп белгілейміз: 2t² − t − 1 ≥ 0 ⇒ (2t + 1)(t − 1) ≥ 0 ⇒ t ≤ −1/2 немесе t ≥ 1.'],
+    [ineq(x => 2 * sq(sin)(x) - 3 * sin(x) + 1, '2sin²x − 3 sin x + 1', '<', '0', TP), 't = sin x деп белгілейміз: 2t² − 3t + 1 < 0 ⇒ (2t − 1)(t − 1) < 0 ⇒ 1/2 < t < 1.'],
+    [ineq(x => 4 * sq(sin)(x) - 3, '4sin²x − 3', '>', '0', PI), '4sin²x > 3 ⇔ sin²x > 3/4 ⇔ |sin x| > √3/2.'],
+    [ineq(sin, 'sin x', '≥', '1', TP), 'sin x ≤ 1 болғандықтан, sin x ≥ 1 тек sin x = 1 болғанда орындалады.'],
+    [ineq(x => 2 * sq(sin)(x) + sin(x) - 1, '2sin²x + sin x − 1', '≤', '0', TP), 't = sin x деп белгілейміз: 2t² + t − 1 ≤ 0 ⇒ (2t − 1)(t + 1) ≤ 0 ⇒ −1 ≤ t ≤ 1/2.']
+  ],
+  2: [
+    [and(ineq(cos, 'cos x', '≥', '−√2/2', TP), ineq(cos, 'cos x', '<', '1/2', TP)), 'Қос теңсіздікті жүйе ретінде жазамыз: cos x ≥ −√2/2 және cos x < 1/2.'],
+    [ineq(x => Math.abs(cos(x)), '|cos x|', '≤', '√3/2', PI), '|cos x| ≤ √3/2 ⇔ −√3/2 ≤ cos x ≤ √3/2.'],
+    [ineq(x => Math.abs(cos(x)), '|cos x|', '>', '1/2', PI), '|cos x| > 1/2 ⇔ cos x > 1/2 немесе cos x < −1/2.'],
+    [ineq(x => 2 * sq(cos)(x) - cos(x) - 1, '2cos²x − cos x − 1', '>', '0', TP), 't = cos x деп белгілейміз: 2t² − t − 1 > 0 ⇒ (2t + 1)(t − 1) > 0 ⇒ t < −1/2 (t ≤ 1 болғандықтан, t > 1 мүмкін емес).'],
+    [ineq(x => 4 * sq(cos)(x) - 3, '4cos²x − 3', '≤', '0', PI), '4cos²x ≤ 3 ⇔ |cos x| ≤ √3/2.'],
+    [ineq(cos, 'cos x', '≥', '1', TP), 'cos x ≤ 1 болғандықтан, cos x ≥ 1 тек cos x = 1 болғанда орындалады.'],
+    [ineq(x => 2 * sq(cos)(x) - 3 * cos(x) + 1, '2cos²x − 3 cos x + 1', '≤', '0', TP), 't = cos x деп белгілейміз: 2t² − 3t + 1 ≤ 0 ⇒ (2t − 1)(t − 1) ≤ 0 ⇒ 1/2 ≤ t ≤ 1.'],
+    [ineq(x => 2 * sq(cos)(x) + cos(x), '2cos²x + cos x', '<', '0', TP), 'Көбейткішке жіктейміз: cos x (2 cos x + 1) < 0 ⇒ −1/2 < cos x < 0.']
+  ],
+  3: [
+    [ineq(x => Math.abs(tg(x)), '|tg x|', '<', '1', PI), '|tg x| < 1 ⇔ −1 < tg x < 1.'],
+    [ineq(x => sq(tg)(x), 'tg²x', '≤', '3', PI), 'tg²x ≤ 3 ⇔ |tg x| ≤ √3.'],
+    [and(ineq(tg, 'tg x', '>', '−1', PI), ineq(tg, 'tg x', '≤', '√3', PI)), 'Қос теңсіздікті жүйе ретінде жазамыз: tg x > −1 және tg x ≤ √3.'],
+    [ineq(x => sq(tg)(x) - 1, 'tg²x − 1', '>', '0', PI), 'tg²x > 1 ⇔ |tg x| > 1.'],
+    [ineq(x => sq(tg)(x) - (1 + R3) * tg(x) + R3, 'tg²x − (1 + √3) tg x + √3', '<', '0', PI), 'Түбірлері 1 және √3 (Виет теоремасы): (t − 1)(t − √3) < 0 ⇒ 1 < tg x < √3.'],
+    [ineq(x => R3 * sq(tg)(x) - 2 * tg(x) - R3, '√3 tg²x − 2 tg x − √3', '≥', '0', PI), 'Көбейткішке жіктейміз: (t − √3)(√3 t + 1) ≥ 0 ⇒ t ≤ −√3/3 немесе t ≥ √3.'],
+    [ineq(x => tg(x) * (tg(x) + 1), 'tg x (tg x + 1)', '≥', '0', PI), 't(t + 1) ≥ 0 ⇒ t ≤ −1 немесе t ≥ 0.']
+  ],
+  4: [
+    [ineq(x => Math.abs(ctg(x)), '|ctg x|', '≤', '1', PI), '|ctg x| ≤ 1 ⇔ −1 ≤ ctg x ≤ 1.'],
+    [ineq(x => sq(ctg)(x), 'ctg²x', '≥', '3', PI), 'ctg²x ≥ 3 ⇔ |ctg x| ≥ √3.'],
+    [and(ineq(ctg, 'ctg x', '≥', '−√3', PI), ineq(ctg, 'ctg x', '<', '1', PI)), 'Қос теңсіздікті жүйе ретінде жазамыз: ctg x ≥ −√3 және ctg x < 1.'],
+    [ineq(x => sq(ctg)(x) - 1, 'ctg²x − 1', '<', '0', PI), 'ctg²x < 1 ⇔ |ctg x| < 1.'],
+    [ineq(x => ctg(x) * (ctg(x) - 1), 'ctg x (ctg x − 1)', '>', '0', PI), 't(t − 1) > 0 ⇒ t < 0 немесе t > 1.'],
+    [ineq(x => sq(ctg)(x) - (1 + R3) * ctg(x) + R3, 'ctg²x − (1 + √3) ctg x + √3', '≤', '0', PI), 'Түбірлері 1 және √3: (t − 1)(t − √3) ≤ 0 ⇒ 1 ≤ ctg x ≤ √3.'],
+    [ineq(x => 3 * sq(ctg)(x) - 4 * R3 * ctg(x) + 3, '3ctg²x − 4√3 ctg x + 3', '>', '0', PI, 0), 'Түбірлері √3 және √3/3 (дискриминант 12): (t − √3)(3t − √3) > 0 ⇒ t < √3/3 немесе t > √3.']
+  ]
+};
+for (const t of [1, 2, 3, 4]) CL[t].forEach(([c, s1]) => reg(t, 'C', 'dom', c, { s1, kind: NM[t] }));
+
+/* ---- 5: күрделі аргумент ---- */
+const PS = {
+  sin: [['>', '1/2'], ['≤', '√2/2'], ['<', '−1/2'], ['≥', '√3/2'], ['>', '−√2/2'], ['≤', '0']],
+  cos: [['<', '1/2'], ['≥', '−√2/2'], ['>', '√3/2'], ['≤', '−1/2'], ['<', '0'], ['≥', '√2/2']],
+  tg: [['>', '1'], ['<', '√3/3'], ['≥', '−1'], ['≤', '√3'], ['>', '0'], ['<', '−√3/3']],
+  ctg: [['>', '√3/3'], ['<', '1'], ['≥', '−1'], ['≤', '√3'], ['>', '0'], ['<', '−√3/3']]
+};
+const AR = {
+  A: [['2x', x => 2 * x, 't/2', 'x ∈ [0; 2π] ⇒ t ∈ [0; 4π]: шеңберді екі рет айналамыз, шешім екі рет қайталанады.'], ['x/2', x => x / 2, '2t', 'x ∈ [0; 2π] ⇒ t ∈ [0; π]: шеңбердің тек жартысы.']],
+  B: [['3x', x => 3 * x, 't/3', 'x ∈ [0; 2π] ⇒ t ∈ [0; 6π]: шеңберді үш рет айналамыз.'], ['x + π/6', x => x + PI / 6, 't − π/6', 'Бұрыш π/6-ге ығысады, ал шешімдер солға π/6 ығысады.'], ['x − π/4', x => x - PI / 4, 't + π/4', 'Бұрыш π/4-ке кері ығысады, ал шешімдер оңға π/4 ығысады.']],
+  C: [['2x − π/3', x => 2 * x - PI / 3, '(t + π/3)/2', 'Алдымен t үшін шешеміз, содан кейін π/3-ті қосып, 2-ге бөлеміз.'], ['2x + π/4', x => 2 * x + PI / 4, '(t − π/4)/2', 'Алдымен t үшін шешеміз, содан кейін π/4-ті алып тастап, 2-ге бөлеміз.'], ['x/2 + π/6', x => x / 2 + PI / 6, '2(t − π/6)', 'Алдымен t үшін шешеміз, содан кейін π/6-ны алып тастап, 2-ге көбейтеміз.']]
+};
+let jj = 0;
+for (const lv of ['A', 'B', 'C']) {
+  for (const [at, af, inv, note] of AR[lv]) {
+    for (const name of ['sin', 'cos', 'tg', 'ctg']) {
+      if (lv !== 'A' && (jj++ % 3 === 2)) continue;
+      const [op, c] = PS[name][jj % 6];
+      const gt = at.includes(' ') ? `${name} (${at})` : `${name} ${at}`;
+      const f = F[name];
+      reg(5, lv, 'dom', ineq(x => f(af(x)), gt, op, c, TP), {
+        kind: name,
+        s1: `t = ${at} деп белгілейміз. ${name} t ${op} ${c} теңсіздігін шешеміз (α = ${ARC[name]}(${c}) = ${alpha(name, c)}), содан кейін x = ${inv} арқылы қайтамыз. ${note}`,
+        extras: [{ c: ineq(f, name + ' x', op, c, TP), tag: 'arg' }]
+      });
+    }
+  }
+}
+
+/* ---- 6: күрделі ---- */
+const I6 = (g, txt, op, c, T) => ineq(g, txt, op, c, T || TP);
+const C6 = [
+  ['A', I6(x => 2 * sq(cos)(x) + 3 * sin(x) - 3, '2cos²x + 3 sin x − 3', '≥', '0'), 'cos²x = 1 − sin²x қояміз ⇒ 2sin²x − 3 sin x + 1 ≤ 0 ⇒ 1/2 ≤ sin x ≤ 1.'],
+  ['A', I6(x => 2 * sq(sin)(x) + cos(x) - 1, '2sin²x + cos x − 1', '>', '0'), 'sin²x = 1 − cos²x қояміз ⇒ 2cos²x − cos x − 1 < 0 ⇒ −1/2 < cos x < 1.'],
+  ['A', I6(x => Math.cos(2 * x) + 5 * cos(x) + 3, 'cos 2x + 5 cos x + 3', '<', '0'), 'cos 2x = 2cos²x − 1 ⇒ 2cos²x + 5 cos x + 2 < 0 ⇒ (2t + 1)(t + 2) < 0 ⇒ −2 < cos x < −1/2.'],
+  ['A', I6(x => Math.cos(2 * x) - 3 * sin(x) + 1, 'cos 2x − 3 sin x + 1', '≥', '0'), 'cos 2x = 1 − 2sin²x ⇒ 2sin²x + 3 sin x − 2 ≤ 0 ⇒ (2t − 1)(t + 2) ≤ 0 ⇒ sin x ≤ 1/2.'],
+  ['A', I6(x => 2 * sq(sin)(x) - 5 * sin(x) + 2, '2sin²x − 5 sin x + 2', '≥', '0'), '(2t − 1)(t − 2) ≥ 0, ал sin x ≤ 1 болғандықтан t − 2 < 0 ⇒ 2t − 1 ≤ 0 ⇒ sin x ≤ 1/2.'],
+  ['A', I6(x => Math.abs(2 * sin(x) - 1), '|2 sin x − 1|', '<', '1'), '|2 sin x − 1| < 1 ⇔ −1 < 2 sin x − 1 < 1 ⇔ 0 < sin x < 1.'],
+  ['A', I6(x => Math.abs(2 * cos(x) + 1), '|2 cos x + 1|', '≥', '1'), '|2 cos x + 1| ≥ 1 ⇔ 2 cos x + 1 ≥ 1 немесе 2 cos x + 1 ≤ −1 ⇔ cos x ≥ 0 немесе cos x ≤ −1.'],
+  ['A', I6(x => sin(x) * cos(x), 'sin x cos x', '<', '0'), 'Көбейтінді теріс: sin x мен cos x таңбалары әртүрлі (II және IV ширек).'],
+  ['B', I6(x => 2 * sin(x) * cos(x), '2 sin x cos x', '>', '√2/2'), '2 sin x cos x = sin 2x ⇒ sin 2x > √2/2.'],
+  ['B', I6(x => sq(cos)(x) - sq(sin)(x), 'cos²x − sin²x', '≥', '√3/2'), 'cos²x − sin²x = cos 2x ⇒ cos 2x ≥ √3/2.'],
+  ['B', I6(x => sq(sin)(x) - sq(cos)(x), 'sin²x − cos²x', '>', '0'), 'sin²x − cos²x = −cos 2x ⇒ cos 2x < 0.'],
+  ['B', I6(x => sin(x) * cos(x), 'sin x cos x', '≥', '1/4'), 'sin x cos x = (1/2) sin 2x ⇒ sin 2x ≥ 1/2.'],
+  ['B', I6(x => sin(2 * x) - sin(x), 'sin 2x − sin x', '>', '0'), 'sin 2x = 2 sin x cos x ⇒ sin x (2 cos x − 1) > 0: көбейткіштердің таңбаларын салыстырамыз.'],
+  ['B', I6(x => sin(x) * (2 * cos(x) - R3), 'sin x (2 cos x − √3)', '≤', '0'), 'Көбейткіштер: sin x және 2 cos x − √3. Нөлдері: sin x = 0 және cos x = √3/2. Аралықтар әдісін қолданамыз.'],
+  ['B', I6(x => (2 * cos(x) - 1) * (2 * sin(x) + R3), '(2 cos x − 1)(2 sin x + √3)', '≥', '0'), 'Нөлдері: cos x = 1/2 және sin x = −√3/2. Әр аралықта көбейтіндінің таңбасын тексереміз.'],
+  ['B', I6(x => sin(x) + cos(x), 'sin x + cos x', '>', '1'), 'sin x + cos x = √2 sin(x + π/4) ⇒ sin(x + π/4) > √2/2.'],
+  ['C', I6(x => sin(x) - cos(x), 'sin x − cos x', '≤', '1'), 'sin x − cos x = √2 sin(x − π/4) ⇒ sin(x − π/4) ≤ √2/2.'],
+  ['C', I6(x => cos(x) - sin(x), 'cos x − sin x', '≥', '0'), 'cos x − sin x = √2 cos(x + π/4) ⇒ cos(x + π/4) ≥ 0.'],
+  ['C', I6(x => R3 * sin(x) + cos(x), '√3 sin x + cos x', '>', '1'), '√3 sin x + cos x = 2 sin(x + π/6) ⇒ sin(x + π/6) > 1/2.'],
+  ['C', I6(x => sin(x) + R3 * cos(x), 'sin x + √3 cos x', '<', '1'), 'sin x + √3 cos x = 2 sin(x + π/3) ⇒ sin(x + π/3) < 1/2.'],
+  ['C', I6(x => Math.pow(sin(x), 4) - Math.pow(cos(x), 4), 'sin⁴x − cos⁴x', '≥', '1/2'), 'sin⁴x − cos⁴x = (sin²x − cos²x)(sin²x + cos²x) = −cos 2x ⇒ cos 2x ≤ −1/2.'],
+  ['C', I6(x => tg(x) * sin(x), 'tg x · sin x', '>', '0', TP), 'tg x · sin x = sin²x / cos x > 0 ⇒ cos x > 0 және sin x ≠ 0.'],
+  ['C', I6(x => ctg(x) - tg(x), 'ctg x − tg x', '>', '0', TP), 'ctg x − tg x = 2 ctg 2x ⇒ ctg 2x > 0 (анықталу облысына назар аудар).'],
+  ['C', I6(x => tg(x) + ctg(x), 'tg x + ctg x', '≥', '2', TP), 'tg x + ctg x = 2 / sin 2x ⇒ 2 / sin 2x ≥ 2 ⇔ 0 < sin 2x ≤ 1.']
+];
+C6.forEach(([lv, c, s1]) => reg(6, lv, 'dom', c, { s1, kind: 'other' }));
+
+/* ---- 7: жүйелер ---- */
+const S = (op, c) => ineq(sin, 'sin x', op, c, TP), C = (op, c) => ineq(cos, 'cos x', op, c, TP);
+const Tg = (op, c) => ineq(tg, 'tg x', op, c, PI), Ct = (op, c) => ineq(ctg, 'ctg x', op, c, PI);
+const SYS = [
+  ['A', [S('>', '0'), C('>', '0')]],
+  ['A', [S('<', '0'), C('>', '0')]],
+  ['A', [S('≥', '1/2'), C('<', '0')]],
+  ['A', [S('>', '−1/2'), S('<', '√2/2')]],
+  ['A', [C('>', '−√3/2'), C('≤', '1/2')]],
+  ['A', [S('≥', '√2/2'), S('<', '√3/2')]],
+  ['A', [C('<', '1/2'), S('>', '0')]],
+  ['A', [S('≤', '1/2'), C('≤', '−1/2')]],
+  ['B', [Tg('>', '1'), S('>', '0')]],
+  ['B', [Tg('<', '−1'), C('>', '0')]],
+  ['B', [Ct('≥', '1'), C('<', '0')]],
+  ['B', [Tg('≥', '√3/3'), C('≤', '−1/2')]],
+  ['B', [ineq(x => sin(2 * x), 'sin 2x', '>', '0', PI), C('<', '0')]],
+  ['B', [ineq(x => cos(2 * x), 'cos 2x', '≥', '1/2', PI), S('>', '0')]],
+  ['B', [S('>', '1/2'), C('>', '1/2')]],
+  ['B', [Tg('>', '0'), C('<', '√2/2')]],
+  ['C', [ineq(x => 2 * sq(sin)(x) - sin(x) - 1, '2sin²x − sin x − 1', '<', '0', TP), C('≥', '0')]],
+  ['C', [ineq(x => Math.abs(sin(x)), '|sin x|', '<', '1/2', PI), C('<', '0')]],
+  ['C', [ineq(x => sin(x) * cos(x), 'sin x cos x', '>', '0', PI), Tg('<', '1')]],
+  ['C', [ineq(x => cos(2 * x), 'cos 2x', '>', '0', PI), S('≥', '1/2')]],
+  ['C', [ineq(x => Math.abs(cos(x)), '|cos x|', '≥', '1/2', PI), Tg('>', '0')]],
+  ['C', [ineq(x => 2 * sq(cos)(x) - cos(x) - 1, '2cos²x − cos x − 1', '≥', '0', TP), S('<', '0')]],
+  ['C', [ineq(x => sin(x) + cos(x), 'sin x + cos x', '>', '0', TP), ineq(x => sin(x) - cos(x), 'sin x − cos x', '<', '0', TP)]],
+  ['C', [ineq(x => sq(tg)(x), 'tg²x', '≤', '3', PI), S('≥', '√2/2')]]
+];
+SYS.forEach(([lv, cs]) => reg(7, lv, 'dom', and(...cs), { s1: 'Жүйенің әр теңсіздігін жеке шешіп, шешімдердің ортақ бөлігін (қиылысуын) аламыз.', kind: 'other' }));
+
+/* ---- 8: жалпы шешім ---- */
+const G8 = [
+  ['A', 'sin', '>', '√2/2'], ['A', 'sin', '≤', '−1/2'], ['A', 'cos', '≥', '1/2'], ['A', 'cos', '<', '−√2/2'],
+  ['A', 'tg', '>', '√3'], ['A', 'tg', '≤', '1'], ['A', 'ctg', '<', '1'], ['A', 'ctg', '≥', '√3/3'],
+  ['A', 'sin', '<', '√3/2'], ['A', 'cos', '>', '0']
+];
+G8.forEach(([lv, name, op, c]) => reg(8, lv, 'gen', ineq(F[name], name + ' x', op, c, TT[name]), {
+  kind: name,
+  s1: `Бір периодтағы шешімді табамыз (α = ${ARC[name]}(${c}) = ${alpha(name, c)}), сосын период қосамыз: ${name === 'sin' || name === 'cos' ? '2πn' : 'πn'}, n ∈ Z.`
+}));
+const GB = [
+  ['sin 2x', x => sin(2 * x), '>', '1/2', PI, 't = 2x деп белгілейміз: sin t > 1/2 ⇒ π/6 + 2πk < t < 5π/6 + 2πk. Содан кейін 2-ге бөлеміз: период π болады.'],
+  ['cos 2x', x => cos(2 * x), '≤', '√2/2', PI, 't = 2x деп белгілейміз: cos t ≤ √2/2. Шешімді 2-ге бөлгенде период π болады.'],
+  ['sin (x + π/3)', x => sin(x + PI / 3), '≥', '√3/2', TP, 't = x + π/3: sin t ≥ √3/2 ⇒ π/3 + 2πn ≤ t ≤ 2π/3 + 2πn. Соңында π/3-ті алып тастаймыз.'],
+  ['cos (x − π/6)', x => cos(x - PI / 6), '<', '1/2', TP, 't = x − π/6: cos t < 1/2. Соңында π/6-ны қосамыз.'],
+  ['tg (x + π/4)', x => tg(x + PI / 4), '>', '1', PI, 't = x + π/4: tg t > 1 ⇒ π/4 + πn < t < π/2 + πn. Соңында π/4-ті алып тастаймыз.'],
+  ['ctg (x − π/3)', x => ctg(x - PI / 3), '≤', '√3/3', PI, 't = x − π/3: ctg t ≤ √3/3. Соңында π/3-ті қосамыз.'],
+  ['−sin x', x => -sin(x), '>', '√2/2', TP, 'Екі жағын −1-ге көбейтеміз: sin x < −√2/2.'],
+  ['2 cos x', x => 2 * cos(x), '≥', '√3', TP, '2-ге бөлеміз: cos x ≥ √3/2.']
+];
+GB.forEach(([txt, g, op, c, T, s1]) => reg(8, 'B', 'gen', ineq(g, txt, op, c, T), { s1, kind: 'other' }));
+const GC = [
+  [ineq(x => 2 * sq(sin)(x) - sin(x) - 1, '2sin²x − sin x − 1', '≥', '0', TP), 't = sin x: 2t² − t − 1 ≥ 0 ⇒ t ≤ −1/2 немесе t = 1.'],
+  [ineq(x => Math.abs(sin(x)), '|sin x|', '<', '1/2', PI), '−1/2 < sin x < 1/2. Бұл теңсіздіктің периоды π.'],
+  [ineq(x => sq(tg)(x), 'tg²x', '≤', '3', PI), '|tg x| ≤ √3 ⇒ −π/3 + πn ≤ x ≤ π/3 + πn.'],
+  [ineq(x => sin(x) * cos(x), 'sin x cos x', '≥', '1/4', PI), 'sin x cos x = (1/2) sin 2x ⇒ sin 2x ≥ 1/2. Период π.'],
+  [ineq(x => cos(x) - sin(x), 'cos x − sin x', '≥', '0', TP), 'cos x − sin x = √2 cos(x + π/4) ⇒ cos(x + π/4) ≥ 0.'],
+  [ineq(x => sin(2 * x) - sin(x), 'sin 2x − sin x', '>', '0', TP), 'sin x (2 cos x − 1) > 0: таңбалар аралығын тексереміз.'],
+  [ineq(x => 2 * sq(cos)(x) + cos(x) - 1, '2cos²x + cos x − 1', '<', '0', TP), 't = cos x: 2t² + t − 1 < 0 ⇒ −1 < t < 1/2.'],
+  [ineq(x => sin(x) + cos(x), 'sin x + cos x', '≥', '1', TP), 'sin x + cos x = √2 sin(x + π/4) ⇒ sin(x + π/4) ≥ √2/2.']
+];
+GC.forEach(([c, s1]) => reg(8, 'C', 'gen', c, { s1, kind: 'other' }));
+
+/* ---- құрастыру ---- */
+OI.bank = {}; OI.byId = {}; OI.dropped = [];
+OI.TOPICS.forEach(t => OI.bank[t.id] = []);
+list.forEach(p => {
+  const b = OI.build(p);
+  if (!b) { OI.dropped.push(p.id); return; }
+  OI.bank[p.topic].push(b); OI.byId[b.id] = b;
+});
+OI.all = Object.values(OI.byId);
+})();
+
+;
+/* Теория мазмұны (қазақша). Мәтін қарапайым, формулалар unicode арқылы. */
+(function () {
+const OI = globalThis.OI;
+OI.THEORY = [
+{
+  title: '1. Тригонометриялық теңсіздік дегеніміз не?', topic: 1,
+  def: 'Белгісіз x тригонометриялық функцияның (sin, cos, tg, ctg) белгісінің ішінде тұрған және «>», «<», «≥», «≤» белгілерінің бірімен жазылған өрнекті тригонометриялық теңсіздік дейміз. Мысалы: sin x > 1/2. Оны шешу — теңсіздікті ақиқат ететін барлық x мәндерін табу.',
+  formulas: ['Бірлік шеңберде бұрышы x нүктенің координаталары: (cos x; sin x).', 'cos x — абсцисса (Ox осі), sin x — ордината (Oy осі).', 'tg x = sin x / cos x — тангенстер осінде (x = 1 түзуі) өлшенеді.', 'ctg x = cos x / sin x — котангенстер осінде (y = 1 түзуі) өлшенеді.', '−1 ≤ sin x ≤ 1,  −1 ≤ cos x ≤ 1;  tg x пен ctg x кез келген мән қабылдай алады.'],
+  example: { q: 'sin x > 1/2 теңсіздігін [0; 2π] кесіндісінде шешейік.', steps: ['Теңдеу: sin x = 1/2 ⇒ x = π/6 және x = 5π/6.', 'Шеңберде ордината 1/2-ден үлкен нүктелер — осы екі нүктенің арасындағы жоғарғы доға.', 'Шеткі нүктелер кірмейді (теңсіздік қатаң).', 'Жауабы: (π/6; 5π/6).'] },
+  algo: ['Теңсіздікті қарапайым түрге келтір (sin x ∘ a).', 'Теңдеудің түбірлерін тап — олар шеңберді доғаларға бөледі.', 'Әр доғадан бір нүкте алып, теңсіздікті тексер.', 'Жауапты аралық түрінде жаз.'],
+  mistakes: ['Теңсіздікті теңдеу сияқты шешіп, тек екі нүктені жазу.', 'Жақшаның түрін шатастыру.', 'sin x > 1 немесе cos x < −1 сияқты мүмкін емес жағдайларды байқамау.'],
+  tasks: 'Практика → «sin x теңсіздіктері», A деңгейі.'
+},
+{
+  title: '2. sin x > a және sin x < a теңсіздіктері', topic: 1,
+  def: 'sin x ∘ a теңсіздігінің шешімі шеңберде y = a түзуінің жоғарғы (sin x > a) немесе төменгі (sin x < a) жағындағы доға болады.',
+  formulas: ['|a| < 1 болғанда α = arcsin a.', 'sin x > a:  α + 2πn < x < π − α + 2πn,  n ∈ Z.', 'sin x < a:  π − α + 2πn < x < 2π + α + 2πn,  n ∈ Z.', 'a ≥ 1: sin x > a шешімі жоқ; a < −1: sin x > a барлық x үшін орындалады.', 'sin x ≥ 1 ⇔ x = π/2 + 2πn.'],
+  example: { q: 'sin x ≤ −√2/2 теңсіздігін шешейік.', steps: ['α = arcsin(−√2/2) = −π/4.', 'sin x < a түрі: π − α + 2πn ≤ x ≤ 2π + α + 2πn.', 'π − (−π/4) = 5π/4;  2π + (−π/4) = 7π/4.', 'Жауабы: [5π/4 + 2πn; 7π/4 + 2πn], n ∈ Z.'] },
+  algo: ['arcsin a мәнін тап.', 'Шеңберде y = a түзуін жүргіз, екі нүктені белгіле.', 'Түзудің қай жағы керек екенін таңда.', 'Периодты қос: 2πn.'],
+  mistakes: ['Екінші нүкте π − α орнына −α деп алу.', 'sin x < a үшін аралықты (α; π − α) деп жазу.', 'Периодты (2πn) ұмыту.'],
+  tasks: 'Практика → «sin x теңсіздіктері», A және B деңгейлері.'
+},
+{
+  title: '3. cos x > a және cos x < a теңсіздіктері', topic: 2,
+  def: 'cos x ∘ a теңсіздігінің шешімі шеңберде x = a түзуінің оң жағындағы (cos x > a) немесе сол жағындағы (cos x < a) доға болады.',
+  formulas: ['|a| < 1 болғанда α = arccos a, 0 ≤ α ≤ π.', 'cos x > a:  −α + 2πn < x < α + 2πn,  n ∈ Z.', 'cos x < a:  α + 2πn < x < 2π − α + 2πn,  n ∈ Z.', 'arccos(−a) = π − arccos a.', 'cos x ≥ 1 ⇔ x = 2πn.'],
+  example: { q: 'cos x ≥ 1/2 теңсіздігін шешейік.', steps: ['α = arccos(1/2) = π/3.', 'cos x > a түрі: −α ≤ x ≤ α.', 'Жалпы түрі: −π/3 + 2πn ≤ x ≤ π/3 + 2πn.', 'Жауабы: [−π/3 + 2πn; π/3 + 2πn], n ∈ Z.'] },
+  algo: ['arccos a мәнін тап.', 'Шеңберде x = a түзуін жүргіз.', 'Оң жағы — «>», сол жағы — «<».', 'Период 2πn қос.'],
+  mistakes: ['arccos(−1/2) = −π/3 деп жазу (дұрысы 2π/3).', 'Доғаның бағытын шатастыру.', 'cos x ≤ 1 екенін ескермеу.'],
+  tasks: 'Практика → «cos x теңсіздіктері».'
+},
+{
+  title: '4. tg x > a және tg x < a теңсіздіктері', topic: 3,
+  def: 'Тангенс π/2 + πn нүктелерінде анықталмаған, сондықтан шешім аралықтарының шеті осы нүктелер болуы мүмкін және олар әрқашан дөңгелек жақшада жазылады.',
+  formulas: ['α = arctg a, −π/2 < α < π/2.', 'tg x > a:  α + πn < x < π/2 + πn,  n ∈ Z.', 'tg x < a:  −π/2 + πn < x < α + πn,  n ∈ Z.', 'arctg(−a) = −arctg a.', 'Период — π.'],
+  example: { q: 'tg x ≥ 1 теңсіздігін шешейік.', steps: ['α = arctg 1 = π/4.', 'tg x ≥ a: π/4 + πn ≤ x < π/2 + πn.', 'π/2 + πn нүктесінде тангенс жоқ, сондықтан жақша дөңгелек.', 'Жауабы: [π/4 + πn; π/2 + πn), n ∈ Z.'] },
+  algo: ['arctg a тап.', 'Тангенстер осінде a нүктесін белгіле.', 'a-дан жоғары (>) немесе төмен (<) бөлікке сәйкес доғаны ал.', 'Период πn қос.'],
+  mistakes: ['Периодты 2πn деп жазу (дұрысы πn).', 'Анықталмаған нүктені аралыққа қосып жіберу.', 'tg x < a үшін аралықты (α; π/2) деп алу.'],
+  tasks: 'Практика → «tg x теңсіздіктері».'
+},
+{
+  title: '5. ctg x > a және ctg x < a теңсіздіктері', topic: 4,
+  def: 'Котангенс πn нүктелерінде анықталмаған. Шешім аралықтарының шеті осы нүктелер болса, жақша дөңгелек болады.',
+  formulas: ['α = arcctg a, 0 < α < π.', 'ctg x > a:  πn < x < α + πn,  n ∈ Z.', 'ctg x < a:  α + πn < x < π + πn,  n ∈ Z.', 'arcctg(−a) = π − arcctg a.', 'Период — π.'],
+  example: { q: 'ctg x < −1 теңсіздігін шешейік.', steps: ['α = arcctg(−1) = 3π/4.', 'ctg x < a: α + πn < x < π + πn.', 'Жалпы түрі: 3π/4 + πn < x < π + πn.', 'Жауабы: (3π/4 + πn; π + πn), n ∈ Z.'] },
+  algo: ['arcctg a тап.', 'Котангенстер осінде a нүктесін белгіле.', 'Керекті бөлікке сәйкес доғаны таңда.', 'Период πn қос.'],
+  mistakes: ['arcctg(−1) = −π/4 деп алу.', 'ctg x > a үшін (α; π) деп жазу.', 'Анықталмаған нүктелерді қосып жіберу.'],
+  tasks: 'Практика → «ctg x теңсіздіктері».'
+},
+{
+  title: '6. Қарапайым теңсіздіктерді шешу (аргументі күрделі)', topic: 5,
+  def: 'Теңсіздікте sin(kx + b), cos(kx + b), tg(kx + b) түрі кездессе, жаңа айнымалы t = kx + b енгізіп, қарапайым теңсіздікті t бойынша шешеміз, сосын x-ке ораламыз.',
+  formulas: ['t = kx + b ⇒ x = (t − b)/k.', 'Периодтар: sin kx, cos kx үшін 2π/|k|;  tg kx, ctg kx үшін π/|k|.', 'k > 1 болғанда [0; 2π] кесіндісінде шешім k рет қайталанады.', 'k < 0 болса, алдымен минусты функциядан шығар: sin(−x) = −sin x, cos(−x) = cos x.'],
+  example: { q: 'sin 2x > 1/2, x ∈ [0; 2π].', steps: ['t = 2x ⇒ t ∈ [0; 4π].', 'sin t > 1/2: (π/6; 5π/6) ∪ (13π/6; 17π/6).', 'x = t/2: (π/12; 5π/12) ∪ (13π/12; 17π/12).', 'Жауабы: (π/12; 5π/12) ∪ (13π/12; 17π/12).'] },
+  algo: ['t = kx + b деп ауыстыр.', 'x қай аралықта жүрсе, t сол аралықты ескеріп ауысатынын жаз.', 'sin t ∘ a (т.б.) шеш.', 'x-ке қайт: b-ны алып тастап, k-ға бөл.'],
+  mistakes: ['Шеткі нүктелерді k-ға бөлмей жазу.', 'Периодты өзгертпеу.', 'b-ны қосудың орнына алып тастау (немесе керісінше).'],
+  tasks: 'Практика → «Күрделі аргументті теңсіздіктер».'
+},
+{
+  title: '7. Күрделі тригонометриялық теңсіздіктер', topic: 6,
+  def: 'Бұл теңсіздіктерді қарапайым түрге келтіру үшін айнымалыны ауыстыру, көбейткіштерге жіктеу, модульді ашу және түрлендіру формулалары қолданылады.',
+  formulas: ['sin²x + cos²x = 1;  cos 2x = 1 − 2sin²x = 2cos²x − 1;  sin 2x = 2 sin x cos x.', 'a sin x + b cos x = √(a² + b²) · sin(x + φ).', '|f| < a ⇔ −a < f < a;  |f| > a ⇔ f > a немесе f < −a.', 'Квадрат: t = sin x (немесе cos x) ⇒ at² + bt + c ∘ 0, ал |t| ≤ 1 шарты ұмытылмасын.', 'Көбейтінді таңбасы: f · g > 0 болса, екеуінің таңбасы бірдей.'],
+  example: { q: '2sin²x − sin x − 1 ≥ 0.', steps: ['t = sin x: 2t² − t − 1 ≥ 0 ⇒ (2t + 1)(t − 1) ≥ 0.', 'Шешімі: t ≤ −1/2 немесе t ≥ 1.', 'sin x ≥ 1 ⇒ x = π/2 + 2πn;  sin x ≤ −1/2 ⇒ [7π/6 + 2πn; 11π/6 + 2πn].', 'Жауабы: x = π/2 + 2πn немесе [7π/6 + 2πn; 11π/6 + 2πn].'] },
+  algo: ['Теңсіздікті бір функцияға келтір.', 'Айнымалы ауыстыр немесе жікте.', 'Алгебралық теңсіздікті шеш.', 'Шыққан қарапайым тригонометриялық теңсіздіктерді шеш.'],
+  mistakes: ['t = sin x үшін |t| > 1 мәндерін жауапқа қалдыру.', 'Модульді ашқанда екінші жағын ұмыту.', 'Екі жағын таңбасы белгісіз өрнекке бөлу.'],
+  tasks: 'Практика → «Квадрат, модуль, түрлендіру».'
+},
+{
+  title: '8. Тригонометриялық теңсіздіктер жүйесі', topic: 7,
+  def: 'Жүйенің шешімі — оның әр теңсіздігін ақиқат ететін x мәндерінің ортақ бөлігі (қиылысуы).',
+  formulas: ['Әр теңсіздікті жеке шешіп, аралықтарды шеңберде (немесе сан осінде) түсір.', 'Қиылысу = екі шешімде де болатын аралықтар.', 'Шеткі нүктелер: екі жақша да шаршы болса ғана нүкте кіреді.'],
+  example: { q: 'sin x > 0 және cos x < 0, x ∈ [0; 2π].', steps: ['sin x > 0 ⇒ (0; π).', 'cos x < 0 ⇒ (π/2; 3π/2).', 'Ортақ бөлігі: (π/2; π).', 'Жауабы: (π/2; π).'] },
+  algo: ['Әр теңсіздікті жеке шеш.', 'Шешімдерді бір шеңберге немесе сызыққа түсір.', 'Қиылысуды тап.', 'Шеткі нүктелердің жақшасын тексер.'],
+  mistakes: ['Қиылысудың орнына бірігуді жазу.', 'Әртүрлі кесіндіде шешкен аралықтарды салыстыру.', 'Анықталмаған нүктелерді қосып жіберу.'],
+  tasks: 'Практика → «Теңсіздіктер жүйесі».'
+},
+{
+  title: '9. Жауапты аралық түрінде жазу', topic: 7,
+  def: 'Жауап міндетті түрде математикалық стандартта жазылуы керек: аралықтар өсу ретімен, біріктіру «∪» белгісімен.',
+  formulas: ['(a; b) — шеткілері кірмейді;  [a; b] — екі шеті кіреді;  [a; b) және (a; b] — біреуі ғана.', '{a} — бір нүкте;  ∅ — шешімі жоқ.', 'tg, ctg үшін анықталмаған нүктелер әрқашан дөңгелек жақшада.', 'Кесіндіде шешкенде жауап осы кесіндімен шектеледі: [0; 2π].'],
+  example: { q: 'sin x ≤ 1/2, x ∈ [0; 2π].', steps: ['sin x = 1/2 ⇒ π/6 және 5π/6.', 'Түзудің төменгі жағы: [0; π/6] және [5π/6; 2π].', '0 және 2π кесіндіге кіреді, сондықтан жақша шаршы.', 'Жауабы: [0; π/6] ∪ [5π/6; 2π].'] },
+  algo: ['Нүктелерді сан осінде өсу ретімен жаз.', 'Әр аралықтың жақшасын теңсіздік белгісіне қарап таңда.', 'Аралықтарды ∪ арқылы біріктір.'],
+  mistakes: ['Аралықтарды рет-ретімен жазбау.', '«x > π/6 және x < 5π/6» деп жазып, аралықты қалдыру.', 'Нүктелік шешімді ұмыту.'],
+  tasks: 'Практика → кез келген тақырып, «өз жауабымды жазамын» режимі.'
+},
+{
+  title: '10. Жалпы шешім және периодтылық', topic: 8,
+  def: 'Кесінді көрсетілмесе, шешім барлық нақты сандар жиынында ізделеді. Функция периодты болғандықтан, бір периодтағы шешімге период қосып жазамыз: x + Tn, n ∈ Z.',
+  formulas: ['sin x, cos x үшін T = 2π;  tg x, ctg x үшін T = π.', 'sin kx, cos kx үшін T = 2π/|k|;  tg kx, ctg kx үшін T = π/|k|.', '|sin x|, |cos x|, tg²x, sin x cos x үшін T = π.', 'Жалпы түрі: (α + Tn; β + Tn), n ∈ Z.'],
+  example: { q: 'sin 2x > 1/2 теңсіздігінің жалпы шешімі.', steps: ['t = 2x: π/6 + 2πk < t < 5π/6 + 2πk.', 'x = t/2: π/12 + πk < x < 5π/12 + πk.', 'Период π болды (2π/2).', 'Жауабы: (π/12 + πn; 5π/12 + πn), n ∈ Z.'] },
+  algo: ['Бір периодтағы шешімді тап.', 'Периодты анықта.', 'Әр шеткіге Tn қос.', 'n ∈ Z екенін көрсет.'],
+  mistakes: ['Период ретінде 2π алу, ал шын мәнінде π (немесе керісінше).', 'n-ді жазбау.', 'Шешім бірнеше аралықтан тұрса, біреуін ғана жазу.'],
+  tasks: 'Практика → «Жалпы шешім және период».'
+}
+];
+
+OI.FORMULA_TABLE = {
+  head: ['x', '0', 'π/6', 'π/4', 'π/3', 'π/2', '2π/3', '3π/4', '5π/6', 'π'],
+  rows: [
+    ['sin x', '0', '1/2', '√2/2', '√3/2', '1', '√3/2', '√2/2', '1/2', '0'],
+    ['cos x', '1', '√3/2', '√2/2', '1/2', '0', '−1/2', '−√2/2', '−√3/2', '−1'],
+    ['tg x', '0', '√3/3', '1', '√3', '—', '−√3', '−1', '−√3/3', '0'],
+    ['ctg x', '—', '√3', '1', '√3/3', '0', '−√3/3', '−1', '−√3', '—']
+  ]
+};
+OI.FORMULA_LIST = [
+  ['Арк-функциялар (теріс аргумент)', ['arcsin(−a) = −arcsin a', 'arccos(−a) = π − arccos a', 'arctg(−a) = −arctg a', 'arcctg(−a) = π − arcctg a']],
+  ['Қарапайым теңсіздіктер (n ∈ Z)', ['sin x > a: arcsin a + 2πn < x < π − arcsin a + 2πn', 'sin x < a: π − arcsin a + 2πn < x < 2π + arcsin a + 2πn', 'cos x > a: −arccos a + 2πn < x < arccos a + 2πn', 'cos x < a: arccos a + 2πn < x < 2π − arccos a + 2πn', 'tg x > a: arctg a + πn < x < π/2 + πn', 'tg x < a: −π/2 + πn < x < arctg a + πn', 'ctg x > a: πn < x < arcctg a + πn', 'ctg x < a: arcctg a + πn < x < π + πn']],
+  ['Негізгі теңдіктер', ['sin²x + cos²x = 1', 'tg x · ctg x = 1', '1 + tg²x = 1/cos²x', '1 + ctg²x = 1/sin²x']],
+  ['Қос бұрыш', ['sin 2x = 2 sin x cos x', 'cos 2x = cos²x − sin²x = 1 − 2sin²x = 2cos²x − 1', 'tg 2x = 2 tg x / (1 − tg²x)']],
+  ['Қосу формулалары', ['sin(x ± y) = sin x cos y ± cos x sin y', 'cos(x ± y) = cos x cos y ∓ sin x sin y']],
+  ['Көмекші бұрыш', ['a sin x + b cos x = √(a² + b²) · sin(x + φ), tg φ = b/a (a > 0)', 'sin x + cos x = √2 sin(x + π/4)', 'sin x − cos x = √2 sin(x − π/4)', '√3 sin x + cos x = 2 sin(x + π/6)']],
+  ['Периодтар', ['sin x, cos x: 2π;  tg x, ctg x: π', 'sin kx, cos kx: 2π/|k|;  tg kx, ctg kx: π/|k|', '|sin x|, |cos x|: π']]
+];
+})();
+
+;
+(function () {
+'use strict';
+const OI = globalThis.OI;
+const CFG = Object.assign({ SUPABASE_URL: '', SUPABASE_ANON_KEY: '', TEACHER_CODE: 'oi-teacher' }, window.OI_CONFIG || {});
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+const LS = {
+  get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v === null || v === undefined ? d : v; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const normU = u => String(u).trim().toLowerCase();
+const okU = u => /^[a-z0-9._-]{3,30}$/.test(u);
+const emailOf = u => u + '@oimath.kz';
+const LV = { A: 'A · жеңіл', B: 'B · орташа', C: 'C · ҰБТ күрделі' };
+const PTS = { A: 1, B: 2, C: 3 };
+const TAGL = { compl: 'Қарама-қарсы аралық', strict: 'Жақша / шеткі нүктелер', mirror: 'Симметриялы нүкте', root: 'Түбірлер қате', table: 'Арк-мән кестесі', partial: 'Шешім бөлігі ұмытылған', arg: 'Күрделі аргумент', period: 'Период', other: 'Басқа қате' };
+const topicName = id => (OI.TOPICS.find(t => t.id === +id) || {}).name || '';
+
+/* ================= Деректер қабаты ================= */
+const pub = r => r && ({ id: r.id, username: r.username, full_name: r.full_name, class: r.class, role: r.role });
+const Local = {
+  mode: 'local',
+  async signUp(u, p, full, cls, code) {
+    const us = LS.get('oi_users', []);
+    if (us.find(x => x.username === u)) throw new Error('Бұл логин бұрын алынған.');
+    const row = { id: uid(), username: u, pw: btoa(unescape(encodeURIComponent(p))), full_name: full, class: cls, role: code && code === CFG.TEACHER_CODE ? 'teacher' : 'student' };
+    us.push(row); LS.set('oi_users', us); LS.set('oi_me', row.id); return pub(row);
+  },
+  async signIn(u, p) {
+    const r = LS.get('oi_users', []).find(x => x.username === u && x.pw === btoa(unescape(encodeURIComponent(p))));
+    if (!r) throw new Error('Логин немесе құпиясөз қате.');
+    LS.set('oi_me', r.id); return pub(r);
+  },
+  async restore() { const id = LS.get('oi_me', null); return pub(LS.get('oi_users', []).find(x => x.id === id)); },
+  signOut() { LS.set('oi_me', null); },
+  async createStudent(u, p, full, cls) { const me = LS.get('oi_me'); const r = await this.signUp(u, p, full, cls); LS.set('oi_me', me); return r; },
+  async addAttempt(a) { const l = LS.get('oi_att', []); l.push({ ...a, id: uid(), user_id: LS.get('oi_me'), created_at: new Date().toISOString() }); LS.set('oi_att', l); },
+  async addTest(t) { const l = LS.get('oi_tests', []); l.push({ ...t, id: uid(), user_id: LS.get('oi_me'), created_at: new Date().toISOString() }); LS.set('oi_tests', l); },
+  async myAttempts() { return LS.get('oi_att', []).filter(a => a.user_id === LS.get('oi_me')); },
+  async myTests() { return LS.get('oi_tests', []).filter(a => a.user_id === LS.get('oi_me')); },
+  async allAttempts() { return LS.get('oi_att', []); },
+  async allTests() { return LS.get('oi_tests', []); },
+  async profiles() { return LS.get('oi_users', []).map(pub); },
+  async assignments() { const me = LS.get('oi_me'), u = LS.get('oi_users', []).find(x => x.id === me); return LS.get('oi_asg', []).filter(a => (u && u.role === 'teacher') || !a.user_id || a.user_id === me); },
+  async addAssignment(a) { const l = LS.get('oi_asg', []); l.push({ ...a, id: uid(), created_at: new Date().toISOString() }); LS.set('oi_asg', l); },
+  async delAssignment(id) { LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.id !== id)); }
+};
+const SB = {
+  mode: 'supabase', tok: null, rt: null, exp: 0, uid: null,
+  async auth(path, body) {
+    const r = await fetch(CFG.SUPABASE_URL + '/auth/v1/' + path, { method: 'POST', headers: { apikey: CFG.SUPABASE_ANON_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    let j = {}; try { j = await r.json(); } catch (e) { }
+    if (!r.ok) {
+      const m = j.msg || j.error_description || j.message || '';
+      if (/already|registered/i.test(m)) throw new Error('Бұл логин бұрын алынған.');
+      if (/invalid login/i.test(m)) throw new Error('Логин немесе құпиясөз қате.');
+      if (/password/i.test(m)) throw new Error('Құпиясөз кемінде 6 таңба болуы керек.');
+      throw new Error(m || 'Серверге қосылу қатесі.');
+    }
+    return j;
+  },
+  setSess(j) { this.tok = j.access_token; this.rt = j.refresh_token; this.uid = j.user.id; this.exp = Date.now() + (j.expires_in || 3600) * 1000; LS.set('oi_sb', { rt: this.rt }); },
+  async fresh() { if (this.rt && Date.now() > this.exp - 60000) { const j = await this.auth('token?grant_type=refresh_token', { refresh_token: this.rt }); this.setSess(j); } },
+  async rest(path, o = {}) {
+    if (!o.tok) await this.fresh();
+    const h = { apikey: CFG.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + (o.tok || this.tok), 'Content-Type': 'application/json' };
+    if (o.prefer) h.Prefer = o.prefer;
+    if (o.range) { h['Range-Unit'] = 'items'; h.Range = o.range[0] + '-' + o.range[1]; }
+    const r = await fetch(CFG.SUPABASE_URL + '/rest/v1/' + path, { method: o.method || 'GET', headers: h, body: o.body ? JSON.stringify(o.body) : undefined });
+    if (!r.ok) throw new Error((await r.text()) || 'Сервер қатесі');
+    return r.status === 204 ? null : r.json().catch(() => null);
+  },
+  async all(path) { let out = [], from = 0; for (; ;) { const r = await this.rest(path, { range: [from, from + 999] }) || []; out = out.concat(r); if (r.length < 1000) break; from += 1000; } return out; },
+  async profile() { const r = await this.rest('profiles?select=*&id=eq.' + this.uid); return r && r[0]; },
+  async signUp(u, p, full, cls) {
+    const j = await this.auth('signup', { email: emailOf(u), password: p });
+    if (!j.access_token) throw new Error('Supabase-те Authentication → Providers → Email бөлімінде «Confirm email» өшірулі болуы керек.');
+    this.setSess(j);
+    await this.rest('profiles', { method: 'POST', body: { id: j.user.id, username: u, full_name: full, class: cls }, prefer: 'return=minimal' });
+    return await this.profile();
+  },
+  async signIn(u, p) { const j = await this.auth('token?grant_type=password', { email: emailOf(u), password: p }); this.setSess(j); const pr = await this.profile(); if (!pr) throw new Error('Профиль табылмады.'); return pr; },
+  async restore() { const s = LS.get('oi_sb', null); if (!s) return null; try { this.rt = s.rt; this.exp = 0; await this.fresh(); return await this.profile(); } catch (e) { LS.set('oi_sb', null); return null; } },
+  signOut() { this.tok = null; this.rt = null; LS.set('oi_sb', null); },
+  async createStudent(u, p, full, cls) {
+    const j = await this.auth('signup', { email: emailOf(u), password: p });
+    if (!j.access_token) throw new Error('«Confirm email» өшірулі болуы керек.');
+    await this.rest('profiles', { method: 'POST', tok: j.access_token, body: { id: j.user.id, username: u, full_name: full, class: cls }, prefer: 'return=minimal' });
+  },
+  addAttempt(a) { return this.rest('attempts', { method: 'POST', body: a, prefer: 'return=minimal' }); },
+  addTest(t) { return this.rest('tests', { method: 'POST', body: t, prefer: 'return=minimal' }); },
+  myAttempts() { return this.all('attempts?select=*&user_id=eq.' + this.uid + '&order=created_at.asc'); },
+  myTests() { return this.all('tests?select=*&user_id=eq.' + this.uid + '&order=created_at.asc'); },
+  allAttempts() { return this.all('attempts?select=*&order=created_at.asc'); },
+  allTests() { return this.all('tests?select=*&order=created_at.asc'); },
+  profiles() { return this.all('profiles?select=*&order=full_name.asc'); },
+  assignments() { return this.all('assignments?select=*&order=created_at.desc'); },
+  addAssignment(a) { return this.rest('assignments', { method: 'POST', body: a, prefer: 'return=minimal' }); },
+  delAssignment(id) { return this.rest('assignments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); }
+};
+const DB = CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY ? SB : Local;
+
+/* ================= Күй ================= */
+const S = { me: null, att: [], tests: [], asg: [] };
+const main = () => $('#main');
+let timer = null;
+function toast(msg, bad) { const t = document.createElement('div'); t.className = 'toast' + (bad ? ' bad' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3600); }
+const guard = fn => async (...a) => { try { return await fn(...a); } catch (e) { toast(e.message || String(e), true); } };
+
+async function loadMine() { S.att = await DB.myAttempts(); S.tests = await DB.myTests(); S.asg = await DB.assignments(); }
+const solved = () => new Set(S.att.filter(a => a.correct).map(a => a.qid));
+const points = () => { const m = {}; S.att.forEach(a => { if (a.correct) m[a.qid] = PTS[a.level] || 1; }); return Object.values(m).reduce((x, y) => x + y, 0); };
+function statsOf(att) {
+  const o = { n: att.length, c: att.filter(a => a.correct).length, topics: {} };
+  OI.TOPICS.forEach(t => o.topics[t.id] = { n: 0, c: 0 });
+  att.forEach(a => { const t = o.topics[a.topic]; if (t) { t.n++; if (a.correct) t.c++; } });
+  o.w = o.n - o.c; o.pct = o.n ? Math.round(100 * o.c / o.n) : 0; return o;
+}
+const pctCls = (n, c) => !n ? 'na' : c / n < .5 ? 'lo' : c / n < .75 ? 'mid' : 'hi';
+const mathHtml = p => p.lines.length > 1
+  ? `<div class="sys"><span class="br">{</span><div>${p.lines.map(l => `<div>${esc(l)}</div>`).join('')}</div></div>`
+  : `<div class="mth">${esc(p.lines[0])}</div>`;
+const qHead = p => p.mode === 'gen' ? 'Теңсіздіктің жалпы шешімін таңдаңыз (n ∈ Z):' : '[0; 2π] кесіндісінде теңсіздікті шешіңіз:';
+const stepsHtml = p => `<ol class="steps">${p.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`;
+const topicSel = (id, v) => `<select id="${id}">${OI.TOPICS.map(t => `<option value="${t.id}"${t.id === +v ? ' selected' : ''}>${t.id}. ${esc(t.name)}</option>`).join('')}</select>`;
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+/* ================= Шеллы және маршрутизация ================= */
+const NAV = [['home', 'Басты'], ['theory', 'Теория'], ['formulas', 'Формулалар'], ['explain', 'Түсіндіру'], ['together', 'Бірге шығару'], ['practice', 'Практика'], ['ubt', 'ҰБТ тест'], ['mistakes', 'Қателер'], ['stats', 'Статистика']];
+function shell() {
+  const nav = NAV.concat(S.me.role === 'teacher' ? [['teacher', 'Мұғалім панелі']] : []);
+  $('#app').innerHTML = `<header class="top"><div class="brand"><b>OI MATH</b><span>Тригонометриялық теңсіздіктер</span></div>
+  <div class="who">${esc(S.me.full_name)}${S.me.role === 'teacher' ? ' · мұғалім' : ''} · <b>${points()}</b> ұпай <button class="lnk" id="out">Шығу</button></div></header>
+  <nav class="nav" id="nav">${nav.map(([k, t]) => `<a href="#/${k}" data-k="${k}">${t}</a>`).join('')}</nav><main id="main"></main>`;
+  $('#out').onclick = () => { DB.signOut(); S.me = null; location.hash = ''; boot(); };
+}
+const VIEWS = {};
+function route() {
+  clearInterval(timer);
+  if (!S.me) return authView();
+  if (!$('#main')) shell();
+  const k = (location.hash.replace(/^#\/?/, '').split('/')[0]) || 'home';
+  const v = VIEWS[k] ? k : 'home';
+  $$('#nav a').forEach(a => a.classList.toggle('on', a.dataset.k === v));
+  scrollTo(0, 0);
+  const pe0 = $('.who b'); if (pe0) pe0.textContent = points();
+  Promise.resolve(VIEWS[v](location.hash.split('/').slice(2))).catch(e => toast(e.message, true));
+}
+addEventListener('hashchange', route);
+
+/* ================= Кіру / тіркелу ================= */
+let authTab = 'in';
+function authView() {
+  $('#app').innerHTML = `<div class="auth"><h1>OI MATH</h1><p class="m">ҰБТ-ға дайындық: тригонометриялық теңсіздіктер</p>
+  ${DB.mode === 'local' ? '<div class="demo">Демо режим: деректер осы құрылғыда сақталады. Барлық оқушыны бір базада көру үшін Supabase қосыңыз (README).</div>' : ''}
+  <div class="tabs"><button class="${authTab === 'in' ? 'on' : ''}" data-t="in">Кіру</button><button class="${authTab === 'up' ? 'on' : ''}" data-t="up">Тіркелу</button></div>
+  <form id="af" class="card" autocomplete="on">
+   ${authTab === 'up' ? '<label>Аты-жөні<input id="fn" required autocomplete="name"></label><label>Сыныбы<input id="cl" placeholder="мысалы, 11А" required></label>' : ''}
+   <label>Логин (латын әріптері, сандар)<input id="un" required autocapitalize="none" autocomplete="username"></label>
+   <label>Құпиясөз (кемінде 6 таңба)<input id="pw" type="password" required minlength="6" autocomplete="${authTab === 'up' ? 'new-password' : 'current-password'}"></label>
+   ${authTab === 'up' && DB.mode === 'local' ? '<label>Мұғалім коды (оқушыға керек емес)<input id="tc"></label>' : ''}
+   <button type="submit" class="pri">${authTab === 'in' ? 'Кіру' : 'Тіркелу'}</button><p class="err" id="ae"></p></form></div>`;
+  $$('.tabs button').forEach(b => b.onclick = () => { authTab = b.dataset.t; authView(); });
+  $('#af').onsubmit = async e => {
+    e.preventDefault(); const err = $('#ae'); err.textContent = '';
+    const u = normU($('#un').value), p = $('#pw').value;
+    if (!okU(u)) { err.textContent = 'Логин: 3–30 таңба, тек латын әріптері, сандар, нүкте, сызықша.'; return; }
+    const btn = $('#af button[type=submit]'); btn.disabled = true;
+    try {
+      S.me = authTab === 'in' ? await DB.signIn(u, p) : await DB.signUp(u, p, $('#fn').value.trim(), $('#cl').value.trim(), ($('#tc') || {}).value);
+      await loadMine(); route();
+    } catch (x) { err.textContent = x.message; S.me = null; btn.disabled = false; }
+  };
+}
+
+/* ================= Басты ================= */
+VIEWS.home = async function () {
+  const st = statsOf(S.att), sv = solved();
+  const asg = S.asg.filter(a => !a.user_id || a.user_id === S.me.id);
+  const prog = a => S.att.filter(x => x.correct && x.topic === a.topic && (a.level === 'auto' || x.level === a.level) && x.created_at >= a.created_at).length;
+  main().innerHTML = `<div class="card hero"><h1>Сәлем, ${esc(S.me.full_name.split(' ')[0] || '')}!</h1>
+  <p>Мақсат: формуланы жаттау емес, тригонометриялық теңсіздікті <b>түсініп</b>, өзің шығара алу.</p>
+  <div class="kpis"><div><b>${points()}</b><span>ұпай</span></div><div><b>${sv.size}</b><span>шешілген есеп</span></div><div><b>${st.pct}%</b><span>дұрыс жауап</span></div></div></div>
+  ${asg.length ? `<div class="card"><h2>Мұғалім тапсырмалары</h2>${asg.map(a => { const d = prog(a); return `<div class="row"><div><b>${esc(topicName(a.topic))}</b> · ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level} · ${d}/${a.count} ${a.note ? '· ' + esc(a.note) : ''}<br><span class="m">${a.user_id ? 'жеке' : 'барлық оқушыға'} · ${new Date(a.created_at).toLocaleDateString('kk-KZ')}</span></div><button class="g" data-a="${a.id}">${d >= a.count ? 'Орындалды ✓' : 'Бастау'}</button></div>`; }).join('')}</div>` : ''}
+  <div class="card"><h2>Қайдан бастаймын?</h2><div class="grid">
+  <a class="tile" href="#/theory"><b>1. Теория</b><span>Нөлден бастап түсіндіру</span></a>
+  <a class="tile" href="#/explain"><b>2. Шеңбер</b><span>Интерактивті түсіндіру</span></a>
+  <a class="tile" href="#/together"><b>3. Бірге шығару</b><span>Қадам-қадаммен</span></a>
+  <a class="tile" href="#/practice"><b>4. Практика</b><span>Өз бетімен, A/B/C</span></a>
+  <a class="tile" href="#/ubt"><b>5. ҰБТ тест</b><span>20 сұрақ, 30 минут</span></a>
+  <a class="tile" href="#/mistakes"><b>6. Қателер</b><span>Қателермен жұмыс</span></a></div></div>`;
+  $$('[data-a]').forEach(b => b.onclick = () => { const a = asg.find(x => x.id === b.dataset.a); PR.topic = a.topic; PR.level = a.level; PR.cur = null; PR.assign = a; location.hash = '#/practice'; });
+};
+
+/* ================= Теория ================= */
+VIEWS.theory = function (args) {
+  const i = Math.min(Math.max(+args[0] || 0, 0), OI.THEORY.length - 1);
+  const t = OI.THEORY[i];
+  main().innerHTML = `<div class="card"><div class="toc">${OI.THEORY.map((x, k) => `<a href="#/theory/${k}" class="${k === i ? 'on' : ''}">${k + 1}</a>`).join('')}</div>
+  <h2>${esc(t.title)}</h2>
+  <h3>Анықтама</h3><p>${esc(t.def)}</p>
+  <h3>Негізгі формулалар</h3><ul class="fm">${t.formulas.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
+  <h3>Түсінікті мысал</h3><div class="ex"><p><b>${esc(t.example.q)}</b></p><ol>${t.example.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>
+  <h3>Шешу алгоритмі</h3><ol>${t.algo.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
+  <h3>Жиі кездесетін қателер</h3><ul class="warn">${t.mistakes.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+  <h3>Өздігінен орындау</h3><p>${esc(t.tasks)}</p>
+  <div class="actions">${i > 0 ? `<a class="btn g" href="#/theory/${i - 1}">← Алдыңғы</a>` : ''}<button id="tp">Практикаға өту</button>${i < OI.THEORY.length - 1 ? `<a class="btn" href="#/theory/${i + 1}">Келесі →</a>` : ''}</div></div>`;
+  $('#tp').onclick = () => { PR.topic = t.topic; PR.level = 'A'; PR.cur = null; PR.assign = null; location.hash = '#/practice'; };
+};
+
+/* ================= Формулалар ================= */
+VIEWS.formulas = function () {
+  const T = OI.FORMULA_TABLE;
+  main().innerHTML = `<div class="card"><h2>Негізгі мәндер кестесі</h2><div class="tw"><table class="ft"><tr>${T.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr>${T.rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</table></div></div>
+  ${OI.FORMULA_LIST.map(([h, l]) => `<div class="card"><h2>${esc(h)}</h2><ul class="fm">${l.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}`;
+};
+
+/* ================= Интерактивті шеңбер ================= */
+const ES = { fn: 'sin', op: '>', a: 0.5, th: 60 };
+const NICE = { sin: [['−1', -1], ['−√3/2', -Math.sqrt(3) / 2], ['−√2/2', -Math.SQRT1_2], ['−1/2', -.5], ['0', 0], ['1/2', .5], ['√2/2', Math.SQRT1_2], ['√3/2', Math.sqrt(3) / 2], ['1', 1]], tg: [['−√3', -Math.sqrt(3)], ['−1', -1], ['−√3/3', -Math.sqrt(3) / 3], ['0', 0], ['√3/3', Math.sqrt(3) / 3], ['1', 1], ['√3', Math.sqrt(3)]] };
+NICE.cos = NICE.sin; NICE.ctg = NICE.tg;
+VIEWS.explain = function () {
+  main().innerHTML = `<div class="card"><h2>Интерактивті тригонометриялық шеңбер</h2>
+  <p class="m">Шеңберді сүйреп бұрышты өзгерт немесе төмендегі жүгірткіні қолдан. Жасыл бөлік — теңсіздіктің шешімі.</p>
+  <div class="ctl"><label>Функция<select id="ef">${['sin', 'cos', 'tg', 'ctg'].map(f => `<option${f === ES.fn ? ' selected' : ''}>${f}</option>`).join('')}</select></label>
+  <label>Белгі<select id="eo">${['>', '≥', '<', '≤'].map(o => `<option${o === ES.op ? ' selected' : ''}>${o}</option>`).join('')}</select></label>
+  <label>a = <b id="av"></b><input type="range" id="ea" step="0.01"></label></div>
+  <div class="quick" id="eq"></div>
+  <div class="two"><svg id="circ" viewBox="0 0 340 340" class="viz"></svg><svg id="graph" viewBox="0 0 340 220" class="viz"></svg></div>
+  <label class="blk">Бұрыш x = <b id="tv"></b><input type="range" id="et" min="0" max="360" step="1"></label>
+  <div id="ev" class="vals"></div><div id="es" class="sol"></div></div>
+  <div class="card"><h2>Шеңберден қалай оқимыз?</h2><ol class="steps"><li>Теңсіздікті теңдеуге ауыстыр: функция = a. Түзу (немесе осьтегі нүкте) шеңберді қиып өтетін нүктелерді тап.</li><li>Бұл нүктелер шеңберді доғаларға бөледі.</li><li>Әр доғадан бір нүкте алып, теңсіздікті тексер. Орындалатын доға — жасыл.</li><li>Доғаның шеттерін бұрыш түрінде жаз, периодты қос.</li></ol>
+  <p class="m">Тангенс үшін оң жақтағы тік ось — тангенстер осі, котангенс үшін жоғарғы көлденең ось — котангенстер осі. Көрсетілетін ось ауқымы −2…2.</p></div>`;
+  const fnE = $('#ef'), opE = $('#eo'), aE = $('#ea'), tE = $('#et');
+  function setRange() {
+    const m = ES.fn === 'sin' || ES.fn === 'cos' ? 1 : 1.8;
+    aE.min = -m; aE.max = m; ES.a = Math.max(-m, Math.min(m, ES.a)); aE.value = ES.a;
+    $('#eq').innerHTML = NICE[ES.fn].map(([t, v], i) => `<button class="g sm" data-i="${i}">${esc(t)}</button>`).join('');
+    $$('#eq button').forEach(b => b.onclick = () => { ES.a = NICE[ES.fn][+b.dataset.i][1]; aE.value = ES.a; draw(); });
+  }
+  const F = OI.fn, CMP = OI.CMP;
+  function draw() {
+    const f = F[ES.fn], R = 80, C = 170, a = ES.a, th = ES.th * Math.PI / 180;
+    const ok = x => { const v = f(x); return v === v && CMP[ES.op](v, a); };
+    const NS = 720, run = []; let cur = null;
+    for (let i = 0; i < NS; i++) { const t = ok(i * 2 * Math.PI / NS); if (t && !cur) cur = [i, i]; else if (t) cur[1] = i; else if (cur) { run.push(cur); cur = null; } }
+    if (cur) run.push(cur);
+    const pt = (ang, r = R) => [C + r * Math.cos(ang), C - r * Math.sin(ang)];
+    let s = `<line x1="10" y1="${C}" x2="330" y2="${C}" class="ax"/><line x1="${C}" y1="10" x2="${C}" y2="330" class="ax"/><circle cx="${C}" cy="${C}" r="${R}" class="cr"/>`;
+    run.forEach(([i, j]) => { const pts = []; for (let k = i; k <= j + 1; k++) pts.push(pt(k * 2 * Math.PI / NS).map(v => v.toFixed(1)).join(',')); s += `<polyline points="${pts.join(' ')}" class="arc"/>`; });
+    if (ES.fn === 'sin') s += `<line x1="${C - R - 12}" y1="${C - R * a}" x2="${C + R + 12}" y2="${C - R * a}" class="aux"/>`;
+    if (ES.fn === 'cos') s += `<line x1="${C + R * a}" y1="${C - R - 12}" x2="${C + R * a}" y2="${C + R + 12}" class="aux"/>`;
+    if (ES.fn === 'tg') {
+      const y = C - R * a, up = ES.op === '>' || ES.op === '≥';
+      s += `<line x1="${C + R}" y1="10" x2="${C + R}" y2="330" class="ax2"/><line x1="${C + R}" y1="${y}" x2="${C + R}" y2="${up ? 10 : 330}" class="hl"/><line x1="${C - 1.2 * R}" y1="${C + 1.2 * R * a}" x2="${C + 1.2 * R}" y2="${C - 1.2 * R * a}" class="aux"/><circle cx="${C + R}" cy="${y}" r="4" class="mk"/>`;
+      const tv = Math.tan(th); if (isFinite(tv) && Math.abs(tv) <= 2) { const p = pt(th); s += `<line x1="${C}" y1="${C}" x2="${C + R}" y2="${C - R * tv}" class="ray"/><circle cx="${C + R}" cy="${C - R * tv}" r="4" class="pt"/>`; }
+    }
+    if (ES.fn === 'ctg') {
+      const x = C + R * a, up = ES.op === '>' || ES.op === '≥';
+      s += `<line x1="10" y1="${C - R}" x2="330" y2="${C - R}" class="ax2"/><line x1="${x}" y1="${C - R}" x2="${up ? 330 : 10}" y2="${C - R}" class="hl"/><line x1="${C - 1.2 * R * a}" y1="${C + 1.2 * R}" x2="${C + 1.2 * R * a}" y2="${C - 1.2 * R}" class="aux"/><circle cx="${x}" cy="${C - R}" r="4" class="mk"/>`;
+      const cv = Math.cos(th) / Math.sin(th); if (isFinite(cv) && Math.abs(cv) <= 2) s += `<line x1="${C}" y1="${C}" x2="${C + R * cv}" y2="${C - R}" class="ray"/><circle cx="${C + R * cv}" cy="${C - R}" r="4" class="pt"/>`;
+    }
+    const P = pt(th);
+    s += `<line x1="${C}" y1="${C}" x2="${P[0]}" y2="${P[1]}" class="rad"/><line x1="${P[0]}" y1="${P[1]}" x2="${P[0]}" y2="${C}" class="pj s"/><line x1="${P[0]}" y1="${P[1]}" x2="${C}" y2="${P[1]}" class="pj c"/><circle cx="${P[0]}" cy="${P[1]}" r="7" class="pt"/>`;
+    s += `<text x="334" y="${C - 4}" class="lb" text-anchor="end">cos</text><text x="${C + 4}" y="20" class="lb">sin</text>`;
+    $('#circ').innerHTML = s;
+    // график
+    const YM = ES.fn === 'sin' || ES.fn === 'cos' ? 1.3 : 3.2, W = 300, X0 = 20, H = 110, Y0 = 110;
+    const gx = x => X0 + x / (2 * Math.PI) * W, gy = y => Y0 - y / YM * (H - 10);
+    let g = '';
+    run.forEach(([i, j]) => g += `<rect x="${gx(i * 2 * Math.PI / NS)}" y="10" width="${Math.max(1, gx((j + 1) * 2 * Math.PI / NS) - gx(i * 2 * Math.PI / NS))}" height="${2 * Y0 - 20}" class="shade"/>`);
+    g += `<line x1="${X0}" y1="${Y0}" x2="${X0 + W}" y2="${Y0}" class="ax"/>`;
+    ['0', 'π/2', 'π', '3π/2', '2π'].forEach((t, k) => g += `<line x1="${X0 + k * W / 4}" y1="${Y0 - 3}" x2="${X0 + k * W / 4}" y2="${Y0 + 3}" class="ax"/><text x="${X0 + k * W / 4}" y="${Y0 + 16}" class="lb" text-anchor="middle">${t}</text>`);
+    if (Math.abs(a) <= YM) g += `<line x1="${X0}" y1="${gy(a)}" x2="${X0 + W}" y2="${gy(a)}" class="aux"/>`;
+    let d = '', pen = false;
+    for (let k = 0; k <= 720; k++) { const x = k * 2 * Math.PI / 720, y = f(x); if (y === y && Math.abs(y) <= YM) { d += (pen ? 'L' : 'M') + gx(x).toFixed(1) + ' ' + gy(y).toFixed(1); pen = true; } else pen = false; }
+    g += `<path d="${d}" class="gr"/>`;
+    const yv = f(th); g += `<line x1="${gx(th)}" y1="10" x2="${gx(th)}" y2="${2 * Y0 - 10}" class="rad" stroke-dasharray="3 3"/>` + (yv === yv && Math.abs(yv) <= YM ? `<circle cx="${gx(th)}" cy="${gy(yv)}" r="5" class="pt"/>` : '');
+    g += `<text x="${X0}" y="12" class="lb">y = ${ES.fn} x,  y = a</text>`;
+    $('#graph').innerHTML = g;
+    // мәндер
+    const n = v => isFinite(v) && Math.abs(v) < 1e6 ? v.toFixed(3).replace('-', '−') : '—';
+    $('#av').textContent = a.toFixed(2).replace('-', '−'); $('#tv').textContent = ES.th + '° (≈ ' + (ES.th / 180).toFixed(3) + 'π)'; tE.value = ES.th;
+    $('#ev').innerHTML = `<span><i class="c1"></i>sin x = <b>${n(Math.sin(th))}</b></span><span><i class="c2"></i>cos x = <b>${n(Math.cos(th))}</b></span><span>tg x = <b>${n(Math.tan(th))}</b></span><span>ctg x = <b>${n(Math.cos(th) / Math.sin(th))}</b></span><span class="${ok(th) ? 'yes' : 'no'}">${ES.fn} x ${ES.op} a: <b>${ok(th) ? 'орындалады ✓' : 'орындалмайды ✗'}</b></span>`;
+    const ivs = run.map(([i, j]) => { const l = i === 0 ? 0 : (i - .5) * .5, r = j === NS - 1 ? 360 : (j + .5) * .5; const q = v => String(Math.round(v)); return `${i === 0 ? '[' : '('}${q(l)}°; ${q(r)}°${j === NS - 1 ? ']' : ')'}`; });
+    $('#es').innerHTML = `<b>Шешім [0°; 360°] аралығында</b> (π = 180°, шамамен): ${ivs.length ? esc(ivs.join(' ∪ ')) : 'шешім жоқ'}`;
+  }
+  fnE.onchange = () => { ES.fn = fnE.value; setRange(); draw(); };
+  opE.onchange = () => { ES.op = opE.value; draw(); };
+  aE.oninput = () => { ES.a = +aE.value; draw(); };
+  tE.oninput = () => { ES.th = +tE.value; draw(); };
+  const svg = $('#circ');
+  const move = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * 340 / r.width - 170, y = (e.clientY - r.top) * 340 / r.height - 170; ES.th = Math.round(((Math.atan2(-y, x) * 180 / Math.PI) + 360) % 360); draw(); };
+  svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); move(e); svg.onpointermove = move; });
+  svg.addEventListener('pointerup', () => { svg.onpointermove = null; });
+  setRange(); draw();
+};
+
+/* ================= Бірге есеп шығару ================= */
+const TG = { topic: 1, level: 'A', idx: 0, step: 0 };
+VIEWS.together = function () {
+  const list = OI.bank[TG.topic].filter(p => p.level === TG.level);
+  TG.idx = Math.min(TG.idx, list.length - 1);
+  const p = list[TG.idx];
+  main().innerHTML = `<div class="card"><h2>Бірге есеп шығару</h2><p class="m">Есепті қадам-қадаммен ашамыз. Әр қадамды өзің түсініп, сосын келесісіне өт.</p>
+  <div class="ctl"><label>Тақырып${topicSel('gt', TG.topic)}</label><label>Деңгей<select id="gl">${['A', 'B', 'C'].map(l => `<option value="${l}"${l === TG.level ? ' selected' : ''}>${LV[l]}</option>`).join('')}</select></label>
+  <label>Есеп №<select id="gi">${list.map((_, i) => `<option value="${i}"${i === TG.idx ? ' selected' : ''}>${i + 1}</option>`).join('')}</select></label></div></div>
+  <div class="card"><p>${esc(qHead(p))}</p>${mathHtml(p)}
+  <ol class="steps" id="gs">${p.steps.slice(0, TG.step).map(s => `<li>${esc(s)}</li>`).join('')}</ol>
+  <div class="actions">${TG.step < p.steps.length ? `<button id="gn">${TG.step ? 'Келесі қадам →' : 'Бірінші қадам →'}</button>` : '<button id="gp">Енді өзің шеш: ұқсас есеп →</button>'}</div></div>`;
+  const re = () => { TG.step = 0; VIEWS.together(); };
+  $('#gt').onchange = e => { TG.topic = +e.target.value; TG.idx = 0; re(); };
+  $('#gl').onchange = e => { TG.level = e.target.value; TG.idx = 0; re(); };
+  $('#gi').onchange = e => { TG.idx = +e.target.value; re(); };
+  if ($('#gn')) $('#gn').onclick = () => { TG.step++; VIEWS.together(); };
+  if ($('#gp')) $('#gp').onclick = () => { PR.topic = TG.topic; PR.level = TG.level; PR.cur = null; PR.assign = null; location.hash = '#/practice'; };
+};
+
+/* ================= Практика ================= */
+const PR = { topic: 1, level: 'auto', lvl: 'A', cs: 0, ws: 0, cur: null, hint: 0, sel: -1, done: false, mode: 'mc', assign: null, last: null };
+function nextProblem() {
+  const L = PR.level === 'auto' ? PR.lvl : PR.level;
+  const sv = solved(), all = OI.bank[PR.topic].filter(p => p.level === L);
+  let c = all.filter(p => !sv.has(p.id) && p.id !== PR.last);
+  if (!c.length) c = all.filter(p => p.id !== PR.last);
+  PR.cur = pick(c.length ? c : all); PR.hint = 0; PR.sel = -1; PR.done = false;
+}
+VIEWS.practice = function () {
+  if (!PR.cur) nextProblem();
+  const a = PR.assign;
+  main().innerHTML = `<div class="card"><h2>Өз бетімен орындау</h2>
+  ${a ? `<div class="demo">Мұғалім тапсырмасы: ${esc(topicName(a.topic))}, ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level}, ${a.count} есеп. ${esc(a.note || '')}</div>` : ''}
+  <div class="ctl"><label>Тақырып${topicSel('pt', PR.topic)}</label><label>Деңгей<select id="pl"><option value="auto"${PR.level === 'auto' ? ' selected' : ''}>Автоматты (қиындық бейімделеді)</option>${['A', 'B', 'C'].map(l => `<option value="${l}"${l === PR.level ? ' selected' : ''}>${LV[l]}</option>`).join('')}</select></label>
+  ${PR.cur.mode === 'dom' ? `<label>Жауап түрі<select id="pm"><option value="mc"${PR.mode === 'mc' ? ' selected' : ''}>Нұсқа таңдау</option><option value="free"${PR.mode === 'free' ? ' selected' : ''}>Өзім жазамын</option></select></label>` : ''}</div></div>
+  <div id="prob"></div>`;
+  $('#pt').onchange = e => { PR.topic = +e.target.value; PR.cur = null; PR.assign = null; VIEWS.practice(); };
+  $('#pl').onchange = e => { PR.level = e.target.value; if (PR.level !== 'auto') PR.lvl = PR.level; PR.cur = null; VIEWS.practice(); };
+  if ($('#pm')) $('#pm').onchange = e => { PR.mode = e.target.value; renderProb(); };
+  renderProb();
+};
+function renderProb() {
+  const p = PR.cur, free = PR.mode === 'free' && p.mode === 'dom';
+  const box = $('#prob');
+  box.innerHTML = `<div class="card"><div class="meta">${esc(topicName(p.topic))} · деңгей <b>${p.level}</b>${PR.level === 'auto' ? ' (автоматты)' : ''} · ${PTS[p.level]} ұпай</div>
+  <p>${esc(qHead(p))}</p>${mathHtml(p)}
+  ${free ? `<input id="fa" placeholder="Мысалы: (π/6; 5π/6) ∪ [7π/6; 3π/2)" ${PR.done ? 'disabled' : ''} autocomplete="off"><p class="m">Жазу: π немесе pi, аралықтар «∪» арқылы, бір нүкте — {π/2}, шешім жоқ — ∅.</p>`
+    : `<div class="opts">${p.options.map((o, i) => `<button class="opt${PR.sel === i ? ' on' : ''}${PR.done && i === p.ans ? ' good' : ''}${PR.done && PR.sel === i && i !== p.ans ? ' badc' : ''}" data-i="${i}" ${PR.done ? 'disabled' : ''}>${'ABCD'[i]}) ${esc(o)}</button>`).join('')}</div>`}
+  <div class="actions">${PR.done ? '<button id="nx">Ұқсас есеп →</button>' : '<button id="ck">Тексеру</button><button class="g" id="hn">Бағыт алу</button>'}</div>
+  <div id="hs">${p.hints.slice(0, PR.hint).map((h, i) => `<div class="hint"><b>Бағыт ${i + 1}.</b> ${esc(h)}</div>`).join('')}${PR.hint > p.hints.length ? `<div class="hint"><b>Бастапқы қадам.</b> ${esc(p.steps[0])}</div>` : ''}</div>
+  <div id="res"></div></div>`;
+  $$('.opt', box).forEach(b => b.onclick = () => { PR.sel = +b.dataset.i; $$('.opt', box).forEach(x => x.classList.toggle('on', x === b)); });
+  if ($('#hn')) $('#hn').onclick = () => { PR.hint = Math.min(PR.hint + 1, p.hints.length + 1); renderProb(); };
+  if ($('#ck')) $('#ck').onclick = check;
+  if ($('#nx')) $('#nx').onclick = () => { PR.last = p.id; nextProblem(); VIEWS.practice(); };
+  if (PR.done && PR.res) $('#res').innerHTML = PR.res;
+}
+const check = guard(async function () {
+  const p = PR.cur, free = PR.mode === 'free' && p.mode === 'dom';
+  let ok, chosen, tag = null, msg = '';
+  if (free) {
+    chosen = $('#fa').value.trim();
+    const canon = OI.parseDom(chosen);
+    if (canon === null) { $('#res').innerHTML = '<div class="bad">Жауапты аралық түрінде жаз. Мысалы: (π/6; 5π/6) ∪ [7π/6; 3π/2). Дөңгелек немесе шаршы жақшаны, нүктелі үтірді қолдан.</div>'; return; }
+    ok = canon === p.truth; chosen = canon;
+    if (!ok) { tag = p.tagMap.get(canon) || 'other'; msg = tag === 'other' ? 'Жауабың дұрыс емес: шеткі нүктелерді, жақшаларды және аралықтар санын қайта тексер. Төмендегі шешіммен салыстыр.' : OI.TAGS[tag]; }
+  } else {
+    if (PR.sel < 0) { toast('Алдымен жауап нұсқасын таңда.', true); return; }
+    ok = PR.sel === p.ans; chosen = p.options[PR.sel]; tag = ok ? null : p.tagsByOpt[PR.sel]; msg = ok ? '' : OI.TAGS[tag];
+  }
+  PR.done = true;
+  const rec = { qid: p.id, topic: p.topic, level: p.level, correct: ok, chosen, tag: ok ? null : (tag || 'other'), kind: 'practice' };
+  S.att.push({ ...rec, id: uid(), user_id: S.me.id, created_at: new Date().toISOString() });
+  DB.addAttempt(rec).catch(e => toast('Нәтиже серверге сақталмады: ' + e.message, true));
+  let note = '';
+  if (PR.level === 'auto') {
+    if (ok) { PR.cs++; PR.ws = 0; if (PR.cs >= 3 && PR.lvl !== 'C') { PR.lvl = PR.lvl === 'A' ? 'B' : 'C'; PR.cs = 0; note = `Керемет! Деңгей көтерілді: ${PR.lvl}.`; } }
+    else { PR.ws++; PR.cs = 0; if (PR.ws >= 2 && PR.lvl !== 'A') { PR.lvl = PR.lvl === 'C' ? 'B' : 'A'; PR.ws = 0; note = `Тапсырма жеңілдетілді: деңгей ${PR.lvl}. Бұл қалыпты, қадамдарды қара.`; } }
+  }
+  PR.res = `<div class="${ok ? 'good' : 'bad'}"><b>${ok ? `Дұрыс! +${PTS[p.level]} ұпай` : 'Қате.'}</b>${ok ? '' : `<br>Дұрыс жауап: <b>${esc(p.truth)}</b>`}${msg ? `<br><span class="why">Қатеңнің себебі: ${esc(msg)}</span>` : ''}${note ? `<br><i>${esc(note)}</i>` : ''}</div>
+  <details open><summary>Толық шешу жолы</summary>${stepsHtml(p)}</details>`;
+  renderProb();
+  const pe = $('.who b'); if (pe) pe.textContent = points();
+});
+
+/* ================= ҰБТ тест ================= */
+const UB = { qs: null, ans: [], left: 1800, t0: 0 };
+VIEWS.ubt = function () {
+  UB.qs = null;
+  main().innerHTML = `<div class="card"><h2>ҰБТ форматындағы тест</h2><p>20 сұрақ (6 есеп A деңгейі, 8 — B, 6 — C), барлық тақырыптардан. Уақыты — 30 минут. Нәтиже мұғалімге автоматты түрде жіберіледі.</p><button id="ub">Тестті бастау</button></div>`;
+  $('#ub').onclick = ubtStart;
+};
+function ubtStart() {
+  const take = (lv, n) => { const used = new Set(); const out = []; let g = 0; while (out.length < n && g++ < 500) { const t = 1 + (out.length + g) % 8; const p = pick(OI.bank[t].filter(x => x.level === lv)); if (!used.has(p.id)) { used.add(p.id); out.push(p); } } return out; };
+  const seen = new Set();
+  UB.qs = [...take('A', 6), ...take('B', 8), ...take('C', 6)].filter(p => !seen.has(p.id) && seen.add(p.id));
+  UB.ans = UB.qs.map(() => -1); UB.left = 1800; UB.t0 = Date.now();
+  main().innerHTML = `<div class="bar"><span id="pg">0 / ${UB.qs.length}</span><span id="tt">30:00</span></div>
+  ${UB.qs.map((p, i) => `<div class="card"><div class="meta">${i + 1}-сұрақ · деңгей ${p.level}</div><p>${esc(qHead(p))}</p>${mathHtml(p)}<div class="opts">${p.options.map((o, j) => `<button class="opt" data-i="${i}" data-j="${j}">${'ABCD'[j]}) ${esc(o)}</button>`).join('')}</div></div>`).join('')}
+  <button id="uf">Тестті аяқтау</button>`;
+  main().onclick = e => { const b = e.target.closest('.opt'); if (!b) return; const i = +b.dataset.i; UB.ans[i] = +b.dataset.j; $$(`.opt[data-i="${i}"]`).forEach(x => x.classList.toggle('on', x === b)); $('#pg').textContent = UB.ans.filter(v => v >= 0).length + ' / ' + UB.qs.length; };
+  const mm = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  timer = setInterval(() => { UB.left--; const t = $('#tt'); if (t) t.textContent = mm(UB.left); if (UB.left <= 0) ubtFinish(); }, 1000);
+  $('#uf').onclick = () => { const u = UB.ans.filter(v => v < 0).length; if (!u || confirm('Жауап берілмеген сұрақ: ' + u + '. Аяқтайсыз ба?')) ubtFinish(); };
+}
+const ubtFinish = guard(async function () {
+  clearInterval(timer); main().onclick = null;
+  const sec = Math.min(1800, Math.round((Date.now() - UB.t0) / 1000));
+  let score = 0; const rows = [];
+  for (let i = 0; i < UB.qs.length; i++) {
+    const p = UB.qs[i], j = UB.ans[i], ok = j === p.ans; if (ok) score++;
+    if (j >= 0) {
+      const rec = { qid: p.id, topic: p.topic, level: p.level, correct: ok, chosen: p.options[j], tag: ok ? null : p.tagsByOpt[j], kind: 'ubt' };
+      S.att.push({ ...rec, id: uid(), user_id: S.me.id, created_at: new Date().toISOString() });
+      DB.addAttempt(rec).catch(e => toast('Сақталмады: ' + e.message, true));
+    }
+    rows.push(`<div class="card ${ok ? 'okc' : 'noc'}"><div class="meta">${i + 1}-сұрақ · ${p.level}</div>${mathHtml(p)}<p>Сенің жауабың: <b>${j >= 0 ? esc(p.options[j]) : 'жауап берілмеді'}</b>${ok ? ' ✓' : `<br>Дұрыс жауап: <b>${esc(p.truth)}</b>${j >= 0 && p.tagsByOpt[j] ? `<br><span class="why">${esc(OI.TAGS[p.tagsByOpt[j]])}</span>` : ''}`}</p><details><summary>Шешу жолы</summary>${stepsHtml(p)}</details></div>`);
+  }
+  const t = { kind: 'ubt', score, total: UB.qs.length, seconds: sec };
+  S.tests.push({ ...t, id: uid(), user_id: S.me.id, created_at: new Date().toISOString() });
+  DB.addTest(t).catch(e => toast('Нәтиже серверге сақталмады: ' + e.message, true));
+  const pct = Math.round(100 * score / UB.qs.length);
+  main().innerHTML = `<div class="card hero"><h1>Тест аяқталды</h1><div class="big">${score} / ${UB.qs.length}</div><p>${pct}% · уақыты ${Math.floor(sec / 60)} мин ${sec % 60} сек</p><a class="btn" href="#/mistakes">Қателермен жұмыс</a></div>${rows.join('')}`;
+});
+
+/* ================= Қателермен жұмыс ================= */
+VIEWS.mistakes = function () {
+  const last = {}; S.att.forEach(a => last[a.qid] = a);
+  const bad = Object.values(last).filter(a => !a.correct && OI.byId[a.qid]).sort((a, b) => b.created_at.localeCompare(a.created_at));
+  main().innerHTML = `<div class="card"><h2>Қателермен жұмыс</h2><p class="m">Мұнда әлі дұрыс шығара алмаған есептерің. Қайта шығарсаң, тізімнен жоғалады.</p></div>` +
+    (bad.length ? bad.map(a => { const p = OI.byId[a.qid]; return `<div class="card"><div class="meta">${esc(topicName(p.topic))} · деңгей ${p.level}</div>${mathHtml(p)}<p>Сенің жауабың: <b>${esc(a.chosen)}</b><br>Дұрыс жауап: <b>${esc(p.truth)}</b>${a.tag ? `<br><span class="why">${esc(OI.TAGS[a.tag] || '')}</span>` : ''}</p><details><summary>Шешу жолы</summary>${stepsHtml(p)}</details><button data-q="${p.id}">Қайта шығару</button></div>`; }).join('') : '<div class="card"><p>Қате жоқ. Керемет! Практикада жаңа есептер шығарып көр.</p></div>');
+  $$('[data-q]').forEach(b => b.onclick = () => { const p = OI.byId[b.dataset.q]; PR.topic = p.topic; PR.cur = p; PR.hint = 0; PR.sel = -1; PR.done = false; PR.res = ''; PR.assign = null; location.hash = '#/practice'; });
+};
+
+/* ================= Статистика ================= */
+VIEWS.stats = function () {
+  const st = statsOf(S.att);
+  const tags = {}; S.att.filter(a => !a.correct).forEach(a => { const k = a.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
+  main().innerHTML = `<div class="card"><h2>Менің статистикам</h2><div class="kpis"><div><b>${st.n}</b><span>орындалған тапсырма</span></div><div><b>${st.c}</b><span>дұрыс</span></div><div><b>${st.w}</b><span>қате</span></div><div><b>${st.pct}%</b><span>дұрыс жауап</span></div></div></div>
+  <div class="card"><h2>Тақырыптар бойынша меңгеру</h2>${OI.TOPICS.map(t => { const x = st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
+  <div class="card"><h2>Соңғы тесттер</h2>${S.tests.length ? `<table class="ft"><tr><th>Күні</th><th>Нәтиже</th><th>Пайыз</th><th>Уақыт</th></tr>${S.tests.slice(-10).reverse().map(t => `<tr><td>${new Date(t.created_at).toLocaleString('kk-KZ')}</td><td>${t.score}/${t.total}</td><td>${Math.round(100 * t.score / t.total)}%</td><td>${Math.floor(t.seconds / 60)}:${String(t.seconds % 60).padStart(2, '0')}</td></tr>`).join('')}</table>` : '<p class="m">Әзір тест тапсырылған жоқ.</p>'}</div>
+  <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате әлі жоқ.</p>'}</div>`;
+};
+
+/* ================= Мұғалім панелі ================= */
+const TS = { tab: 'group', sel: '', data: null };
+const dl = (name, text) => {
+  const blob = new Blob(['﻿' + text], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+};
+VIEWS.teacher = async function () {
+  if (S.me.role !== 'teacher') { main().innerHTML = '<div class="card"><p>Бұл бөлім тек мұғалімге арналған.</p></div>'; return; }
+  main().innerHTML = '<div class="card"><p>Жүктелуде…</p></div>';
+  const [pr, att, tests, asg] = await Promise.all([DB.profiles(), DB.allAttempts(), DB.allTests(), DB.assignments()]);
+  TS.data = { students: pr.filter(p => p.role !== 'teacher'), att, tests, asg };
+  teacherRender();
+};
+function teacherRender() {
+  const { students, att, tests, asg } = TS.data;
+  const rows = students.map(s => {
+    const a = att.filter(x => x.user_id === s.id), st = statsOf(a), ts = tests.filter(x => x.user_id === s.id), lt = ts[ts.length - 1];
+    const weak = OI.TOPICS.filter(t => st.topics[t.id].n >= 3 && st.topics[t.id].c / st.topics[t.id].n < .6).map(t => t.id);
+    return { s, st, weak, lt };
+  });
+  const tabs = [['group', 'Топ нәтижесі'], ['student', 'Оқушы талдауы'], ['assign', 'Тапсырма беру'], ['reg', 'Оқушыларды тіркеу']];
+  let body = '';
+  if (TS.tab === 'group') {
+    const all = statsOf(att.filter(x => students.some(s => s.id === x.user_id)));
+    body = `<div class="card"><div class="kpis"><div><b>${students.length}</b><span>оқушы</span></div><div><b>${all.n}</b><span>тапсырма</span></div><div><b>${all.pct}%</b><span>топтың дұрыс жауабы</span></div></div>
+    <div class="tw"><table class="ft"><tr><th>Аты-жөні</th><th>Сынып</th><th>Тапсырма</th><th>Дұрыс</th><th>Қате</th><th>%</th>${OI.TOPICS.map(t => `<th title="${esc(t.name)}">Т${t.id}</th>`).join('')}<th>Соңғы тест</th><th>Қиналатын тақырып</th></tr>
+    ${rows.map(r => `<tr><td>${esc(r.s.full_name)}</td><td>${esc(r.s.class || '')}</td><td>${r.st.n}</td><td>${r.st.c}</td><td>${r.st.w}</td><td>${r.st.n ? r.st.pct + '%' : '–'}</td>${OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return `<td class="${pctCls(x.n, x.c)}">${x.n ? Math.round(100 * x.c / x.n) + '%' : '–'}</td>`; }).join('')}<td>${r.lt ? r.lt.score + '/' + r.lt.total : '–'}</td><td>${r.weak.length ? r.weak.map(i => 'Т' + i).join(', ') : '–'}</td></tr>`).join('') || '<tr><td colspan="16">Оқушы жоқ</td></tr>'}</table></div>
+    <p class="m">Т1–Т8 — тақырыптар: ${OI.TOPICS.map(t => `Т${t.id} ${esc(t.name)}`).join('; ')}. Қызыл — 50%-дан төмен, сары — 75%-ға дейін, жасыл — жақсы.</p>
+    <div class="actions"><button id="xl">Excel есебін жүктеу (CSV)</button><button class="g" id="rf">Жаңарту</button></div></div>`;
+  }
+  if (TS.tab === 'student') {
+    const r = rows.find(x => x.s.id === TS.sel);
+    body = `<div class="card"><label>Оқушы<select id="ss"><option value="">— таңда —</option>${students.map(s => `<option value="${s.id}"${s.id === TS.sel ? ' selected' : ''}>${esc(s.full_name)} (${esc(s.class || '')})</option>`).join('')}</select></label></div>`;
+    if (r) {
+      const a = att.filter(x => x.user_id === r.s.id), tags = {};
+      a.filter(x => !x.correct).forEach(x => { const k = x.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
+      const last = {}; a.forEach(x => last[x.qid] = x);
+      const bad = Object.values(last).filter(x => !x.correct && OI.byId[x.qid]).slice(-15).reverse();
+      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
+      ${OI.TOPICS.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
+      <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате жоқ.</p>'}</div>
+      <div class="card"><h2>Шешілмеген қателер (соңғы 15)</h2>${bad.length ? bad.map(x => { const p = OI.byId[x.qid]; return `<div class="row col"><div class="meta">${esc(topicName(p.topic))} · ${p.level}</div>${mathHtml(p)}<span>Жауабы: <b>${esc(x.chosen)}</b> · Дұрысы: <b>${esc(p.truth)}</b></span><span class="why">${esc(OI.TAGS[x.tag] || '')}</span></div>`; }).join('') : '<p class="m">Жоқ.</p>'}</div>`;
+    }
+  }
+  if (TS.tab === 'assign') {
+    body = `<div class="card"><h2>Жеке тапсырма тағайындау</h2><form id="af2"><label>Кімге<select id="as"><option value="">Барлық оқушыға</option>${students.map(s => `<option value="${s.id}">${esc(s.full_name)}</option>`).join('')}</select></label>
+    <label>Тақырып${topicSel('at', 1)}</label><label>Деңгей<select id="al"><option value="auto">Автоматты</option><option>A</option><option>B</option><option>C</option></select></label>
+    <label>Есеп саны<input id="ac" type="number" min="1" max="50" value="10"></label><label>Ескертпе<input id="an" placeholder="міндетті емес"></label><button type="submit">Тағайындау</button></form></div>
+    <div class="card"><h2>Берілген тапсырмалар</h2>${asg.length ? asg.map(a => `<div class="row"><span>${esc(a.user_id ? (students.find(s => s.id === a.user_id) || {}).full_name || 'оқушы' : 'Барлығына')} · ${esc(topicName(a.topic))} · ${a.level} · ${a.count} есеп ${a.note ? '· ' + esc(a.note) : ''}</span><button class="g sm" data-d="${a.id}">Жою</button></div>`).join('') : '<p class="m">Әзір жоқ.</p>'}</div>`;
+  }
+  if (TS.tab === 'reg') {
+    body = `<div class="card"><h2>Оқушыны тіркеу</h2><p class="m">Оқушы өзі де «Тіркелу» арқылы кіре алады. Мұнда оған логин мен құпиясөз беріп тіркейсіз.</p><form id="rf2"><label>Аты-жөні<input id="rn" required></label><label>Сыныбы<input id="rc" required></label><label>Логин (латынша)<input id="ru" required autocapitalize="none"></label><label>Құпиясөз<input id="rp" required minlength="6"></label><button type="submit">Тіркеу</button></form><p id="rm" class="m"></p></div>`;
+  }
+  main().innerHTML = `<div class="tabs t2">${tabs.map(([k, t]) => `<button class="${TS.tab === k ? 'on' : ''}" data-t="${k}">${t}</button>`).join('')}</div>${body}`;
+  $$('.t2 button').forEach(b => b.onclick = () => { TS.tab = b.dataset.t; teacherRender(); });
+  if ($('#xl')) $('#xl').onclick = () => {
+    const head = ['Аты-жөні', 'Сынып', 'Тапсырма', 'Дұрыс', 'Қате', 'Пайыз', ...OI.TOPICS.map(t => 'Т' + t.id + ' ' + t.name), 'Соңғы тест', 'Қиналатын тақырыптар'];
+    const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
+    dl('oi-math-test-results.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
+  };
+  if ($('#rf')) $('#rf').onclick = () => VIEWS.teacher();
+  if ($('#ss')) $('#ss').onchange = e => { TS.sel = e.target.value; teacherRender(); };
+  if ($('#af2')) $('#af2').onsubmit = guard(async e => { e.preventDefault(); await DB.addAssignment({ user_id: $('#as').value || null, topic: +$('#at').value, level: $('#al').value, count: +$('#ac').value || 10, note: $('#an').value.trim() }); toast('Тапсырма берілді.'); TS.data.asg = await DB.assignments(); teacherRender(); });
+  $$('[data-d]').forEach(b => b.onclick = guard(async () => { await DB.delAssignment(b.dataset.d); TS.data.asg = await DB.assignments(); teacherRender(); }));
+  if ($('#rf2')) $('#rf2').onsubmit = guard(async e => {
+    e.preventDefault(); const u = normU($('#ru').value);
+    if (!okU(u)) { toast('Логин: 3–30 таңба, тек латын әріптері мен сандар.', true); return; }
+    await DB.createStudent(u, $('#rp').value, $('#rn').value.trim(), $('#rc').value.trim());
+    $('#rm').textContent = `Тіркелді. Логин: ${u}, құпиясөз: ${$('#rp').value}. Оқушыға жіберіңіз.`; $('#rf2').reset();
+    TS.data.students = (await DB.profiles()).filter(p => p.role !== 'teacher');
+  });
+}
+
+/* ================= Іске қосу ================= */
+async function boot() {
+  try { S.me = await DB.restore(); if (S.me) await loadMine(); } catch (e) { S.me = null; }
+  route();
+}
+boot();
+})();
+</script></body></html>
