@@ -706,7 +706,7 @@ OI.FORMULA_LIST = [
 (function () {
 'use strict';
 const OI = globalThis.OI;
-const CFG = Object.assign({ SUPABASE_URL: '', SUPABASE_ANON_KEY: '', TEACHER_CODE: 'oi-teacher' }, window.OI_CONFIG || {});
+const CFG = Object.assign({ SUPABASE_URL: '', SUPABASE_ANON_KEY: '', TEACHER_CODE: 'oi-teacher', GROUPS: ['ҰБТ-1', 'ҰБТ-2'] }, window.OI_CONFIG || {});
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 const LS = {
@@ -747,9 +747,10 @@ const Local = {
   async allAttempts() { return LS.get('oi_att', []); },
   async allTests() { return LS.get('oi_tests', []); },
   async profiles() { return LS.get('oi_users', []).map(pub); },
-  async assignments() { const me = LS.get('oi_me'), u = LS.get('oi_users', []).find(x => x.id === me); return LS.get('oi_asg', []).filter(a => (u && u.role === 'teacher') || !a.user_id || a.user_id === me); },
+  async assignments() { const me = LS.get('oi_me'), u = LS.get('oi_users', []).find(x => x.id === me); return LS.get('oi_asg', []).filter(a => (u && u.role === 'teacher') || a.user_id === me || (!a.user_id && (!a.grp || (u && a.grp === u.class)))); },
   async addAssignment(a) { const l = LS.get('oi_asg', []); l.push({ ...a, id: uid(), created_at: new Date().toISOString() }); LS.set('oi_asg', l); },
   async delAssignment(id) { LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.id !== id)); },
+  async setGroup(id, g) { LS.set('oi_users', LS.get('oi_users', []).map(u => u.id === id ? { ...u, class: g } : u)); },
   async delStudent(id) {
     LS.set('oi_users', LS.get('oi_users', []).filter(u => u.id !== id || u.role === 'teacher'));
     LS.set('oi_att', LS.get('oi_att', []).filter(a => a.user_id !== id)); LS.set('oi_tests', LS.get('oi_tests', []).filter(a => a.user_id !== id));
@@ -808,11 +809,13 @@ const SB = {
   assignments() { return this.all('assignments?select=*&order=created_at.desc'); },
   addAssignment(a) { return this.rest('assignments', { method: 'POST', body: a, prefer: 'return=minimal' }); },
   delAssignment(id) { return this.rest('assignments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); },
+  setGroup(id, g) { return this.rest('profiles?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body: { class: g }, prefer: 'return=minimal' }); },
   delStudent(id) { return this.rest('rpc/delete_student', { method: 'POST', body: { sid: id } }); }
 };
 const DB = CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY ? SB : Local;
 
 /* ================= Күй ================= */
+const grpOpts = cur => '<option value="">— топты таңда —</option>' + CFG.GROUPS.map(g => `<option${g === cur ? ' selected' : ''}>${esc(g)}</option>`).join('');
 const S = { me: null, att: [], tests: [], asg: [] };
 const main = () => $('#main');
 let timer = null;
@@ -867,7 +870,7 @@ function authView() {
   ${DB.mode === 'local' ? '<div class="demo">Демо режим: деректер осы құрылғыда сақталады. Барлық оқушыны бір базада көру үшін Supabase қосыңыз (README).</div>' : ''}
   <div class="tabs"><button class="${authTab === 'in' ? 'on' : ''}" data-t="in">Кіру</button><button class="${authTab === 'up' ? 'on' : ''}" data-t="up">Тіркелу</button></div>
   <form id="af" class="card" autocomplete="on">
-   ${authTab === 'up' ? '<label>Аты-жөні<input id="fn" required autocomplete="name"></label><label>Сыныбы<input id="cl" placeholder="мысалы, 11А" required></label>' : ''}
+   ${authTab === 'up' ? `<label>Аты-жөні<input id="fn" required autocomplete="name"></label><label>Тобы<select id="cl" required>${grpOpts('')}</select></label>` : ''}
    <label>Логин (латын әріптері, сандар)<input id="un" required autocapitalize="none" autocomplete="username"></label>
    <label>Құпиясөз (кемінде 6 таңба)<input id="pw" type="password" required minlength="6" autocomplete="${authTab === 'up' ? 'new-password' : 'current-password'}"></label>
    ${authTab === 'up' && DB.mode === 'local' ? '<label>Мұғалім коды (оқушыға керек емес)<input id="tc"></label>' : ''}
@@ -888,12 +891,12 @@ function authView() {
 /* ================= Басты ================= */
 VIEWS.home = async function () {
   const st = statsOf(S.att), sv = solved();
-  const asg = S.asg.filter(a => !a.user_id || a.user_id === S.me.id);
+  const asg = S.asg.filter(a => a.user_id ? a.user_id === S.me.id : (!a.grp || a.grp === S.me.class));
   const prog = a => S.att.filter(x => x.correct && x.topic === a.topic && (a.level === 'auto' || x.level === a.level) && x.created_at >= a.created_at).length;
   main().innerHTML = `<div class="card hero"><h1>Сәлем, ${esc(S.me.full_name.split(' ')[0] || '')}!</h1>
   <p>Мақсат: формуланы жаттау емес, тригонометриялық теңсіздікті <b>түсініп</b>, өзің шығара алу.</p>
   <div class="kpis"><div><b>${points()}</b><span>ұпай</span></div><div><b>${sv.size}</b><span>шешілген есеп</span></div><div><b>${st.pct}%</b><span>дұрыс жауап</span></div></div></div>
-  ${asg.length ? `<div class="card"><h2>Мұғалім тапсырмалары</h2>${asg.map(a => { const d = prog(a); return `<div class="row"><div><b>${esc(topicName(a.topic))}</b> · ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level} · ${d}/${a.count} ${a.note ? '· ' + esc(a.note) : ''}<br><span class="m">${a.user_id ? 'жеке' : 'барлық оқушыға'} · ${new Date(a.created_at).toLocaleDateString('kk-KZ')}</span></div><button class="g" data-a="${a.id}">${d >= a.count ? 'Орындалды ✓' : 'Бастау'}</button></div>`; }).join('')}</div>` : ''}
+  ${asg.length ? `<div class="card"><h2>Мұғалім тапсырмалары</h2>${asg.map(a => { const d = prog(a); return `<div class="row"><div><b>${esc(topicName(a.topic))}</b> · ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level} · ${d}/${a.count} ${a.note ? '· ' + esc(a.note) : ''}<br><span class="m">${a.user_id ? 'жеке' : a.grp ? 'топқа: ' + esc(a.grp) : 'барлық оқушыға'} · ${new Date(a.created_at).toLocaleDateString('kk-KZ')}</span></div><button class="g" data-a="${a.id}">${d >= a.count ? 'Орындалды ✓' : 'Бастау'}</button></div>`; }).join('')}</div>` : ''}
   <div class="card"><h2>Қайдан бастаймын?</h2><div class="grid">
   <a class="tile" href="#/theory"><b>1. Теория</b><span>Нөлден бастап түсіндіру</span></a>
   <a class="tile" href="#/explain"><b>2. Шеңбер</b><span>Интерактивті түсіндіру</span></a>
@@ -1154,7 +1157,7 @@ VIEWS.stats = function () {
 };
 
 /* ================= Мұғалім панелі ================= */
-const TS = { tab: 'group', sel: '', data: null };
+const TS = { tab: 'group', sel: '', grp: '', data: null };
 const dl = (name, text) => {
   const blob = new Blob(['﻿' + text], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
@@ -1163,11 +1166,13 @@ VIEWS.teacher = async function () {
   if (S.me.role !== 'teacher') { main().innerHTML = '<div class="card"><p>Бұл бөлім тек мұғалімге арналған.</p></div>'; return; }
   main().innerHTML = '<div class="card"><p>Жүктелуде…</p></div>';
   const [pr, att, tests, asg] = await Promise.all([DB.profiles(), DB.allAttempts(), DB.allTests(), DB.assignments()]);
-  TS.data = { students: pr.filter(p => p.role !== 'teacher'), att, tests, asg };
+  TS.data = { all: pr.filter(p => p.role !== 'teacher'), att, tests, asg };
   teacherRender();
 };
 function teacherRender() {
-  const { students, att, tests, asg } = TS.data;
+  const { all: allS, att, tests, asg } = TS.data;
+  const students = TS.grp ? allS.filter(s => s.class === TS.grp) : allS;
+  if (TS.sel && !students.some(s => s.id === TS.sel)) TS.sel = '';
   const rows = students.map(s => {
     const a = att.filter(x => x.user_id === s.id), st = statsOf(a), ts = tests.filter(x => x.user_id === s.id), lt = ts[ts.length - 1];
     const weak = OI.TOPICS.filter(t => st.topics[t.id].n >= 3 && st.topics[t.id].c / st.topics[t.id].n < .6).map(t => t.id);
@@ -1185,50 +1190,53 @@ function teacherRender() {
   }
   if (TS.tab === 'student') {
     const r = rows.find(x => x.s.id === TS.sel);
-    body = `<div class="card"><label>Оқушы<select id="ss"><option value="">— таңда —</option>${students.map(s => `<option value="${s.id}"${s.id === TS.sel ? ' selected' : ''}>${esc(s.full_name)} (${esc(s.class || '')})</option>`).join('')}</select></label></div>`;
+    body = `<div class="card"><label>Оқушы<select id="ss"><option value="">— таңда —</option>${students.map(s => `<option value="${s.id}"${s.id === TS.sel ? ' selected' : ''}>${esc(s.full_name)} (${esc(s.class || '–')})</option>`).join('')}</select></label></div>`;
     if (r) {
       const a = att.filter(x => x.user_id === r.s.id), tags = {};
       a.filter(x => !x.correct).forEach(x => { const k = x.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
       const last = {}; a.forEach(x => last[x.qid] = x);
       const bad = Object.values(last).filter(x => !x.correct && OI.byId[x.qid]).slice(-15).reverse();
-      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><div class="actions"><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
+      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><label>Тобы<select id="gs">${grpOpts(r.s.class)}</select></label><div class="actions"><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
       ${OI.TOPICS.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
       <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате жоқ.</p>'}</div>
       <div class="card"><h2>Шешілмеген қателер (соңғы 15)</h2>${bad.length ? bad.map(x => { const p = OI.byId[x.qid]; return `<div class="row col"><div class="meta">${esc(topicName(p.topic))} · ${p.level}</div>${mathHtml(p)}<span>Жауабы: <b>${esc(x.chosen)}</b> · Дұрысы: <b>${esc(p.truth)}</b></span><span class="why">${esc(OI.TAGS[x.tag] || '')}</span></div>`; }).join('') : '<p class="m">Жоқ.</p>'}</div>`;
     }
   }
   if (TS.tab === 'assign') {
-    body = `<div class="card"><h2>Жеке тапсырма тағайындау</h2><form id="af2"><label>Кімге<select id="as"><option value="">Барлық оқушыға</option>${students.map(s => `<option value="${s.id}">${esc(s.full_name)}</option>`).join('')}</select></label>
+    body = `<div class="card"><h2>Жеке тапсырма тағайындау</h2><form id="af2"><label>Кімге<select id="as"><option value="">Барлық оқушыға</option>${CFG.GROUPS.map(g => `<option value="g:${esc(g)}"${TS.grp === g ? ' selected' : ''}>Топқа: ${esc(g)}</option>`).join('')}<optgroup label="Жеке оқушыға">${students.map(s => `<option value="${s.id}">${esc(s.full_name)}</option>`).join('')}</optgroup></select></label>
     <label>Тақырып${topicSel('at', 1)}</label><label>Деңгей<select id="al"><option value="auto">Автоматты</option><option>A</option><option>B</option><option>C</option></select></label>
     <label>Есеп саны<input id="ac" type="number" min="1" max="50" value="10"></label><label>Ескертпе<input id="an" placeholder="міндетті емес"></label><button type="submit">Тағайындау</button></form></div>
-    <div class="card"><h2>Берілген тапсырмалар</h2>${asg.length ? asg.map(a => `<div class="row"><span>${esc(a.user_id ? (students.find(s => s.id === a.user_id) || {}).full_name || 'оқушы' : 'Барлығына')} · ${esc(topicName(a.topic))} · ${a.level} · ${a.count} есеп ${a.note ? '· ' + esc(a.note) : ''}</span><button class="g sm" data-d="${a.id}">Жою</button></div>`).join('') : '<p class="m">Әзір жоқ.</p>'}</div>`;
+    <div class="card"><h2>Берілген тапсырмалар</h2>${asg.length ? asg.map(a => `<div class="row"><span>${esc(a.user_id ? (allS.find(s => s.id === a.user_id) || {}).full_name || 'оқушы' : a.grp ? 'Топ: ' + a.grp : 'Барлығына')} · ${esc(topicName(a.topic))} · ${a.level} · ${a.count} есеп ${a.note ? '· ' + esc(a.note) : ''}</span><button class="g sm" data-d="${a.id}">Жою</button></div>`).join('') : '<p class="m">Әзір жоқ.</p>'}</div>`;
   }
   if (TS.tab === 'reg') {
-    body = `<div class="card"><h2>Оқушыны тіркеу</h2><p class="m">Оқушы өзі де «Тіркелу» арқылы кіре алады. Мұнда оған логин мен құпиясөз беріп тіркейсіз.</p><form id="rf2"><label>Аты-жөні<input id="rn" required></label><label>Сыныбы<input id="rc" required></label><label>Логин (латынша)<input id="ru" required autocapitalize="none"></label><label>Құпиясөз<input id="rp" required minlength="6"></label><button type="submit">Тіркеу</button></form><p id="rm" class="m"></p></div>`;
+    body = `<div class="card"><h2>Оқушыны тіркеу</h2><p class="m">Оқушы өзі де «Тіркелу» арқылы кіре алады. Мұнда оған логин мен құпиясөз беріп тіркейсіз.</p><form id="rf2"><label>Аты-жөні<input id="rn" required></label><label>Тобы<select id="rc" required>${grpOpts('')}</select></label><label>Логин (латынша)<input id="ru" required autocapitalize="none"></label><label>Құпиясөз<input id="rp" required minlength="6"></label><button type="submit">Тіркеу</button></form><p id="rm" class="m"></p></div>`;
   }
-  main().innerHTML = `<div class="tabs t2">${tabs.map(([k, t]) => `<button class="${TS.tab === k ? 'on' : ''}" data-t="${k}">${t}</button>`).join('')}</div>${body}`;
-  $$('.t2 button').forEach(b => b.onclick = () => { TS.tab = b.dataset.t; teacherRender(); });
+  const grpBar = `<div class="tabs t2 gb">${['', ...CFG.GROUPS].map(g => `<button class="${TS.grp === g ? 'on' : ''}" data-g="${esc(g)}">${g ? esc(g) + ' (' + allS.filter(s => s.class === g).length + ')' : 'Барлығы (' + allS.length + ')'}</button>`).join('')}</div>`;
+  main().innerHTML = grpBar + `<div class="tabs t2">${tabs.map(([k, t]) => `<button class="${TS.tab === k ? 'on' : ''}" data-t="${k}">${t}</button>`).join('')}</div>${body}`;
+  $$('.t2 button[data-t]').forEach(b => b.onclick = () => { TS.tab = b.dataset.t; teacherRender(); });
+  $$('.gb button').forEach(b => b.onclick = () => { TS.grp = b.dataset.g; teacherRender(); });
   if ($('#xl')) $('#xl').onclick = () => {
     const head = ['Аты-жөні', 'Сынып', 'Тапсырма', 'Дұрыс', 'Қате', 'Пайыз', ...OI.TOPICS.map(t => 'Т' + t.id + ' ' + t.name), 'Соңғы тест', 'Қиналатын тақырыптар'];
     const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
-    dl('oi-math-test-results.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
+    dl('oi-math-results' + (TS.grp ? '-' + TS.grp : '') + '.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
   };
+  if ($('#gs')) $('#gs').onchange = guard(async e => { if (!e.target.value) return; await DB.setGroup(TS.sel, e.target.value); TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); toast('Топ өзгертілді.'); teacherRender(); });
   if ($('#ds')) $('#ds').onclick = guard(async () => {
     const st = students.find(x => x.id === TS.sel); if (!st) return;
     if (!confirm(st.full_name + ' оқушысын және оның барлық нәтижесін өшіресіз бе? Қайтару мүмкін емес.')) return;
     await DB.delStudent(st.id); toast('Оқушы өшірілді.');
-    TS.sel = ''; TS.data.students = (await DB.profiles()).filter(p => p.role !== 'teacher'); TS.data.att = await DB.allAttempts(); TS.data.tests = await DB.allTests(); TS.data.asg = await DB.assignments(); teacherRender();
+    TS.sel = ''; TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); TS.data.att = await DB.allAttempts(); TS.data.tests = await DB.allTests(); TS.data.asg = await DB.assignments(); teacherRender();
   });
   if ($('#rf')) $('#rf').onclick = () => VIEWS.teacher();
   if ($('#ss')) $('#ss').onchange = e => { TS.sel = e.target.value; teacherRender(); };
-  if ($('#af2')) $('#af2').onsubmit = guard(async e => { e.preventDefault(); await DB.addAssignment({ user_id: $('#as').value || null, topic: +$('#at').value, level: $('#al').value, count: +$('#ac').value || 10, note: $('#an').value.trim() }); toast('Тапсырма берілді.'); TS.data.asg = await DB.assignments(); teacherRender(); });
+  if ($('#af2')) $('#af2').onsubmit = guard(async e => { e.preventDefault(); const who = $('#as').value; await DB.addAssignment({ user_id: who && !who.startsWith('g:') ? who : null, grp: who.startsWith('g:') ? who.slice(2) : null, topic: +$('#at').value, level: $('#al').value, count: +$('#ac').value || 10, note: $('#an').value.trim() }); toast('Тапсырма берілді.'); TS.data.asg = await DB.assignments(); teacherRender(); });
   $$('[data-d]').forEach(b => b.onclick = guard(async () => { await DB.delAssignment(b.dataset.d); TS.data.asg = await DB.assignments(); teacherRender(); }));
   if ($('#rf2')) $('#rf2').onsubmit = guard(async e => {
     e.preventDefault(); const u = normU($('#ru').value);
     if (!okU(u)) { toast('Логин: 3–30 таңба, тек латын әріптері мен сандар.', true); return; }
     await DB.createStudent(u, $('#rp').value, $('#rn').value.trim(), $('#rc').value.trim());
     $('#rm').textContent = `Тіркелді. Логин: ${u}, құпиясөз: ${$('#rp').value}. Оқушыға жіберіңіз.`; $('#rf2').reset();
-    TS.data.students = (await DB.profiles()).filter(p => p.role !== 'teacher');
+    TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); teacherRender();
   });
 }
 
