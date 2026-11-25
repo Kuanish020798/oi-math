@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="kk"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OI MATH · Тригонометриялық теңсіздіктер</title>
-<link rel="icon" href="data:,">
+<title>KUANMATH · ҰБТ-ға дайындық</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22kg%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22%238b9cff%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22%236d5dfc%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2216%22%20fill=%22url%28%23kg%29%22/%3E%3Cpath%20d=%22M20%2014v36%22%20stroke=%22%23fff%22%20stroke-width=%226%22%20stroke-linecap=%22round%22%20fill=%22none%22/%3E%3Cpath%20d=%22M45%2015L25%2033l21%2018%22%20stroke=%22%23fff%22%20stroke-width=%226%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20fill=%22none%22/%3E%3Cpath%20d=%22M34.7%2024.3A13%2013%200%200%201%2034.9%2041.4%22%20stroke=%22%23fcd34d%22%20stroke-width=%223.5%22%20stroke-linecap=%22round%22%20fill=%22none%22/%3E%3C/svg%3E">
 <style>:root{--bg:#f4f6fb;--c:#fff;--t:#1c2233;--m:#6a7388;--p:#3b5bdb;--pl:#e7ecff;--b:#dde2ee;--ok:#12805c;--okb:#e3f7ee;--no:#c0392b;--nob:#fdecea;--warn:#fff4d6;--arc:#16a34a}
 @media(prefers-color-scheme:dark){:root{--bg:#10131c;--c:#1a1f2e;--t:#e9ecf5;--m:#98a2b8;--p:#8ea2ff;--pl:#26304f;--b:#2c3550;--ok:#4cd6a0;--okb:#14352b;--no:#ff8a7a;--nob:#3b1d1a;--warn:#3a3114;--arc:#34d399}}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--t);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 #app{max-width:880px;margin:0 auto;padding:0 12px 40px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;flex-wrap:wrap}
-.brand b{font-size:20px;color:var(--p);margin-right:8px}.brand span{color:var(--m);font-size:14px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:38px;height:38px;flex:none}.logo.big{display:block;width:84px;height:84px;margin:0 auto 6px}.brand b{font-size:20px;letter-spacing:.5px;color:var(--p);margin-right:8px}.brand span{color:var(--m);font-size:14px}
 .who{font-size:14px;color:var(--m)}
 .nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;position:sticky;top:0;background:var(--bg);z-index:5;-webkit-overflow-scrolling:touch}
 .nav a{white-space:nowrap;padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--t);background:var(--c);border:1px solid var(--b);font-size:14px}
@@ -71,6 +71,8 @@ td.lo{background:var(--nob)}td.mid{background:var(--warn)}td.hi{background:var(-
 .sol{background:var(--pl);padding:10px 12px;border-radius:10px;font-size:15px}.quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.quick button{margin:0}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--p);color:#fff;padding:12px 18px;border-radius:10px;z-index:99;max-width:90vw;font-size:15px}.toast.bad{background:var(--no)}
 @media(max-width:520px){.mth{font-size:19px}.opt{font-size:16px}.kpis b{font-size:22px}}
+
+.chk{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:15px}.chk input{width:22px;height:22px;flex:none;margin:0}
 </style></head>
 <body><div id="app"></div>
 <!-- ============ БАПТАУ ============
@@ -586,6 +588,297 @@ OI.all = Object.values(OI.byId);
 })();
 
 ;
+/* OI bank 2: көрсеткіштік (9) және логарифмдік (10) теңдеулер мен теңсіздіктер.
+   Әр есептің жауабы осы жерде сандық тексеріледі (тор бойынша). Тексеруден өтпесе есеп банкке кірмейді. */
+(function () {
+'use strict';
+const OI = globalThis.OI;
+OI.TOPICS.push(
+  { id: 9, name: 'Көрсеткіштік теңдеулер мен теңсіздіктер' },
+  { id: 10, name: 'Логарифмдік теңдеулер мен теңсіздіктер' }
+);
+OI.bank[9] = []; OI.bank[10] = [];
+Object.assign(OI.TAGS, {
+  r_compl: 'Бұл — қарама-қарсы жиын. Теңсіздік белгісін және негіздің 1-ден үлкен немесе кіші екенін қайта тексер.',
+  r_strict: 'Шеткі нүктелердің жақшасы қате. Қатаң (>, <) белгіде — дөңгелек жақша, қатаң емес (≥, ≤) белгіде — шаршы жақша. Логарифм анықталмайтын нүкте әрқашан дөңгелек жақшамен жазылады.',
+  r_root: 'Шеткі нүкте немесе түбір қате есептелген. Дәрежелерді теңестіруді не логарифм анықтамасын (log_a b = c ⇔ a^c = b) қайта тексер.',
+  r_partial: 'Шешімнің бір бөлігі ұмытылған (екінші түбір немесе бір аралық). Квадрат теңдеудің екі түбірін де тексер.',
+  r_neg: 'Түбірдің таңбасы қате. Теріс көрсеткіш, бөлшек негіз кезінде таңбаны мұқият жаз.',
+  base: 'Негіз 0 мен 1 аралығында болғанда функция кемиді, сондықтан теңсіздіктің белгісі қарама-қарсыға ауысады. Сен белгіні ауыстырмадың.',
+  dom: 'Анықталу облысы (ОДЗ) ескерілмеген. Логарифм таңбасының ішіндегі өрнек оң болуы керек: жауапты ОДЗ-мен қиыстыр.',
+  ext: 'Бөтен түбір қалып қойған. Теңдеуді шешкеннен кейін әр түбірді ОДЗ бойынша тексер: логарифм ішіндегі өрнек оң болуы керек.',
+  sub: 'Алмастыру t = aˣ қате қолданылған. t > 0 шартын ескер, табылған t-дан x-ке оралуды ұмытпа.'
+});
+
+/* ---- көмекшілер ---- */
+const INF = Infinity, E = 1e-9;
+const gt = (a, b) => a > b + E, ge = (a, b) => a >= b - E, lt = (a, b) => a < b - E, le = (a, b) => a <= b + E;
+const lg = (x, b) => x > 0 ? Math.log(x) / Math.log(b) : NaN;
+const log10 = x => x > 0 ? Math.log10(x) : NaN;
+const I = (l, r, lc = false, rc = false) => ({ l, r, lc, rc });
+const P = x => ({ l: x, r: x, lc: true, rc: true });
+const num = v => {
+  if (v === INF) return '+∞'; if (v === -INF) return '−∞';
+  const neg = v < 0, a = Math.abs(v);
+  let s;
+  if (Math.abs(a - Math.round(a)) < 1e-9) s = String(Math.round(a));
+  else { s = null; for (let d = 2; d <= 12; d++) { const n = a * d; if (Math.abs(n - Math.round(n)) < 1e-9) { s = Math.round(n) + '/' + d; break; } } if (!s) s = a.toFixed(3); }
+  return (neg ? '−' : '') + s;
+};
+const fmtSet = ps => {
+  if (!ps.length) return '∅';
+  const a = ps.slice().sort((x, y) => x.l - y.l || x.r - y.r);
+  if (a.every(p => p.l === p.r)) return `{${a.map(p => num(p.l)).join('; ')}}`;
+  return a.map(p => p.l === p.r ? `{${num(p.l)}}` : `${p.lc ? '[' : '('}${num(p.l)}; ${num(p.r)}${p.rc ? ']' : ')'}`).join(' ∪ ');
+};
+const comp = ps => {
+  const a = ps.slice().sort((x, y) => x.l - y.l), out = [];
+  let pv = -INF, pc = true;
+  const gap = (nl, nc) => { const lc = !pc, rc = !nc; if (pv < nl || (pv === nl && lc && rc && isFinite(pv))) out.push(pv === nl ? P(pv) : I(pv, nl, lc && isFinite(pv), rc && isFinite(nl))); };
+  for (const p of a) { gap(p.l, p.lc); pv = p.r; pc = p.rc; }
+  gap(INF, true);
+  return out;
+};
+const inSet = (ps, x) => ps.some(p => (x > p.l && x < p.r) || (p.lc && x === p.l) || (p.rc && x === p.r));
+const ends = ps => { const e = []; ps.forEach(p => { if (isFinite(p.l)) e.push(p.l); if (isFinite(p.r) && p.r !== p.l) e.push(p.r); }); return e; };
+
+const GRID = (() => { const g = []; for (let x = -130; x <= 130; x += Math.abs(x) <= 30 ? 0.0137 : 0.071) g.push(x); return g; })();
+
+function verifyIneq(pred, truth) {
+  const es = ends(truth), near = x => es.some(e => Math.abs(x - e) < 2e-3);
+  for (const x of GRID) { if (near(x)) continue; if (!!pred(x) !== inSet(truth, x)) return false; }
+  for (const e of es) {
+    const lo = e - 1e-4, hi = e + 1e-4;
+    const okLo = es.some(f => f !== e && Math.abs(f - lo) < 2e-4);
+    if (!okLo && !!pred(lo) !== inSet(truth, lo)) return false;
+    const okHi = es.some(f => f !== e && Math.abs(f - hi) < 2e-4);
+    if (!okHi && !!pred(hi) !== inSet(truth, hi)) return false;
+  }
+  for (const p of truth) {
+    for (const [v, c] of [[p.l, p.lc], [p.r, p.rc]]) if (isFinite(v) && !!pred(v) !== !!c) return false;
+    if (p.l !== p.r) { const m = isFinite(p.l) ? (isFinite(p.r) ? (p.l + p.r) / 2 : p.l + 1) : (isFinite(p.r) ? p.r - 1 : 0); if (!pred(m)) return false; }
+  }
+  return true;
+}
+function verifyEq(g, truth) {
+  const roots = [];
+  let pa = null, ga = NaN;
+  for (const x of GRID) {
+    const gx = g(x);
+    if (Number.isFinite(gx) && Number.isFinite(ga) && ((ga < 0 && gx > 0) || (ga > 0 && gx < 0))) {
+      let lo = pa, hi = x, glo = ga;
+      for (let i = 0; i < 80; i++) { const m = (lo + hi) / 2, gm = g(m); if (!Number.isFinite(gm)) break; if ((gm < 0) === (glo < 0)) { lo = m; glo = gm; } else hi = m; }
+      const m = (lo + hi) / 2, gm = g(m);
+      if (Number.isFinite(gm) && Math.abs(gm) < 1e-6) roots.push(m);
+    } else if (Number.isFinite(gx) && Math.abs(gx) < 1e-12) roots.push(x);
+    pa = x; ga = gx;
+  }
+  const uniq = []; roots.sort((a, b) => a - b).forEach(r => { if (!uniq.length || r - uniq[uniq.length - 1] > 1e-3) uniq.push(r); });
+  const tr = truth.map(p => p.l).sort((a, b) => a - b);
+  if (uniq.length !== tr.length) return false;
+  return tr.every((r, i) => Math.abs(r - uniq[i]) < 1e-5 && Math.abs(g(r)) < 1e-7);
+}
+
+/* ---- ұқсамайтын қате жауаптар ---- */
+function candsR(truth, eq, extras) {
+  const out = [], add = (ps, tag) => out.push({ s: fmtSet(ps), tag });
+  const flip = ps => ps.map(p => p.l === p.r ? p : I(p.l, p.r, isFinite(p.l) ? !p.lc : false, isFinite(p.r) ? !p.rc : false));
+  const shift = d => truth.map(p => p.l === p.r ? P(p.l + d) : I(p.l + d, p.r + d, p.lc, p.rc));
+  const shiftF = d => truth.map(p => p.l === p.r ? P(p.l + d) : I(isFinite(p.l) ? p.l + d : p.l, isFinite(p.r) ? p.r + d : p.r, p.lc, p.rc));
+  if (eq) {
+    if (truth.length >= 2) { add(truth.slice(1), 'r_partial'); add(truth.slice(0, -1), 'r_partial'); }
+    add(truth.map(p => P(-p.l)), 'r_neg');
+    add(shift(1), 'r_root'); add(shift(-1), 'r_root');
+  } else {
+    add(comp(truth), 'r_compl');
+    add(flip(truth), 'r_strict');
+    if (truth.length >= 2) { add(truth.slice(1), 'r_partial'); add(truth.slice(0, -1), 'r_partial'); }
+    add(shiftF(1), 'r_root'); add(shiftF(-1), 'r_root');
+  }
+  for (const e of extras || []) add(e.ps, e.tag);
+  if (eq) { add(truth.map(p => P(p.l * 2)), 'r_root'); add(truth.map(p => P(p.l + 2)), 'r_root'); }
+  const truthS = fmtSet(truth), seen = new Map();
+  for (const o of out) if (o.s !== truthS && !seen.has(o.s)) seen.set(o.s, o.tag);
+  return { truthS, map: seen };
+}
+
+const list = [], cnt = {};
+function reg(topic, level, type, lines, f, truth, steps, o = {}) {
+  const k = topic + level; cnt[k] = (cnt[k] || 0) + 1;
+  list.push({ id: `t${topic}${level}${String(cnt[k]).padStart(2, '0')}`, topic, level, type, lines: [].concat(lines), f, truth, steps, h1: o.h, extras: o.extras });
+}
+const E_ = (ps, tag) => ({ ps, tag });
+
+function buildR(p) {
+  const eq = p.type === 'eq';
+  if (!(eq ? verifyEq(p.f, p.truth) : verifyIneq(p.f, p.truth))) return null;
+  const { truthS, map } = candsR(p.truth, eq, p.extras);
+  const rnd = OI.rng(p.id);
+  const sh = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const pool = sh([...map.entries()]), picked = [], tags = new Set();
+  const prio = t => (t === 'base' || t === 'dom' || t === 'ext' || t === 'sub') ? 0 : 1;
+  pool.sort((a, b) => prio(a[1]) - prio(b[1]));
+  for (const [s, t] of pool) if (!tags.has(t) && picked.length < 3) { picked.push([s, t]); tags.add(t); }
+  for (const [s, t] of pool) if (picked.length < 3 && !picked.find(x => x[0] === s)) picked.push([s, t]);
+  if (picked.length < 3) return null;
+  const opts = sh([[truthS, null], ...picked]);
+  const ans = opts.findIndex(o => o[1] === null);
+  const steps = p.steps.concat([`Жауабы: ${truthS}`]);
+  const hints = [p.h1 || 'Алгоритм: 1) анықталу облысын жаз; 2) екі жағын бір негізге келтір (не алмастыру енгіз); 3) негіз 1-ден кіші болса, теңсіздік белгісін ауыстыр; 4) жауапты ОДЗ-мен салыстыр.', steps[1] || steps[0]];
+  return {
+    id: p.id, topic: p.topic, level: p.level, mode: 'real', head: eq ? 'Теңдеуді шешіңіз:' : 'Теңсіздікті шешіңіз:', cond: null, lines: p.lines, kind: 'other',
+    options: opts.map(o => o[0]), tagsByOpt: opts.map(o => o[1]), ans, truth: truthS, steps, hints, tagMap: map
+  };
+}
+
+/* =================== 9. КӨРСЕТКІШТІК =================== */
+const T9 = 9;
+// A
+reg(T9, 'A', 'eq', '2^x = 16', x => Math.pow(2, x) - 16, [P(4)],
+  ['16 = 2⁴ деп жазамыз: 2^x = 2⁴.', 'Негіздері бірдей, сондықтан көрсеткіштері тең: x = 4.']);
+reg(T9, 'A', 'eq', '3^(x − 1) = 27', x => Math.pow(3, x - 1) - 27, [P(4)],
+  ['27 = 3³: 3^(x − 1) = 3³.', 'Көрсеткіштерді теңестіреміз: x − 1 = 3.', 'x = 4.']);
+reg(T9, 'A', 'ineq', '5^x > 25', x => gt(Math.pow(5, x), 25), [I(2, INF)],
+  ['25 = 5²: 5^x > 5².', 'Негіз 5 > 1, функция өседі, белгі сақталады: x > 2.'],
+  { extras: [E_([I(-INF, 2)], 'base')] });
+reg(T9, 'A', 'ineq', '(1/2)^x ≥ 8', x => ge(Math.pow(0.5, x), 8), [I(-INF, -3, false, true)],
+  ['8 = (1/2)^(−3), себебі (1/2)^(−3) = 2³ = 8.', 'Негіз 1/2 < 1, функция кемиді, сондықтан белгі қарама-қарсыға ауысады.', 'x ≤ −3.'],
+  { extras: [E_([I(-3, INF, true, false)], 'base')] });
+reg(T9, 'A', 'ineq', '2^(x + 1) < 8', x => lt(Math.pow(2, x + 1), 8), [I(-INF, 2)],
+  ['8 = 2³: 2^(x + 1) < 2³.', 'Негіз 2 > 1, белгі сақталады: x + 1 < 3.', 'x < 2.']);
+reg(T9, 'A', 'eq', '4^x = 1/2', x => Math.pow(4, x) - 0.5, [P(-0.5)],
+  ['Екі жағын да 2-нің дәрежесімен жазамыз: 4^x = 2^(2x), 1/2 = 2^(−1).', '2x = −1.', 'x = −1/2.']);
+reg(T9, 'A', 'ineq', '3^x ≤ 1/9', x => le(Math.pow(3, x), 1 / 9), [I(-INF, -2, false, true)],
+  ['1/9 = 3^(−2): 3^x ≤ 3^(−2).', 'Негіз 3 > 1, белгі сақталады: x ≤ −2.'],
+  { extras: [E_([I(-2, INF, true, false)], 'base')] });
+reg(T9, 'A', 'ineq', '(1/3)^x < 9', x => lt(Math.pow(1 / 3, x), 9), [I(-2, INF)],
+  ['9 = (1/3)^(−2).', 'Негіз 1/3 < 1, функция кемиді, белгі ауысады: x > −2.'],
+  { extras: [E_([I(-INF, -2)], 'base')] });
+// B
+reg(T9, 'B', 'eq', '4^x − 5·2^x + 4 = 0', x => Math.pow(4, x) - 5 * Math.pow(2, x) + 4, [P(0), P(2)],
+  ['4^x = (2^x)². t = 2^x деп алсақ (t > 0): t² − 5t + 4 = 0.', 'Түбірлері: t = 1 және t = 4, екеуі де оң.', '2^x = 1 ⇒ x = 0;  2^x = 4 ⇒ x = 2.'],
+  { h: 'Алмастыру: t = 2^x, t > 0. Квадрат теңдеуді шеш, сосын x-ке оралу.' });
+reg(T9, 'B', 'eq', '9^x − 4·3^x + 3 = 0', x => Math.pow(9, x) - 4 * Math.pow(3, x) + 3, [P(0), P(1)],
+  ['t = 3^x (t > 0): t² − 4t + 3 = 0.', 't = 1 және t = 3.', '3^x = 1 ⇒ x = 0;  3^x = 3 ⇒ x = 1.'],
+  { h: 'Алмастыру: t = 3^x, t > 0.' });
+reg(T9, 'B', 'eq', '2^(x² − 3x) = 16', x => Math.pow(2, x * x - 3 * x) - 16, [P(-1), P(4)],
+  ['16 = 2⁴, сондықтан көрсеткіштерді теңестіреміз: x² − 3x = 4.', 'x² − 3x − 4 = 0, Виет теоремасы бойынша x = −1 және x = 4.']);
+reg(T9, 'B', 'ineq', '3^(2x − 1) ≥ 27^(x − 1)', x => ge(Math.pow(3, 2 * x - 1), Math.pow(27, x - 1)), [I(-INF, 2, false, true)],
+  ['27^(x − 1) = (3³)^(x − 1) = 3^(3x − 3).', 'Негіз 3 > 1, белгі сақталады: 2x − 1 ≥ 3x − 3.', '2 ≥ x, яғни x ≤ 2.'],
+  { extras: [E_([I(2, INF, true, false)], 'r_strict'), E_([I(-INF, 2)], 'r_strict')] });
+reg(T9, 'B', 'ineq', '4^x − 3·2^x + 2 < 0', x => lt(Math.pow(4, x) - 3 * Math.pow(2, x) + 2, 0), [I(0, 1)],
+  ['t = 2^x (t > 0): t² − 3t + 2 < 0.', 'Түбірлері 1 және 2, парабола тармақтары жоғары: 1 < t < 2.', '1 < 2^x < 2 ⇒ 0 < x < 1.'],
+  { extras: [E_([I(1, 2)], 'sub'), E_([I(-INF, 0), I(1, INF)], 'r_compl')] });
+reg(T9, 'B', 'eq', '5^(x + 1) + 5^x = 30', x => Math.pow(5, x + 1) + Math.pow(5, x) - 30, [P(1)],
+  ['5^(x + 1) = 5·5^x. Ортақ көбейткішті жақшаның сыртына шығарамыз: 5^x · (5 + 1) = 30.', '5^x = 5.', 'x = 1.']);
+reg(T9, 'B', 'ineq', '(1/2)^(x² − 5x) > 1/64', x => gt(Math.pow(0.5, x * x - 5 * x), 1 / 64), [I(-1, 6)],
+  ['1/64 = (1/2)⁶.', 'Негіз 1/2 < 1, белгі ауысады: x² − 5x < 6.', 'x² − 5x − 6 < 0 ⇒ (x − 6)(x + 1) < 0 ⇒ −1 < x < 6.'],
+  { extras: [E_([I(-INF, -1), I(6, INF)], 'base')] });
+reg(T9, 'B', 'eq', '2^x · 3^x = 36', x => Math.pow(2, x) * Math.pow(3, x) - 36, [P(2)],
+  ['Бірдей көрсеткішті көбейтуді біріктіреміз: 2^x · 3^x = 6^x.', '6^x = 36 = 6².', 'x = 2.']);
+reg(T9, 'B', 'ineq', '2^(x + 3) − 2^x > 56', x => gt(Math.pow(2, x + 3) - Math.pow(2, x), 56), [I(3, INF)],
+  ['2^(x + 3) = 8·2^x. 2^x-ті жақшаның сыртына шығарамыз: 2^x (8 − 1) > 56.', '7·2^x > 56 ⇒ 2^x > 8 = 2³.', 'Негіз 2 > 1: x > 3.']);
+// C
+reg(T9, 'C', 'ineq', '4^x − 2^(x + 1) − 8 ≥ 0', x => ge(Math.pow(4, x) - 2 * Math.pow(2, x) - 8, 0), [I(2, INF, true, false)],
+  ['2^(x + 1) = 2·2^x. t = 2^x, t > 0: t² − 2t − 8 ≥ 0.', 'Түбірлері −2 және 4: t ≤ −2 немесе t ≥ 4. t > 0 болғандықтан t ≥ 4.', '2^x ≥ 4 ⇒ x ≥ 2.'],
+  { extras: [E_([I(-INF, 2)], 'r_compl'), E_([I(-INF, -1, false, true), I(2, INF, true, false)], 'sub')] });
+reg(T9, 'C', 'ineq', '9^x − 10·3^x + 9 > 0', x => gt(Math.pow(9, x) - 10 * Math.pow(3, x) + 9, 0), [I(-INF, 0), I(2, INF)],
+  ['t = 3^x (t > 0): t² − 10t + 9 > 0.', 'Түбірлері 1 және 9: t < 1 немесе t > 9.', '3^x < 1 ⇒ x < 0;  3^x > 9 ⇒ x > 2.'],
+  { extras: [E_([I(0, 2)], 'r_compl'), E_([I(-INF, 1), I(9, INF)], 'sub')] });
+reg(T9, 'C', 'ineq', '2^(2x + 1) − 5·2^x + 2 ≤ 0', x => le(Math.pow(2, 2 * x + 1) - 5 * Math.pow(2, x) + 2, 0), [I(-1, 1, true, true)],
+  ['2^(2x + 1) = 2·(2^x)². t = 2^x, t > 0: 2t² − 5t + 2 ≤ 0.', 'Түбірлері 1/2 және 2: 1/2 ≤ t ≤ 2.', '2^(−1) ≤ 2^x ≤ 2¹ ⇒ −1 ≤ x ≤ 1.'],
+  { extras: [E_([I(0.5, 2, true, true)], 'sub')] });
+reg(T9, 'C', 'eq', '3^x + 3^(2 − x) = 10', x => Math.pow(3, x) + Math.pow(3, 2 - x) - 10, [P(0), P(2)],
+  ['3^(2 − x) = 9 / 3^x. t = 3^x (t > 0): t + 9/t = 10.', 'Екі жағын t-ға көбейтеміз: t² − 10t + 9 = 0, t = 1 немесе t = 9.', '3^x = 1 ⇒ x = 0;  3^x = 9 ⇒ x = 2.']);
+reg(T9, 'C', 'ineq', '(1/4)^x − 9·(1/2)^x + 8 < 0', x => lt(Math.pow(0.25, x) - 9 * Math.pow(0.5, x) + 8, 0), [I(-3, 0)],
+  ['(1/4)^x = ((1/2)^x)². t = (1/2)^x, t > 0: t² − 9t + 8 < 0 ⇒ 1 < t < 8.', '(1/2)^x > 1 = (1/2)⁰: негіз < 1, белгі ауысады, x < 0.', '(1/2)^x < 8 = (1/2)^(−3): белгі ауысады, x > −3.', 'Қиылыс: −3 < x < 0.'],
+  { extras: [E_([I(0, 3)], 'base'), E_([I(1, 8)], 'sub')] });
+reg(T9, 'C', 'eq', '2^x + 2^(−x) = 5/2', x => Math.pow(2, x) + Math.pow(2, -x) - 2.5, [P(-1), P(1)],
+  ['t = 2^x (t > 0): t + 1/t = 5/2 ⇒ 2t² − 5t + 2 = 0.', 't = 2 немесе t = 1/2, екеуі де оң.', '2^x = 2 ⇒ x = 1;  2^x = 1/2 ⇒ x = −1.']);
+reg(T9, 'C', 'ineq', '|2^x − 3| < 1', x => lt(Math.abs(Math.pow(2, x) - 3), 1), [I(1, 2)],
+  ['Модуль теңсіздігі: −1 < 2^x − 3 < 1.', 'Үш бөлікке 3 қосамыз: 2 < 2^x < 4.', '2¹ < 2^x < 2² ⇒ 1 < x < 2.'],
+  { extras: [E_([I(2, 4)], 'sub'), E_([I(-INF, 1), I(2, INF)], 'r_compl')] });
+
+/* =================== 10. ЛОГАРИФМДІК =================== */
+const T10 = 10, L2 = x => lg(x, 2), L3 = x => lg(x, 3), L5 = x => lg(x, 5);
+// A
+reg(T10, 'A', 'eq', 'log₂ x = 3', x => L2(x) - 3, [P(8)],
+  ['Анықтама бойынша log₂ x = 3 ⇔ x = 2³.', 'x = 8. ОДЗ: x > 0 — орындалады.']);
+reg(T10, 'A', 'eq', 'log₃ (x − 1) = 2', x => L3(x - 1) - 2, [P(10)],
+  ['Анықтама бойынша x − 1 = 3² = 9.', 'x = 10. ОДЗ: x − 1 > 0 — орындалады.']);
+reg(T10, 'A', 'ineq', 'log₂ x > 3', x => gt(L2(x), 3), [I(8, INF)],
+  ['3 = log₂ 8, сондықтан log₂ x > log₂ 8.', 'Негіз 2 > 1, белгі сақталады: x > 8. ОДЗ (x > 0) өздігінен орындалады.'],
+  { extras: [E_([I(0, 8)], 'base')] });
+reg(T10, 'A', 'ineq', 'log₅ x < 2', x => lt(L5(x), 2), [I(0, 25)],
+  ['2 = log₅ 25: log₅ x < log₅ 25.', 'Негіз 5 > 1, белгі сақталады: x < 25.', 'ОДЗ: x > 0. Қиылыс: 0 < x < 25.'],
+  { extras: [E_([I(-INF, 25)], 'dom')] });
+reg(T10, 'A', 'eq', 'log₂ (x + 1) = 4', x => L2(x + 1) - 4, [P(15)],
+  ['Анықтама бойынша x + 1 = 2⁴ = 16.', 'x = 15. ОДЗ: x + 1 > 0 — орындалады.']);
+reg(T10, 'A', 'ineq', 'log_(1/2) x > 1', x => gt(lg(x, 0.5), 1), [I(0, 0.5)],
+  ['1 = log_(1/2) (1/2).', 'Негіз 1/2 < 1, функция кемиді, белгі ауысады: x < 1/2.', 'ОДЗ: x > 0. Қиылыс: 0 < x < 1/2.'],
+  { extras: [E_([I(0.5, INF)], 'base'), E_([I(-INF, 0.5)], 'dom')] });
+reg(T10, 'A', 'ineq', 'log₃ (2x − 1) ≥ 1', x => ge(L3(2 * x - 1), 1), [I(2, INF, true, false)],
+  ['1 = log₃ 3: log₃ (2x − 1) ≥ log₃ 3.', 'Негіз 3 > 1: 2x − 1 ≥ 3 ⇒ x ≥ 2.', 'ОДЗ: 2x − 1 > 0 өздігінен орындалады.'],
+  { extras: [E_([I(0.5, 2, false, true)], 'base')] });
+reg(T10, 'A', 'eq', 'lg x = 2', x => log10(x) - 2, [P(100)],
+  ['lg x — негізі 10 логарифм: lg x = 2 ⇔ x = 10².', 'x = 100.']);
+// B
+reg(T10, 'B', 'eq', 'log₂ (x − 1) + log₂ (x + 1) = 3', x => L2(x - 1) + L2(x + 1) - 3, [P(3)],
+  ['ОДЗ: x − 1 > 0 және x + 1 > 0 ⇒ x > 1.', 'Қосындыны көбейтіндіге айналдырамыз: log₂ (x² − 1) = 3 ⇒ x² − 1 = 8.', 'x² = 9 ⇒ x = 3 немесе x = −3.', 'ОДЗ-ге (x > 1) тек x = 3 сай келеді. x = −3 — бөтен түбір.'],
+  { extras: [E_([P(-3), P(3)], 'ext')] });
+reg(T10, 'B', 'eq', 'log₃ (x² − 3x + 3) = 1', x => L3(x * x - 3 * x + 3) - 1, [P(0), P(3)],
+  ['Анықтама бойынша x² − 3x + 3 = 3¹ = 3.', 'x² − 3x = 0 ⇒ x (x − 3) = 0 ⇒ x = 0 немесе x = 3.', 'ОДЗ: логарифм ішінде 3 > 0 — екі түбір де жарайды.']);
+reg(T10, 'B', 'eq', 'log₂ (x² − 4x) = 5', x => L2(x * x - 4 * x) - 5, [P(-4), P(8)],
+  ['Анықтама бойынша x² − 4x = 2⁵ = 32.', 'x² − 4x − 32 = 0 ⇒ (x − 8)(x + 4) = 0 ⇒ x = 8 немесе x = −4.', 'Логарифм ішінде 32 > 0 — екі түбір де жарайды.']);
+reg(T10, 'B', 'ineq', 'log₂ (3x − 1) < log₂ (x + 5)', x => lt(L2(3 * x - 1), L2(x + 5)), [I(1 / 3, 3)],
+  ['ОДЗ: 3x − 1 > 0 ⇒ x > 1/3;  x + 5 > 0 ⇒ x > −5. Ортақ ОДЗ: x > 1/3.', 'Негіз 2 > 1, белгі сақталады: 3x − 1 < x + 5 ⇒ x < 3.', 'Қиылыс: 1/3 < x < 3.'],
+  { extras: [E_([I(-INF, 3)], 'dom'), E_([I(3, INF)], 'r_compl')] });
+reg(T10, 'B', 'ineq', 'log_(1/2) (x − 2) ≥ −2', x => ge(lg(x - 2, 0.5), -2), [I(2, 6, false, true)],
+  ['−2 = log_(1/2) 4, себебі (1/2)^(−2) = 4.', 'Негіз 1/2 < 1, белгі ауысады: 0 < x − 2 ≤ 4.', '2 < x ≤ 6. (ОДЗ: x − 2 > 0 осында ескерілді.)'],
+  { extras: [E_([I(6, INF, true, false)], 'base'), E_([I(-INF, 6, false, true)], 'dom')] });
+reg(T10, 'B', 'eq', 'log₃ (x + 2) + log₃ x = 1', x => L3(x + 2) + L3(x) - 1, [P(1)],
+  ['ОДЗ: x + 2 > 0 және x > 0 ⇒ x > 0.', 'log₃ (x (x + 2)) = 1 ⇒ x² + 2x = 3 ⇒ x² + 2x − 3 = 0.', 'x = 1 немесе x = −3. ОДЗ бойынша тек x = 1 жарайды.'],
+  { extras: [E_([P(-3), P(1)], 'ext')] });
+reg(T10, 'B', 'ineq', 'lg (x − 3) < 1', x => lt(log10(x - 3), 1), [I(3, 13)],
+  ['1 = lg 10: lg (x − 3) < lg 10.', 'Негіз 10 > 1: x − 3 < 10 ⇒ x < 13.', 'ОДЗ: x − 3 > 0 ⇒ x > 3. Қиылыс: 3 < x < 13.'],
+  { extras: [E_([I(-INF, 13)], 'dom')] });
+reg(T10, 'B', 'ineq', 'log₂ x + log₂ (x − 2) ≤ 3', x => le(L2(x) + L2(x - 2), 3), [I(2, 4, false, true)],
+  ['ОДЗ: x > 0 және x − 2 > 0 ⇒ x > 2.', 'log₂ (x (x − 2)) ≤ 3 ⇒ x² − 2x ≤ 8 ⇒ x² − 2x − 8 ≤ 0 ⇒ −2 ≤ x ≤ 4.', 'ОДЗ-мен қиылыс: 2 < x ≤ 4.'],
+  { extras: [E_([I(-2, 4, true, true)], 'dom'), E_([I(0, 4, false, true)], 'dom')] });
+reg(T10, 'B', 'eq', '2 log₂ x = log₂ (x + 6)', x => 2 * L2(x) - L2(x + 6), [P(3)],
+  ['ОДЗ: x > 0 және x + 6 > 0 ⇒ x > 0.', '2 log₂ x = log₂ x², сондықтан x² = x + 6 ⇒ x² − x − 6 = 0.', 'x = 3 немесе x = −2. ОДЗ бойынша тек x = 3 жарайды.'],
+  { extras: [E_([P(-2), P(3)], 'ext')] });
+// C
+reg(T10, 'C', 'ineq', 'log₂² x − 3 log₂ x + 2 ≤ 0', x => le(L2(x) * L2(x) - 3 * L2(x) + 2, 0), [I(2, 4, true, true)],
+  ['ОДЗ: x > 0. t = log₂ x деп аламыз: t² − 3t + 2 ≤ 0.', 'Түбірлері 1 және 2: 1 ≤ t ≤ 2.', '1 ≤ log₂ x ≤ 2 ⇒ 2¹ ≤ x ≤ 2² ⇒ 2 ≤ x ≤ 4.'],
+  { extras: [E_([I(1, 2, true, true)], 'sub'), E_([I(0, 2, false, true), I(4, INF, true, false)], 'r_compl')] });
+reg(T10, 'C', 'eq', 'log₃² x − 2 log₃ x − 3 = 0', x => L3(x) * L3(x) - 2 * L3(x) - 3, [P(1 / 3), P(27)],
+  ['ОДЗ: x > 0. t = log₃ x: t² − 2t − 3 = 0 ⇒ t = 3 немесе t = −1.', 'log₃ x = 3 ⇒ x = 27;  log₃ x = −1 ⇒ x = 1/3.', 'Екі түбір де x > 0, сондықтан екеуі де жарайды.']);
+reg(T10, 'C', 'ineq', 'log₂ (x² − 5x + 6) > 1', x => gt(L2(x * x - 5 * x + 6), 1), [I(-INF, 1), I(4, INF)],
+  ['1 = log₂ 2, негіз 2 > 1: x² − 5x + 6 > 2.', 'x² − 5x + 4 > 0 ⇒ (x − 1)(x − 4) > 0 ⇒ x < 1 немесе x > 4.', 'ОДЗ: x² − 5x + 6 > 0 — бұл шарт 2-ден үлкен болғандықтан өздігінен орындалады.'],
+  { extras: [E_([I(1, 4)], 'r_compl'), E_([I(-INF, 2), I(3, INF)], 'dom')] });
+reg(T10, 'C', 'eq', 'log_x 16 = 4', x => (x > 0 && Math.abs(x - 1) > 1e-12) ? Math.log(16) / Math.log(x) - 4 : NaN, [P(2)],
+  ['ОДЗ: x > 0 және x ≠ 1 (логарифмнің негізі).', 'Анықтама бойынша x⁴ = 16 ⇒ x = 2 немесе x = −2.', 'Негіз оң болуы керек, сондықтан x = −2 бөтен түбір. Жауабы x = 2.'],
+  { extras: [E_([P(-2), P(2)], 'ext')] });
+reg(T10, 'C', 'eq', 'log₂ (x + 3) − log₂ (x − 1) = 2', x => L2(x + 3) - L2(x - 1) - 2, [P(7 / 3)],
+  ['ОДЗ: x + 3 > 0 және x − 1 > 0 ⇒ x > 1.', 'Айырманы бөлімге айналдырамыз: log₂ ((x + 3)/(x − 1)) = 2 ⇒ (x + 3)/(x − 1) = 4.', 'x + 3 = 4x − 4 ⇒ 3x = 7 ⇒ x = 7/3.', '7/3 > 1, ОДЗ-ге сай келеді.']);
+reg(T10, 'C', 'ineq', 'log_(1/2) (x² − 3x) ≥ −2', x => ge(lg(x * x - 3 * x, 0.5), -2), [I(-1, 0, true, false), I(3, 4, false, true)],
+  ['−2 = log_(1/2) 4. Негіз < 1, белгі ауысады: 0 < x² − 3x ≤ 4.', 'x² − 3x > 0 ⇒ x < 0 немесе x > 3.', 'x² − 3x − 4 ≤ 0 ⇒ −1 ≤ x ≤ 4.', 'Қиылыс: −1 ≤ x < 0 және 3 < x ≤ 4.'],
+  { extras: [E_([I(-INF, -1, false, true), I(4, INF, true, false)], 'base'), E_([I(-1, 4, true, true)], 'dom')] });
+reg(T10, 'C', 'ineq', 'log₂ (2x − 1) ≤ log₂ (x² − 4)', x => le(L2(2 * x - 1), L2(x * x - 4)), [I(3, INF, true, false)],
+  ['ОДЗ: 2x − 1 > 0 ⇒ x > 1/2;  x² − 4 > 0 ⇒ x < −2 немесе x > 2. Ортақ ОДЗ: x > 2.', 'Негіз 2 > 1: 2x − 1 ≤ x² − 4 ⇒ x² − 2x − 3 ≥ 0 ⇒ x ≤ −1 немесе x ≥ 3.', 'ОДЗ-мен қиылыс: x ≥ 3.'],
+  { extras: [E_([I(-INF, -1, false, true), I(3, INF, true, false)], 'dom'), E_([I(2, 3)], 'r_compl')] });
+
+/* ---- құрастыру ---- */
+list.forEach(p => {
+  const b = buildR(p);
+  if (!b) { OI.dropped.push(p.id); return; }
+  OI.bank[p.topic].push(b); OI.byId[b.id] = b;
+});
+OI.all = Object.values(OI.byId);
+})();
+
+;
 /* Теория мазмұны (қазақша). Мәтін қарапайым, формулалар unicode арқылы. */
 (function () {
 const OI = globalThis.OI;
@@ -680,6 +973,43 @@ OI.THEORY = [
   mistakes: ['Период ретінде 2π алу, ал шын мәнінде π (немесе керісінше).', 'n-ді жазбау.', 'Шешім бірнеше аралықтан тұрса, біреуін ғана жазу.'],
   tasks: 'Практика → «Жалпы шешім және период».'
 }
+,{
+  title: '11. Көрсеткіштік теңдеулер', topic: 9,
+  def: 'Белгісіз x дәреже көрсеткішінде тұрған теңдеу көрсеткіштік теңдеу деп аталады, мысалы 2^x = 16. Негізгі идея: екі жағын да бір негізге келтіру немесе алмастыру енгізу.',
+  formulas: ['a^m · a^n = a^(m + n);  a^m / a^n = a^(m − n);  (a^m)^n = a^(mn).', 'a^(−n) = 1 / a^n;  a⁰ = 1.', 'a > 0, a ≠ 1 болғанда: a^f(x) = a^g(x) ⇔ f(x) = g(x).', 'a^x > 0 — көрсеткіштік функция әрқашан оң.', 'a^x = b теңдеуі: b ≤ 0 болса, шешімі жоқ.'],
+  example: { q: '4^x − 5·2^x + 4 = 0 теңдеуін шешейік.', steps: ['4^x = (2^x)². t = 2^x деп алайық, t > 0.', 't² − 5t + 4 = 0 ⇒ t = 1 немесе t = 4.', '2^x = 1 ⇒ x = 0;  2^x = 4 ⇒ x = 2.', 'Жауабы: {0; 2}.'] },
+  algo: ['Екі жағын да бір негізге келтіруге бола ма, соны қара.', 'Болса — көрсеткіштерді теңестір.', 'Болмаса — t = a^x алмастыруын енгіз, t > 0 екенін ұмытпа.', 'Табылған t-дан x-ке оралып, жауабын жаз.'],
+  mistakes: ['t > 0 шартын ескермеу (теріс t-ға x табуға тырысу).', 'Көрсеткіштерді қосу орнына көбейту: a^m · a^n ≠ a^(mn).', 'Теріс көрсеткіштің таңбасын шатастыру.'],
+  tasks: 'Практика → «Көрсеткіштік теңдеулер мен теңсіздіктер», A және B деңгейлері.'
+},
+{
+  title: '12. Көрсеткіштік теңсіздіктер', topic: 9,
+  def: 'Көрсеткіштік теңсіздікті шешу үшін екі жағын бір негізге келтіреміз, сосын негізге қарап белгіні сақтаймыз немесе ауыстырамыз.',
+  formulas: ['a > 1 (функция өседі): a^f(x) > a^g(x) ⇔ f(x) > g(x).', '0 < a < 1 (функция кемиді): a^f(x) > a^g(x) ⇔ f(x) < g(x). Белгі ауысады!', 'a^x > b, b ≤ 0 болғанда: x кез келген нақты сан.', 'a^x < b, b ≤ 0 болғанда: шешімі жоқ.'],
+  example: { q: '(1/2)^x ≥ 8 теңсіздігін шешейік.', steps: ['8 = (1/2)^(−3).', 'Негіз 1/2 < 1, функция кемиді, белгі қарама-қарсыға ауысады: x ≤ −3.', 'Жауабы: (−∞; −3].'] },
+  algo: ['Екі жағын бір негізге келтір.', 'Негізді қара: 1-ден үлкен — белгі сақталады; 0 мен 1 аралығында — белгі ауысады.', 'Квадрат түрінде болса, t = a^x алмастыруын енгізіп, t > 0 деп шеш.', 'Жауапты аралық түрінде жаз, шеткі нүктелердің жақшасын тексер.'],
+  mistakes: ['0 < a < 1 болғанда белгіні ауыстырмау.', 'Алмастырудан кейін t > 0 шартын ескермеу.', 'Қатаң емес теңсіздікте шаршы жақшаны қоймау.'],
+  tasks: 'Практика → «Көрсеткіштік теңдеулер мен теңсіздіктер», B және C деңгейлері.'
+},
+{
+  title: '13. Логарифмдік теңдеулер', topic: 10,
+  def: 'Белгісіз x логарифм таңбасының ішінде (немесе негізінде) тұрған теңдеу логарифмдік теңдеу деп аталады, мысалы log₂ x = 3. Ең маңыздысы: анықталу облысын (ОДЗ) жазып, түбірлерді соған тексеру.',
+  formulas: ['log_a b = c ⇔ a^c = b  (a > 0, a ≠ 1, b > 0).', 'log_a (xy) = log_a x + log_a y;  log_a (x/y) = log_a x − log_a y  (x > 0, y > 0).', 'log_a x^n = n · log_a x  (x > 0).', 'log_a f(x) = log_a g(x) ⇔ f(x) = g(x), f(x) > 0, g(x) > 0.', 'lg x = log₁₀ x.'],
+  example: { q: 'log₃ (x + 2) + log₃ x = 1 теңдеуін шешейік.', steps: ['ОДЗ: x + 2 > 0 және x > 0 ⇒ x > 0.', 'log₃ (x (x + 2)) = 1 ⇒ x² + 2x = 3 ⇒ x² + 2x − 3 = 0.', 'x = 1 немесе x = −3.', 'ОДЗ-ге (x > 0) тек x = 1 сай. Жауабы: {1}.'] },
+  algo: ['ОДЗ жаз: логарифм ішіндегі өрнек > 0, негіз > 0 және ≠ 1.', 'Логарифмдерді бір логарифмге біріктір.', 'Анықтама бойынша (немесе потенцирлеу арқылы) алгебралық теңдеу ал.', 'Түбірлерді ОДЗ-мен тексер, бөтен түбірді сызып таста.'],
+  mistakes: ['ОДЗ-ді тексермеу: бөтен түбір қалып қояды.', 'log_a (x + y) = log_a x + log_a y деп жазу (мұндай формула жоқ).', 'Алмастыру кезінде (log x)² мен log x² шатастыру.'],
+  tasks: 'Практика → «Логарифмдік теңдеулер мен теңсіздіктер», A және B деңгейлері.'
+},
+{
+  title: '14. Логарифмдік теңсіздіктер', topic: 10,
+  def: 'Логарифмдік теңсіздікті шешкенде екі нәрсе бірден есепке алынады: негізге байланысты теңсіздік белгісі және логарифм ішіндегі өрнектің оң болу шарты (ОДЗ).',
+  formulas: ['a > 1: log_a f(x) > log_a g(x) ⇔ f(x) > g(x) > 0.', '0 < a < 1: log_a f(x) > log_a g(x) ⇔ 0 < f(x) < g(x). Белгі ауысады!', 'Санды логарифмге айналдыру: c = log_a a^c.', 'ОДЗ-ні жеке жазып, шешіммен қиыстыру — міндетті.'],
+  example: { q: 'log_(1/2) (x − 2) ≥ −2 теңсіздігін шешейік.', steps: ['−2 = log_(1/2) 4, себебі (1/2)^(−2) = 4.', 'Негіз 1/2 < 1, белгі ауысады: 0 < x − 2 ≤ 4.', '2 < x ≤ 6.', 'Жауабы: (2; 6].'] },
+  algo: ['ОДЗ-ні жаз.', 'Екі жағын бір негізді логарифмге келтір.', 'Негіз 1-ден үлкен болса — белгіні сақта, кіші болса — ауыстыр.', 'Шешімді ОДЗ-мен қиыстырып, жауапты аралық түрінде жаз.'],
+  mistakes: ['ОДЗ-ді ұмытып, шешімді тым кең жазу.', '0 < a < 1 болғанда белгіні ауыстырмау.', 'Шеткі нүктенің жақшасын шатастыру: логарифм анықталмайтын нүкте — дөңгелек жақша.'],
+  tasks: 'Практика → «Логарифмдік теңдеулер мен теңсіздіктер», B және C деңгейлері.'
+}
+
 ];
 
 OI.FORMULA_TABLE = {
@@ -698,7 +1028,10 @@ OI.FORMULA_LIST = [
   ['Қос бұрыш', ['sin 2x = 2 sin x cos x', 'cos 2x = cos²x − sin²x = 1 − 2sin²x = 2cos²x − 1', 'tg 2x = 2 tg x / (1 − tg²x)']],
   ['Қосу формулалары', ['sin(x ± y) = sin x cos y ± cos x sin y', 'cos(x ± y) = cos x cos y ∓ sin x sin y']],
   ['Көмекші бұрыш', ['a sin x + b cos x = √(a² + b²) · sin(x + φ), tg φ = b/a (a > 0)', 'sin x + cos x = √2 sin(x + π/4)', 'sin x − cos x = √2 sin(x − π/4)', '√3 sin x + cos x = 2 sin(x + π/6)']],
-  ['Периодтар', ['sin x, cos x: 2π;  tg x, ctg x: π', 'sin kx, cos kx: 2π/|k|;  tg kx, ctg kx: π/|k|', '|sin x|, |cos x|: π']]
+  ['Периодтар', ['sin x, cos x: 2π;  tg x, ctg x: π', 'sin kx, cos kx: 2π/|k|;  tg kx, ctg kx: π/|k|', '|sin x|, |cos x|: π']],
+  ['Көрсеткіштік функция', ['a^m · a^n = a^(m + n);  a^m / a^n = a^(m − n)', '(a^m)^n = a^(mn);  (ab)^n = a^n · b^n', 'a^(−n) = 1 / a^n;  a⁰ = 1', 'a > 1: функция өседі, белгі сақталады', '0 < a < 1: функция кемиді, белгі ауысады', 'a^x > 0 әрқашан'], 9],
+  ['Логарифм', ['log_a b = c ⇔ a^c = b  (a > 0, a ≠ 1, b > 0)', 'log_a 1 = 0;  log_a a = 1', 'log_a (xy) = log_a x + log_a y', 'log_a (x/y) = log_a x − log_a y', 'log_a x^n = n log_a x', 'log_a b = log_c b / log_c a  (жаңа негізге көшу)', 'lg x = log₁₀ x'], 10],
+  ['Логарифмдік теңсіздік', ['a > 1: log_a f > log_a g ⇔ f > g > 0', '0 < a < 1: log_a f > log_a g ⇔ 0 < f < g', 'Әрқашан ОДЗ: логарифм ішіндегі өрнек > 0', 'Теңдеуде түбірлерді ОДЗ-мен тексер'], 10]
 ];
 })();
 
@@ -706,7 +1039,7 @@ OI.FORMULA_LIST = [
 (function () {
 'use strict';
 const OI = globalThis.OI;
-const CFG = Object.assign({ SUPABASE_URL: '', SUPABASE_ANON_KEY: '', TEACHER_CODE: 'oi-teacher', GROUPS: ['ҰБТ-1', 'ҰБТ-2'] }, window.OI_CONFIG || {});
+const CFG = Object.assign({ SUPABASE_URL: '', SUPABASE_ANON_KEY: '', TEACHER_CODE: 'oi-teacher', GROUPS: ['ҰБТ-1', 'ҰБТ-2'], GROUP_TOPICS: {} }, window.OI_CONFIG || {});
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 const LS = {
@@ -719,7 +1052,7 @@ const okU = u => /^[a-z0-9._-]{3,30}$/.test(u);
 const emailOf = u => u + '@oimath.kz';
 const LV = { A: 'A · жеңіл', B: 'B · орташа', C: 'C · ҰБТ күрделі' };
 const PTS = { A: 1, B: 2, C: 3 };
-const TAGL = { compl: 'Қарама-қарсы аралық', strict: 'Жақша / шеткі нүктелер', mirror: 'Симметриялы нүкте', root: 'Түбірлер қате', table: 'Арк-мән кестесі', partial: 'Шешім бөлігі ұмытылған', arg: 'Күрделі аргумент', period: 'Период', other: 'Басқа қате' };
+const TAGL = { compl: 'Қарама-қарсы аралық', strict: 'Жақша / шеткі нүктелер', mirror: 'Симметриялы нүкте', root: 'Түбірлер қате', table: 'Арк-мән кестесі', partial: 'Шешім бөлігі ұмытылған', arg: 'Күрделі аргумент', period: 'Период', other: 'Басқа қате', r_compl: 'Қарама-қарсы жиын', r_strict: 'Жақша / шеткі нүктелер', r_root: 'Түбір / шеткі нүкте қате', r_partial: 'Шешім бөлігі ұмытылған', r_neg: 'Таңба қате', base: 'Негіз < 1: белгі ауыспаған', dom: 'ОДЗ ескерілмеген', ext: 'Бөтен түбір', sub: 'Алмастыру қатесі' };
 const topicName = id => (OI.TOPICS.find(t => t.id === +id) || {}).name || '';
 
 /* ================= Деректер қабаты ================= */
@@ -750,6 +1083,8 @@ const Local = {
   async assignments() { const me = LS.get('oi_me'), u = LS.get('oi_users', []).find(x => x.id === me); return LS.get('oi_asg', []).filter(a => (u && u.role === 'teacher') || a.user_id === me || (!a.user_id && (!a.grp || (u && a.grp === u.class)))); },
   async addAssignment(a) { const l = LS.get('oi_asg', []); l.push({ ...a, id: uid(), created_at: new Date().toISOString() }); LS.set('oi_asg', l); },
   async delAssignment(id) { LS.set('oi_asg', LS.get('oi_asg', []).filter(a => a.id !== id)); },
+  async groupTopics() { return LS.get('oi_gt', {}); },
+  async setGroupTopics(g, ids) { const o = LS.get('oi_gt', {}); o[g] = ids; LS.set('oi_gt', o); },
   async setGroup(id, g) { LS.set('oi_users', LS.get('oi_users', []).map(u => u.id === id ? { ...u, class: g } : u)); },
   async delStudent(id) {
     LS.set('oi_users', LS.get('oi_users', []).filter(u => u.id !== id || u.role === 'teacher'));
@@ -809,6 +1144,11 @@ const SB = {
   assignments() { return this.all('assignments?select=*&order=created_at.desc'); },
   addAssignment(a) { return this.rest('assignments', { method: 'POST', body: a, prefer: 'return=minimal' }); },
   delAssignment(id) { return this.rest('assignments?id=eq.' + encodeURIComponent(id), { method: 'DELETE' }); },
+  async groupTopics() { const r = await this.all('group_topics?select=*'); const o = {}; r.forEach(x => (o[x.grp] = o[x.grp] || []).push(x.topic)); Object.values(o).forEach(a => a.sort((x, y) => x - y)); return o; },
+  async setGroupTopics(g, ids) {
+    await this.rest('group_topics?grp=eq.' + encodeURIComponent(g), { method: 'DELETE' });
+    await this.rest('group_topics', { method: 'POST', body: ids.map(t => ({ grp: g, topic: t })), prefer: 'return=minimal' });
+  },
   setGroup(id, g) { return this.rest('profiles?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body: { class: g }, prefer: 'return=minimal' }); },
   delStudent(id) { return this.rest('rpc/delete_student', { method: 'POST', body: { sid: id } }); }
 };
@@ -816,13 +1156,18 @@ const DB = CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY ? SB : Local;
 
 /* ================= Күй ================= */
 const grpOpts = cur => '<option value="">— топты таңда —</option>' + CFG.GROUPS.map(g => `<option${g === cur ? ' selected' : ''}>${esc(g)}</option>`).join('');
+const ALLT = () => OI.TOPICS.map(t => t.id);
+const topicsOf = g => (CFG.GROUP_TOPICS && CFG.GROUP_TOPICS[g]) || ALLT();
+const isT = () => S.me && S.me.role === 'teacher';
+const myTopics = () => isT() ? ALLT() : topicsOf(S.me && S.me.class);
+const hasTrig = () => myTopics().some(t => t <= 8);
 const S = { me: null, att: [], tests: [], asg: [] };
 const main = () => $('#main');
 let timer = null;
 function toast(msg, bad) { const t = document.createElement('div'); t.className = 'toast' + (bad ? ' bad' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3600); }
 const guard = fn => async (...a) => { try { return await fn(...a); } catch (e) { toast(e.message || String(e), true); } };
 
-async function loadMine() { S.att = await DB.myAttempts(); S.tests = await DB.myTests(); S.asg = await DB.assignments(); }
+async function loadMine() { S.att = await DB.myAttempts(); S.tests = await DB.myTests(); S.asg = await DB.assignments(); try { CFG.GROUP_TOPICS = await DB.groupTopics(); } catch (e) { CFG.GROUP_TOPICS = {}; } }
 const solved = () => new Set(S.att.filter(a => a.correct).map(a => a.qid));
 const points = () => { const m = {}; S.att.forEach(a => { if (a.correct) m[a.qid] = PTS[a.level] || 1; }); return Object.values(m).reduce((x, y) => x + y, 0); };
 function statsOf(att) {
@@ -835,16 +1180,16 @@ const pctCls = (n, c) => !n ? 'na' : c / n < .5 ? 'lo' : c / n < .75 ? 'mid' : '
 const mathHtml = p => p.lines.length > 1
   ? `<div class="sys"><span class="br">{</span><div>${p.lines.map(l => `<div>${esc(l)}</div>`).join('')}</div></div>`
   : `<div class="mth">${esc(p.lines[0])}</div>`;
-const qHead = p => p.mode === 'gen' ? 'Теңсіздіктің жалпы шешімін таңдаңыз (n ∈ Z):' : '[0; 2π] кесіндісінде теңсіздікті шешіңіз:';
+const qHead = p => p.mode === 'real' ? p.head : p.mode === 'gen' ? 'Теңсіздіктің жалпы шешімін таңдаңыз (n ∈ Z):' : '[0; 2π] кесіндісінде теңсіздікті шешіңіз:';
 const stepsHtml = p => `<ol class="steps">${p.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`;
-const topicSel = (id, v) => `<select id="${id}">${OI.TOPICS.map(t => `<option value="${t.id}"${t.id === +v ? ' selected' : ''}>${t.id}. ${esc(t.name)}</option>`).join('')}</select>`;
+const topicSel = (id, v) => `<select id="${id}">${OI.TOPICS.filter(t => myTopics().includes(t.id) || t.id === +v).map(t => `<option value="${t.id}"${t.id === +v ? ' selected' : ''}>${t.id}. ${esc(t.name)}</option>`).join('')}</select>`;
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 /* ================= Шеллы және маршрутизация ================= */
 const NAV = [['home', 'Басты'], ['theory', 'Теория'], ['formulas', 'Формулалар'], ['explain', 'Түсіндіру'], ['together', 'Бірге шығару'], ['practice', 'Практика'], ['ubt', 'ҰБТ тест'], ['mistakes', 'Қателер'], ['stats', 'Статистика']];
 function shell() {
-  const nav = NAV.concat(S.me.role === 'teacher' ? [['teacher', 'Мұғалім панелі']] : []);
-  $('#app').innerHTML = `<header class="top"><div class="brand"><b>OI MATH</b><span>Тригонометриялық теңсіздіктер</span></div>
+  const nav = NAV.filter(n => n[0] !== 'explain' || hasTrig()).concat(S.me.role === 'teacher' ? [['teacher', 'Мұғалім панелі']] : []);
+  $('#app').innerHTML = `<header class="top"><div class="brand"><svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="kg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b9cff"/><stop offset="1" stop-color="#6d5dfc"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#kg1)"/><path d="M20 14v36" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M45 15L25 33l21 18" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M34.7 24.3A13 13 0 0 1 34.9 41.4" stroke="#fcd34d" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg><div><b>KUANMATH</b><span>ҰБТ-ға дайындық</span></div></div>
   <div class="who">${esc(S.me.full_name)}${S.me.role === 'teacher' ? ' · мұғалім' : ''} · <b>${points()}</b> ұпай <button class="lnk" id="out">Шығу</button></div></header>
   <nav class="nav" id="nav">${nav.map(([k, t]) => `<a href="#/${k}" data-k="${k}">${t}</a>`).join('')}</nav><main id="main"></main>`;
   $('#out').onclick = () => { DB.signOut(); S.me = null; location.hash = ''; boot(); };
@@ -866,7 +1211,7 @@ addEventListener('hashchange', route);
 /* ================= Кіру / тіркелу ================= */
 let authTab = 'in';
 function authView() {
-  $('#app').innerHTML = `<div class="auth"><h1>OI MATH</h1><p class="m">ҰБТ-ға дайындық: тригонометриялық теңсіздіктер</p>
+  $('#app').innerHTML = `<div class="auth"><svg class="logo big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="kg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b9cff"/><stop offset="1" stop-color="#6d5dfc"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#kg2)"/><path d="M20 14v36" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M45 15L25 33l21 18" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M34.7 24.3A13 13 0 0 1 34.9 41.4" stroke="#fcd34d" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg><h1>KUANMATH</h1><p class="m">ҰБТ-ға дайындық: тригонометрия, көрсеткіштік және логарифмдік есептер</p>
   ${DB.mode === 'local' ? '<div class="demo">Демо режим: деректер осы құрылғыда сақталады. Барлық оқушыны бір базада көру үшін Supabase қосыңыз (README).</div>' : ''}
   <div class="tabs"><button class="${authTab === 'in' ? 'on' : ''}" data-t="in">Кіру</button><button class="${authTab === 'up' ? 'on' : ''}" data-t="up">Тіркелу</button></div>
   <form id="af" class="card" autocomplete="on">
@@ -894,12 +1239,12 @@ VIEWS.home = async function () {
   const asg = S.asg.filter(a => a.user_id ? a.user_id === S.me.id : (!a.grp || a.grp === S.me.class));
   const prog = a => S.att.filter(x => x.correct && x.topic === a.topic && (a.level === 'auto' || x.level === a.level) && x.created_at >= a.created_at).length;
   main().innerHTML = `<div class="card hero"><h1>Сәлем, ${esc(S.me.full_name.split(' ')[0] || '')}!</h1>
-  <p>Мақсат: формуланы жаттау емес, тригонометриялық теңсіздікті <b>түсініп</b>, өзің шығара алу.</p>
+  <p>Мақсат: формуланы жаттау емес, есепті <b>түсініп</b>, өзің шығара алу.</p>
   <div class="kpis"><div><b>${points()}</b><span>ұпай</span></div><div><b>${sv.size}</b><span>шешілген есеп</span></div><div><b>${st.pct}%</b><span>дұрыс жауап</span></div></div></div>
   ${asg.length ? `<div class="card"><h2>Мұғалім тапсырмалары</h2>${asg.map(a => { const d = prog(a); return `<div class="row"><div><b>${esc(topicName(a.topic))}</b> · ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level} · ${d}/${a.count} ${a.note ? '· ' + esc(a.note) : ''}<br><span class="m">${a.user_id ? 'жеке' : a.grp ? 'топқа: ' + esc(a.grp) : 'барлық оқушыға'} · ${new Date(a.created_at).toLocaleDateString('kk-KZ')}</span></div><button class="g" data-a="${a.id}">${d >= a.count ? 'Орындалды ✓' : 'Бастау'}</button></div>`; }).join('')}</div>` : ''}
   <div class="card"><h2>Қайдан бастаймын?</h2><div class="grid">
   <a class="tile" href="#/theory"><b>1. Теория</b><span>Нөлден бастап түсіндіру</span></a>
-  <a class="tile" href="#/explain"><b>2. Шеңбер</b><span>Интерактивті түсіндіру</span></a>
+  ${hasTrig() ? '<a class="tile" href="#/explain"><b>2. Шеңбер</b><span>Интерактивті түсіндіру</span></a>' : ''}
   <a class="tile" href="#/together"><b>3. Бірге шығару</b><span>Қадам-қадаммен</span></a>
   <a class="tile" href="#/practice"><b>4. Практика</b><span>Өз бетімен, A/B/C</span></a>
   <a class="tile" href="#/ubt"><b>5. ҰБТ тест</b><span>20 сұрақ, 30 минут</span></a>
@@ -909,9 +1254,10 @@ VIEWS.home = async function () {
 
 /* ================= Теория ================= */
 VIEWS.theory = function (args) {
-  const i = Math.min(Math.max(+args[0] || 0, 0), OI.THEORY.length - 1);
-  const t = OI.THEORY[i];
-  main().innerHTML = `<div class="card"><div class="toc">${OI.THEORY.map((x, k) => `<a href="#/theory/${k}" class="${k === i ? 'on' : ''}">${k + 1}</a>`).join('')}</div>
+  const TH = OI.THEORY.filter(x => myTopics().includes(x.topic));
+  const i = Math.min(Math.max(+args[0] || 0, 0), TH.length - 1);
+  const t = TH[i];
+  main().innerHTML = `<div class="card"><div class="toc">${TH.map((x, k) => `<a href="#/theory/${k}" class="${k === i ? 'on' : ''}">${k + 1}</a>`).join('')}</div>
   <h2>${esc(t.title)}</h2>
   <h3>Анықтама</h3><p>${esc(t.def)}</p>
   <h3>Негізгі формулалар</h3><ul class="fm">${t.formulas.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
@@ -919,15 +1265,15 @@ VIEWS.theory = function (args) {
   <h3>Шешу алгоритмі</h3><ol>${t.algo.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
   <h3>Жиі кездесетін қателер</h3><ul class="warn">${t.mistakes.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
   <h3>Өздігінен орындау</h3><p>${esc(t.tasks)}</p>
-  <div class="actions">${i > 0 ? `<a class="btn g" href="#/theory/${i - 1}">← Алдыңғы</a>` : ''}<button id="tp">Практикаға өту</button>${i < OI.THEORY.length - 1 ? `<a class="btn" href="#/theory/${i + 1}">Келесі →</a>` : ''}</div></div>`;
+  <div class="actions">${i > 0 ? `<a class="btn g" href="#/theory/${i - 1}">← Алдыңғы</a>` : ''}<button id="tp">Практикаға өту</button>${i < TH.length - 1 ? `<a class="btn" href="#/theory/${i + 1}">Келесі →</a>` : ''}</div></div>`;
   $('#tp').onclick = () => { PR.topic = t.topic; PR.level = 'A'; PR.cur = null; PR.assign = null; location.hash = '#/practice'; };
 };
 
 /* ================= Формулалар ================= */
 VIEWS.formulas = function () {
   const T = OI.FORMULA_TABLE;
-  main().innerHTML = `<div class="card"><h2>Негізгі мәндер кестесі</h2><div class="tw"><table class="ft"><tr>${T.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr>${T.rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</table></div></div>
-  ${OI.FORMULA_LIST.map(([h, l]) => `<div class="card"><h2>${esc(h)}</h2><ul class="fm">${l.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}`;
+  main().innerHTML = `${hasTrig() ? '' : '<!--'}<div class="card"><h2>Негізгі мәндер кестесі</h2><div class="tw"><table class="ft"><tr>${T.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr>${T.rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</table></div></div>${hasTrig() ? '' : '-->'}
+  ${OI.FORMULA_LIST.filter(f => myTopics().includes(f[2] || 1)).map(([h, l]) => `<div class="card"><h2>${esc(h)}</h2><ul class="fm">${l.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}`;
 };
 
 /* ================= Интерактивті шеңбер ================= */
@@ -1014,6 +1360,7 @@ VIEWS.explain = function () {
 /* ================= Бірге есеп шығару ================= */
 const TG = { topic: 1, level: 'A', idx: 0, step: 0 };
 VIEWS.together = function () {
+  if (!myTopics().includes(TG.topic)) TG.topic = myTopics()[0];
   const list = OI.bank[TG.topic].filter(p => p.level === TG.level);
   TG.idx = Math.min(TG.idx, list.length - 1);
   const p = list[TG.idx];
@@ -1041,6 +1388,7 @@ function nextProblem() {
   PR.cur = pick(c.length ? c : all); PR.hint = 0; PR.sel = -1; PR.done = false;
 }
 VIEWS.practice = function () {
+  if (!PR.assign && !myTopics().includes(PR.topic)) { PR.topic = myTopics()[0]; PR.cur = null; }
   if (!PR.cur) nextProblem();
   const a = PR.assign;
   main().innerHTML = `<div class="card"><h2>Өз бетімен орындау</h2>
@@ -1101,11 +1449,11 @@ const check = guard(async function () {
 const UB = { qs: null, ans: [], left: 1800, t0: 0 };
 VIEWS.ubt = function () {
   UB.qs = null;
-  main().innerHTML = `<div class="card"><h2>ҰБТ форматындағы тест</h2><p>20 сұрақ (6 есеп A деңгейі, 8 — B, 6 — C), барлық тақырыптардан. Уақыты — 30 минут. Нәтиже мұғалімге автоматты түрде жіберіледі.</p><button id="ub">Тестті бастау</button></div>`;
+  main().innerHTML = `<div class="card"><h2>ҰБТ форматындағы тест</h2><p>20 сұрақ (6 есеп A деңгейі, 8 — B, 6 — C), өз тақырыптарыңнан. Уақыты — 30 минут. Нәтиже мұғалімге автоматты түрде жіберіледі.</p><button id="ub">Тестті бастау</button></div>`;
   $('#ub').onclick = ubtStart;
 };
 function ubtStart() {
-  const take = (lv, n) => { const used = new Set(); const out = []; let g = 0; while (out.length < n && g++ < 500) { const t = 1 + (out.length + g) % 8; const p = pick(OI.bank[t].filter(x => x.level === lv)); if (!used.has(p.id)) { used.add(p.id); out.push(p); } } return out; };
+  const take = (lv, n) => { const used = new Set(); const out = []; let g = 0; while (out.length < n && g++ < 500) { const mt = myTopics(), t = mt[(out.length + g) % mt.length]; const p = pick(OI.bank[t].filter(x => x.level === lv)); if (!used.has(p.id)) { used.add(p.id); out.push(p); } } return out; };
   const seen = new Set();
   UB.qs = [...take('A', 6), ...take('B', 8), ...take('C', 6)].filter(p => !seen.has(p.id) && seen.add(p.id));
   UB.ans = UB.qs.map(() => -1); UB.left = 1800; UB.t0 = Date.now();
@@ -1151,7 +1499,7 @@ VIEWS.stats = function () {
   const st = statsOf(S.att);
   const tags = {}; S.att.filter(a => !a.correct).forEach(a => { const k = a.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
   main().innerHTML = `<div class="card"><h2>Менің статистикам</h2><div class="kpis"><div><b>${st.n}</b><span>орындалған тапсырма</span></div><div><b>${st.c}</b><span>дұрыс</span></div><div><b>${st.w}</b><span>қате</span></div><div><b>${st.pct}%</b><span>дұрыс жауап</span></div></div></div>
-  <div class="card"><h2>Тақырыптар бойынша меңгеру</h2>${OI.TOPICS.map(t => { const x = st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
+  <div class="card"><h2>Тақырыптар бойынша меңгеру</h2>${OI.TOPICS.filter(t => myTopics().includes(t.id)).map(t => { const x = st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
   <div class="card"><h2>Соңғы тесттер</h2>${S.tests.length ? `<table class="ft"><tr><th>Күні</th><th>Нәтиже</th><th>Пайыз</th><th>Уақыт</th></tr>${S.tests.slice(-10).reverse().map(t => `<tr><td>${new Date(t.created_at).toLocaleString('kk-KZ')}</td><td>${t.score}/${t.total}</td><td>${Math.round(100 * t.score / t.total)}%</td><td>${Math.floor(t.seconds / 60)}:${String(t.seconds % 60).padStart(2, '0')}</td></tr>`).join('')}</table>` : '<p class="m">Әзір тест тапсырылған жоқ.</p>'}</div>
   <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате әлі жоқ.</p>'}</div>`;
 };
@@ -1172,20 +1520,21 @@ VIEWS.teacher = async function () {
 function teacherRender() {
   const { all: allS, att, tests, asg } = TS.data;
   const students = TS.grp ? allS.filter(s => s.class === TS.grp) : allS;
+  const cols = OI.TOPICS.filter(t => !TS.grp || topicsOf(TS.grp).includes(t.id));
   if (TS.sel && !students.some(s => s.id === TS.sel)) TS.sel = '';
   const rows = students.map(s => {
     const a = att.filter(x => x.user_id === s.id), st = statsOf(a), ts = tests.filter(x => x.user_id === s.id), lt = ts[ts.length - 1];
     const weak = OI.TOPICS.filter(t => st.topics[t.id].n >= 3 && st.topics[t.id].c / st.topics[t.id].n < .6).map(t => t.id);
     return { s, st, weak, lt };
   });
-  const tabs = [['group', 'Топ нәтижесі'], ['student', 'Оқушы талдауы'], ['assign', 'Тапсырма беру'], ['reg', 'Оқушыларды тіркеу']];
+  const tabs = [['group', 'Топ нәтижесі'], ['student', 'Оқушы талдауы'], ['assign', 'Тапсырма беру'], ['topics', 'Тақырып ашу/жабу'], ['reg', 'Оқушыларды тіркеу']];
   let body = '';
   if (TS.tab === 'group') {
     const all = statsOf(att.filter(x => students.some(s => s.id === x.user_id)));
     body = `<div class="card"><div class="kpis"><div><b>${students.length}</b><span>оқушы</span></div><div><b>${all.n}</b><span>тапсырма</span></div><div><b>${all.pct}%</b><span>топтың дұрыс жауабы</span></div></div>
-    <div class="tw"><table class="ft"><tr><th>Аты-жөні</th><th>Сынып</th><th>Тапсырма</th><th>Дұрыс</th><th>Қате</th><th>%</th>${OI.TOPICS.map(t => `<th title="${esc(t.name)}">Т${t.id}</th>`).join('')}<th>Соңғы тест</th><th>Қиналатын тақырып</th></tr>
-    ${rows.map(r => `<tr><td>${esc(r.s.full_name)}</td><td>${esc(r.s.class || '')}</td><td>${r.st.n}</td><td>${r.st.c}</td><td>${r.st.w}</td><td>${r.st.n ? r.st.pct + '%' : '–'}</td>${OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return `<td class="${pctCls(x.n, x.c)}">${x.n ? Math.round(100 * x.c / x.n) + '%' : '–'}</td>`; }).join('')}<td>${r.lt ? r.lt.score + '/' + r.lt.total : '–'}</td><td>${r.weak.length ? r.weak.map(i => 'Т' + i).join(', ') : '–'}</td></tr>`).join('') || '<tr><td colspan="16">Оқушы жоқ</td></tr>'}</table></div>
-    <p class="m">Т1–Т8 — тақырыптар: ${OI.TOPICS.map(t => `Т${t.id} ${esc(t.name)}`).join('; ')}. Қызыл — 50%-дан төмен, сары — 75%-ға дейін, жасыл — жақсы.</p>
+    <div class="tw"><table class="ft"><tr><th>Аты-жөні</th><th>Сынып</th><th>Тапсырма</th><th>Дұрыс</th><th>Қате</th><th>%</th>${cols.map(t => `<th title="${esc(t.name)}">Т${t.id}</th>`).join('')}<th>Соңғы тест</th><th>Қиналатын тақырып</th></tr>
+    ${rows.map(r => `<tr><td>${esc(r.s.full_name)}</td><td>${esc(r.s.class || '')}</td><td>${r.st.n}</td><td>${r.st.c}</td><td>${r.st.w}</td><td>${r.st.n ? r.st.pct + '%' : '–'}</td>${cols.map(t => { const x = r.st.topics[t.id]; return `<td class="${pctCls(x.n, x.c)}">${x.n ? Math.round(100 * x.c / x.n) + '%' : '–'}</td>`; }).join('')}<td>${r.lt ? r.lt.score + '/' + r.lt.total : '–'}</td><td>${r.weak.length ? r.weak.map(i => 'Т' + i).join(', ') : '–'}</td></tr>`).join('') || '<tr><td colspan="${9 + cols.length}">Оқушы жоқ</td></tr>'}</table></div>
+    <p class="m">Тақырыптар: ${cols.map(t => `Т${t.id} ${esc(t.name)}`).join('; ')}. Қызыл — 50%-дан төмен, сары — 75%-ға дейін, жасыл — жақсы.</p>
     <div class="actions"><button id="xl">Excel есебін жүктеу (CSV)</button><button class="g" id="rf">Жаңарту</button></div></div>`;
   }
   if (TS.tab === 'student') {
@@ -1197,7 +1546,7 @@ function teacherRender() {
       const last = {}; a.forEach(x => last[x.qid] = x);
       const bad = Object.values(last).filter(x => !x.correct && OI.byId[x.qid]).slice(-15).reverse();
       body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><label>Тобы<select id="gs">${grpOpts(r.s.class)}</select></label><div class="actions"><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
-      ${OI.TOPICS.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
+      ${cols.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
       <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате жоқ.</p>'}</div>
       <div class="card"><h2>Шешілмеген қателер (соңғы 15)</h2>${bad.length ? bad.map(x => { const p = OI.byId[x.qid]; return `<div class="row col"><div class="meta">${esc(topicName(p.topic))} · ${p.level}</div>${mathHtml(p)}<span>Жауабы: <b>${esc(x.chosen)}</b> · Дұрысы: <b>${esc(p.truth)}</b></span><span class="why">${esc(OI.TAGS[x.tag] || '')}</span></div>`; }).join('') : '<p class="m">Жоқ.</p>'}</div>`;
     }
@@ -1208,6 +1557,9 @@ function teacherRender() {
     <label>Есеп саны<input id="ac" type="number" min="1" max="50" value="10"></label><label>Ескертпе<input id="an" placeholder="міндетті емес"></label><button type="submit">Тағайындау</button></form></div>
     <div class="card"><h2>Берілген тапсырмалар</h2>${asg.length ? asg.map(a => `<div class="row"><span>${esc(a.user_id ? (allS.find(s => s.id === a.user_id) || {}).full_name || 'оқушы' : a.grp ? 'Топ: ' + a.grp : 'Барлығына')} · ${esc(topicName(a.topic))} · ${a.level} · ${a.count} есеп ${a.note ? '· ' + esc(a.note) : ''}</span><button class="g sm" data-d="${a.id}">Жою</button></div>`).join('') : '<p class="m">Әзір жоқ.</p>'}</div>`;
   }
+  if (TS.tab === 'topics') {
+    body = `<div class="card"><h2>Топқа тақырып ашу/жабу</h2><p class="m">Белгіленген тақырыптарды ғана сол топтың оқушысы көреді (практика, теория, формулалар, ҰБТ тест). Өзгерісті «Сақтау» арқылы бекітіңіз.</p></div>` + CFG.GROUPS.map((g, gi) => `<div class="card"><h2>${esc(g)} <span class="m">(${allS.filter(s => s.class === g).length} оқушы)</span></h2>${OI.TOPICS.map(t => `<label class="chk"><input type="checkbox" data-g="${gi}" value="${t.id}"${topicsOf(g).includes(t.id) ? ' checked' : ''}> ${t.id}. ${esc(t.name)}</label>`).join('')}<div class="actions"><button class="g sm" data-all="${gi}">Барлығын ашу</button><button data-save="${gi}">Сақтау</button></div></div>`).join('');
+  }
   if (TS.tab === 'reg') {
     body = `<div class="card"><h2>Оқушыны тіркеу</h2><p class="m">Оқушы өзі де «Тіркелу» арқылы кіре алады. Мұнда оған логин мен құпиясөз беріп тіркейсіз.</p><form id="rf2"><label>Аты-жөні<input id="rn" required></label><label>Тобы<select id="rc" required>${grpOpts('')}</select></label><label>Логин (латынша)<input id="ru" required autocapitalize="none"></label><label>Құпиясөз<input id="rp" required minlength="6"></label><button type="submit">Тіркеу</button></form><p id="rm" class="m"></p></div>`;
   }
@@ -1216,9 +1568,9 @@ function teacherRender() {
   $$('.t2 button[data-t]').forEach(b => b.onclick = () => { TS.tab = b.dataset.t; teacherRender(); });
   $$('.gb button').forEach(b => b.onclick = () => { TS.grp = b.dataset.g; teacherRender(); });
   if ($('#xl')) $('#xl').onclick = () => {
-    const head = ['Аты-жөні', 'Сынып', 'Тапсырма', 'Дұрыс', 'Қате', 'Пайыз', ...OI.TOPICS.map(t => 'Т' + t.id + ' ' + t.name), 'Соңғы тест', 'Қиналатын тақырыптар'];
-    const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...OI.TOPICS.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
-    dl('oi-math-results' + (TS.grp ? '-' + TS.grp : '') + '.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
+    const head = ['Аты-жөні', 'Сынып', 'Тапсырма', 'Дұрыс', 'Қате', 'Пайыз', ...cols.map(t => 'Т' + t.id + ' ' + t.name), 'Соңғы тест', 'Қиналатын тақырыптар'];
+    const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...cols.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
+    dl('kuanmath-results' + (TS.grp ? '-' + TS.grp : '') + '.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
   };
   if ($('#gs')) $('#gs').onchange = guard(async e => { if (!e.target.value) return; await DB.setGroup(TS.sel, e.target.value); TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); toast('Топ өзгертілді.'); teacherRender(); });
   if ($('#ds')) $('#ds').onclick = guard(async () => {
@@ -1227,6 +1579,12 @@ function teacherRender() {
     await DB.delStudent(st.id); toast('Оқушы өшірілді.');
     TS.sel = ''; TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); TS.data.att = await DB.allAttempts(); TS.data.tests = await DB.allTests(); TS.data.asg = await DB.assignments(); teacherRender();
   });
+  $$('[data-all]').forEach(b => b.onclick = () => $$(`input[data-g="${b.dataset.all}"]`).forEach(c => c.checked = true));
+  $$('[data-save]').forEach(b => b.onclick = guard(async () => {
+    const g = CFG.GROUPS[+b.dataset.save], ids = $$(`input[data-g="${b.dataset.save}"]`).filter(c => c.checked).map(c => +c.value);
+    if (!ids.length) { toast('Кемінде бір тақырып ашық болуы керек.', true); return; }
+    await DB.setGroupTopics(g, ids); CFG.GROUP_TOPICS[g] = ids; toast(g + ': сақталды.');
+  }));
   if ($('#rf')) $('#rf').onclick = () => VIEWS.teacher();
   if ($('#ss')) $('#ss').onchange = e => { TS.sel = e.target.value; teacherRender(); };
   if ($('#af2')) $('#af2').onsubmit = guard(async e => { e.preventDefault(); const who = $('#as').value; await DB.addAssignment({ user_id: who && !who.startsWith('g:') ? who : null, grp: who.startsWith('g:') ? who.slice(2) : null, topic: +$('#at').value, level: $('#al').value, count: +$('#ac').value || 10, note: $('#an').value.trim() }); toast('Тапсырма берілді.'); TS.data.asg = await DB.assignments(); teacherRender(); });
