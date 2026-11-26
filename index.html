@@ -1362,8 +1362,27 @@ VIEWS.explain = function () {
     const n = v => isFinite(v) && Math.abs(v) < 1e6 ? v.toFixed(3).replace('-', '−') : '—';
     $('#av').textContent = a.toFixed(2).replace('-', '−'); $('#tv').textContent = ES.th + '° (≈ ' + (ES.th / 180).toFixed(3) + 'π)'; tE.value = ES.th;
     $('#ev').innerHTML = `<span><i class="c1"></i>sin x = <b>${n(Math.sin(th))}</b></span><span><i class="c2"></i>cos x = <b>${n(Math.cos(th))}</b></span><span>tg x = <b>${n(Math.tan(th))}</b></span><span>ctg x = <b>${n(Math.cos(th) / Math.sin(th))}</b></span><span class="${ok(th) ? 'yes' : 'no'}">${ES.fn} x ${ES.op} a: <b>${ok(th) ? 'орындалады ✓' : 'орындалмайды ✗'}</b></span>`;
-    const ivs = run.map(([i, j]) => { const l = i === 0 ? 0 : (i - .5) * .5, r = j === NS - 1 ? 360 : (j + .5) * .5; const q = v => String(Math.round(v)); return `${i === 0 ? '[' : '('}${q(l)}°; ${q(r)}°${j === NS - 1 ? ']' : ')'}`; });
-    $('#es').innerHTML = `<b>Шешім [0°; 360°] аралығында</b> (π = 180°, шамамен): ${ivs.length ? esc(ivs.join(' ∪ ')) : 'шешім жоқ'}`;
+    // НАҚТЫ ЖАУАП: кестелік a үшін π арқылы дәл, басқа a үшін арк-функция арқылы
+    const T = ES.fn === 'sin' || ES.fn === 'cos' ? 2 * Math.PI : Math.PI;
+    const nice = NICE[ES.fn].find(([t, v]) => Math.abs(v - a) < 0.006);
+    const head = `<b>${esc(ES.fn)} x ${esc(ES.op)} ${esc(nice ? nice[0] : a.toFixed(2).replace('-', '−'))}</b><br>`;
+    if (nice) {
+      $('#av').textContent = nice[0];
+      const c = OI.ineq(f, ES.fn + ' x', ES.op, nice[0], T), at = OI.atoms(c);
+      $('#es').innerHTML = head + `[0; 2π] кесіндісінде: <b>${esc(OI.domStr(at))}</b><br>Жалпы шешім (n ∈ Z): <b>${esc(OI.genStr(at, T))}</b>`;
+    } else {
+      const A = a.toFixed(2).replace('-', '−'), st = ES.op === '>' || ES.op === '<', up = ES.op === '>' || ES.op === '≥';
+      const L = st ? '(' : '[', Rb = st ? ')' : ']';
+      const al = { sin: 'arcsin', cos: 'arccos', tg: 'arctg', ctg: 'arcctg' }[ES.fn] + '(' + A + ')';
+      const deg = { sin: Math.asin(a), cos: Math.acos(a), tg: Math.atan(a), ctg: Math.PI / 2 - Math.atan(a) }[ES.fn] * 180 / Math.PI;
+      const G = {
+        sin: up ? `${L}${al} + 2πn; π − ${al} + 2πn${Rb}` : `${L}π − ${al} + 2πn; 2π + ${al} + 2πn${Rb}`,
+        cos: up ? `${L}−${al} + 2πn; ${al} + 2πn${Rb}` : `${L}${al} + 2πn; 2π − ${al} + 2πn${Rb}`,
+        tg: up ? `${L}${al} + πn; π/2 + πn)` : `(−π/2 + πn; ${al} + πn${Rb}`,
+        ctg: up ? `(πn; ${al} + πn${Rb}` : `${L}${al} + πn; π + πn)`
+      }[ES.fn];
+      $('#es').innerHTML = head + `Жалпы шешім (n ∈ Z): <b>${esc(G)}</b><br><span class="m">${esc(al)} ≈ ${deg.toFixed(1).replace('-', '−')}°. Кестелік мәнді таңдасаң (жоғарыдағы батырмалар), жауап π арқылы дәл шығады.</span>`;
+    }
   }
   fnE.onchange = () => { ES.fn = fnE.value; setRange(); draw(); };
   opE.onchange = () => { ES.op = opE.value; draw(); };
