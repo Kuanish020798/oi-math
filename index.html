@@ -44,7 +44,7 @@ input[type=range]{padding:0;margin:8px 0}label{display:block;font-size:14px;colo
 .meta{font-size:13px;color:var(--m)}
 .opts{display:grid;gap:8px;margin-top:8px}
 .opt{display:flex;align-items:center;gap:12px;min-height:54px;background:var(--c);color:var(--t);border:2px solid var(--b);text-align:left;font-weight:500;font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:18px;margin:0;width:100%}.opt .ot{flex:1;overflow-wrap:anywhere}.ltr{flex:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--gl);color:#3A2607;font:800 14px Manrope,system-ui,sans-serif;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
-.opt.on{border-color:var(--p);background:var(--p);color:#FFF8EA}.opt.good{border-color:var(--ok);background:var(--okb)}.opt.badc{border-color:var(--no);background:var(--nob)}
+.opt.on{border-color:var(--p);background:var(--p);color:#FFF8EA}.opt.good{border-color:var(--ok);background:var(--okb)}.opt.badc{border-color:var(--no);background:var(--nob)}.opt.on.good,.opt.on.badc{color:var(--t)}
 .good{background:var(--okb);border-left:4px solid var(--ok);padding:10px 12px;border-radius:8px;margin-top:10px}
 .bad{background:var(--nob);border-left:4px solid var(--no);padding:10px 12px;border-radius:8px;margin-top:10px}
 .why{color:var(--t);font-size:15px}
@@ -72,6 +72,17 @@ td.lo{background:var(--nob)}td.mid{background:var(--warn)}td.hi{background:var(-
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--p);color:#fff;padding:12px 18px;border-radius:10px;z-index:99;max-width:90vw;font-size:15px}.toast.bad{background:var(--no)}
 @media(max-width:520px){.mth{font-size:19px}.opt{font-size:16px}.kpis b{font-size:22px}}
 
+.calc-fab{position:fixed;right:14px;bottom:18px;z-index:60;width:56px;height:56px;border-radius:50%;padding:0;margin:0;font-size:26px;line-height:56px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.calc{position:fixed;right:10px;bottom:84px;z-index:60;width:min(340px,calc(100vw - 20px));background:var(--c);border:1px solid var(--b);border-radius:16px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+.calc[hidden],.calc-fab[hidden]{display:none}
+.chd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;color:var(--m)}.chd button{margin:0}
+.cd{background:var(--bg);border-radius:10px;padding:8px 10px;text-align:right;min-height:66px;margin-bottom:8px;overflow-x:auto}
+.cd .ce{font-size:15px;color:var(--m);min-height:22px;white-space:nowrap;font-family:"Cambria Math","STIX Two Math",Georgia,serif}.cd .cres{font-size:26px;font-weight:800;white-space:nowrap}
+.ck{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.ck .eq{grid-row:span 2}.ck .z{grid-column:span 2}
+.pn{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px}.pn button{width:38px;height:38px;padding:0;margin:0;background:var(--c);color:var(--t);border:1px solid var(--b);font-size:14px}.pn button.ok{background:var(--okb);border-color:var(--ok);color:var(--ok)}.pn button.no{background:var(--nob);border-color:var(--no);color:var(--no)}.pn button.on{outline:3px solid var(--p);outline-offset:1px}.pnav{display:flex;justify-content:space-between;border-top:1px solid var(--b);padding-top:10px}
+.ck button{margin:0;padding:14px 0;font-size:20px;background:var(--bg);color:var(--t);border-color:var(--b)}
+.ck button.op{background:var(--pl);color:var(--p)}.ck button.eq{background:var(--p);color:#fff}.ck button.cl{color:var(--no)}
+.cnt{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 6px}.cnt span{background:var(--pl);color:var(--p);border-radius:8px;padding:3px 9px;font-size:13px;font-weight:700}
 .chk{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:15px}.chk input{width:22px;height:22px;flex:none;margin:0}
 </style></head>
 <body><div id="app"></div>
@@ -1216,6 +1227,7 @@ function shell() {
 const VIEWS = {};
 function route() {
   clearInterval(timer);
+  calcVisible(!!S.me);
   if (!S.me) return authView();
   if (!$('#main')) shell();
   const k = (location.hash.replace(/^#\/?/, '').split('/')[0]) || 'home';
@@ -1418,20 +1430,34 @@ VIEWS.together = function () {
 
 /* ================= Практика ================= */
 const PR = { topic: 1, level: 'auto', lvl: 'A', cs: 0, ws: 0, cur: null, hint: 0, sel: -1, done: false, mode: 'mc', assign: null, last: null };
-function nextProblem() {
+/* Практика — тест варианты сияқты: деңгейдің барлық есебі бір тізім (алдымен шешілмегендері),
+   әр есеп бір рет, алдыңғы/келесі есепке өтуге және нөмір арқылы секіруге болады. */
+const shuf = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const levelList = (t, L) => (OI.bank[t] || []).filter(p => p.level === L);
+function saveSt() { if (PR.cur) PR.st[PR.cur.id] = { sel: PR.sel, done: PR.done, res: PR.res, hint: PR.hint, ok: PR.ok }; }
+function goTo(i) {
+  PR.i = i; PR.cur = OI.byId[PR.list[i]];
+  const st = PR.st[PR.cur.id] || {};
+  PR.sel = st.sel === undefined ? -1 : st.sel; PR.done = !!st.done; PR.res = st.res || ''; PR.hint = st.hint || 0; PR.ok = !!st.ok;
+}
+function newVariant() {
   const L = PR.level === 'auto' ? PR.lvl : PR.level;
-  const sv = solved(), all = OI.bank[PR.topic].filter(p => p.level === L);
-  let c = all.filter(p => !sv.has(p.id) && p.id !== PR.last);
-  if (!c.length) c = all.filter(p => p.id !== PR.last);
-  PR.cur = pick(c.length ? c : all); PR.hint = 0; PR.sel = -1; PR.done = false;
+  const all = levelList(PR.topic, L);
+  PR.st = {}; PR.L = L;
+  if (!all.length) { PR.cur = null; PR.list = []; return; }
+  const sv = solved();
+  PR.list = [...shuf(all.filter(p => !sv.has(p.id)).map(p => p.id)), ...shuf(all.filter(p => sv.has(p.id)).map(p => p.id))];
+  if (PR.list.length > 1 && PR.list[0] === PR.last) PR.list.push(PR.list.shift());
+  goTo(0);
 }
 VIEWS.practice = function () {
   if (!PR.assign && !myTopics().includes(PR.topic)) { PR.topic = myTopics()[0]; PR.cur = null; }
-  if (!PR.cur) nextProblem();
+  if (!PR.cur) newVariant();
+  if (!PR.cur) { main().innerHTML = '<div class="card"><p>Бұл деңгейде есеп жоқ.</p></div>'; return; }
   const a = PR.assign;
   main().innerHTML = `<div class="card"><h2>Өз бетімен орындау</h2>
   ${a ? `<div class="demo">Мұғалім тапсырмасы: ${esc(topicName(a.topic))}, ${a.level === 'auto' ? 'барлық деңгей' : 'деңгей ' + a.level}, ${a.count} есеп. ${esc(a.note || '')}</div>` : ''}
-  <div class="ctl"><label>Тақырып${topicSel('pt', PR.topic)}</label><label>Деңгей<select id="pl"><option value="auto"${PR.level === 'auto' ? ' selected' : ''}>Автоматты (қиындық бейімделеді)</option>${['A', 'B', 'C'].map(l => `<option value="${l}"${l === PR.level ? ' selected' : ''}>${LV[l]}</option>`).join('')}</select></label>
+  <div class="ctl"><label>Тақырып${topicSel('pt', PR.topic)}</label><label>Деңгей<select id="pl"><option value="auto"${PR.level === 'auto' ? ' selected' : ''}>Автоматты (қиындық бейімделеді)</option>${['A', 'B', 'C'].map(l => `<option value="${l}"${l === PR.level ? ' selected' : ''}>${LV[l]} (${levelList(PR.topic, l).length} есеп)</option>`).join('')}</select></label>
   ${PR.cur.mode === 'dom' ? `<label>Жауап түрі<select id="pm"><option value="mc"${PR.mode === 'mc' ? ' selected' : ''}>Нұсқа таңдау</option><option value="free"${PR.mode === 'free' ? ' selected' : ''}>Өзім жазамын</option></select></label>` : ''}</div></div>
   <div id="prob"></div>`;
   $('#pt').onchange = e => { PR.topic = +e.target.value; PR.cur = null; PR.assign = null; VIEWS.practice(); };
@@ -1442,17 +1468,28 @@ VIEWS.practice = function () {
 function renderProb() {
   const p = PR.cur, free = PR.mode === 'free' && p.mode === 'dom';
   const box = $('#prob');
-  box.innerHTML = `<div class="card"><div class="meta">${esc(topicName(p.topic))} · деңгей <b>${p.level}</b>${PR.level === 'auto' ? ' (автоматты)' : ''} · ${PTS[p.level]} ұпай</div>
+  const lvAll = levelList(p.topic, p.level), sv = solved(), svN = lvAll.filter(x => sv.has(x.id)).length;
+  const n = PR.list.length;
+  box.innerHTML = `<div class="card">${n > 1 ? `<div class="pn">${PR.list.map((id, k) => { const st = PR.st[id]; return `<button data-n="${k}" class="${k === PR.i ? 'on ' : ''}${st && st.done ? (st.ok ? 'ok' : 'no') : ''}">${k + 1}</button>`; }).join('')}</div>` : ''}<div class="cnt"><span>Есеп ${PR.i + 1} / ${n}</span><span>Деңгей ${p.level}: барлығы ${lvAll.length} есеп</span><span>Шешілгені: ${svN} / ${lvAll.length}</span></div><div class="meta">${esc(topicName(p.topic))} · деңгей <b>${p.level}</b>${PR.level === 'auto' ? ' (автоматты)' : ''} · ${PTS[p.level]} ұпай</div>
   <p>${esc(qHead(p))}</p>${mathHtml(p)}
   ${free ? `<input id="fa" placeholder="Мысалы: (π/6; 5π/6) ∪ [7π/6; 3π/2)" ${PR.done ? 'disabled' : ''} autocomplete="off"><p class="m">Жазу: π немесе pi, аралықтар «∪» арқылы, бір нүкте — {π/2}, шешім жоқ — ∅.</p>`
     : `<div class="opts">${p.options.map((o, i) => `<button class="opt${PR.sel === i ? ' on' : ''}${PR.done && i === p.ans ? ' good' : ''}${PR.done && PR.sel === i && i !== p.ans ? ' badc' : ''}" data-i="${i}" ${PR.done ? 'disabled' : ''}><span class="ltr">${'ABCD'[i]}</span><span class="ot">${esc(o)}</span></button>`).join('')}</div>`}
-  <div class="actions">${PR.done ? '<button id="nx">Ұқсас есеп →</button>' : '<button id="ck">Тексеру</button><button class="g" id="hn">Бағыт алу</button>'}</div>
+  <div class="actions">${PR.done ? '' : '<button id="ck">Тексеру</button><button class="g" id="hn">Бағыт алу</button>'}</div>
   <div id="hs">${p.hints.slice(0, PR.hint).map((h, i) => `<div class="hint"><b>Бағыт ${i + 1}.</b> ${esc(h)}</div>`).join('')}${PR.hint > p.hints.length ? `<div class="hint"><b>Бастапқы қадам.</b> ${esc(p.steps[0])}</div>` : ''}</div>
-  <div id="res"></div></div>`;
-  $$('.opt', box).forEach(b => b.onclick = () => { PR.sel = +b.dataset.i; $$('.opt', box).forEach(x => x.classList.toggle('on', x === b)); });
-  if ($('#hn')) $('#hn').onclick = () => { PR.hint = Math.min(PR.hint + 1, p.hints.length + 1); renderProb(); };
+  <div id="res"></div>
+  <div class="actions pnav"><button class="g" id="pv"${PR.i > 0 ? '' : ' disabled'}>← Алдыңғы</button><button id="nx">${PR.i < n - 1 ? 'Келесі →' : 'Жаңа вариант →'}</button></div></div>`;
+  $$('.opt', box).forEach(b => b.onclick = () => { PR.sel = +b.dataset.i; saveSt(); $$('.opt', box).forEach(x => x.classList.toggle('on', x === b)); });
+  if ($('#hn')) $('#hn').onclick = () => { PR.hint = Math.min(PR.hint + 1, p.hints.length + 1); saveSt(); renderProb(); };
   if ($('#ck')) $('#ck').onclick = check;
-  if ($('#nx')) $('#nx').onclick = () => { PR.last = p.id; nextProblem(); VIEWS.practice(); };
+  const go = i => { saveSt(); goTo(i); VIEWS.practice(); };
+  $$('.pn button', box).forEach(b => b.onclick = () => go(+b.dataset.n));
+  $('#pv').onclick = () => { if (PR.i > 0) go(PR.i - 1); };
+  $('#nx').onclick = () => {
+    saveSt();
+    if (PR.level === 'auto' && PR.lvl !== PR.L) { toast('Жаңа деңгей: ' + PR.lvl + '. Жаңа вариант басталды.'); PR.last = p.id; newVariant(); VIEWS.practice(); return; }
+    if (PR.i < n - 1) go(PR.i + 1);
+    else { const left = PR.list.filter(id => !(PR.st[id] && PR.st[id].done)).length; if (left && !confirm('Шешілмеген есеп: ' + left + '. Жаңа вариантқа өтесіз бе?')) return; PR.last = p.id; newVariant(); VIEWS.practice(); }
+  };
   if (PR.done && PR.res) $('#res').innerHTML = PR.res;
 }
 const check = guard(async function () {
@@ -1477,9 +1514,10 @@ const check = guard(async function () {
     if (ok) { PR.cs++; PR.ws = 0; if (PR.cs >= 3 && PR.lvl !== 'C') { PR.lvl = PR.lvl === 'A' ? 'B' : 'C'; PR.cs = 0; note = `Керемет! Деңгей көтерілді: ${PR.lvl}.`; } }
     else { PR.ws++; PR.cs = 0; if (PR.ws >= 2 && PR.lvl !== 'A') { PR.lvl = PR.lvl === 'C' ? 'B' : 'A'; PR.ws = 0; note = `Тапсырма жеңілдетілді: деңгей ${PR.lvl}. Бұл қалыпты, қадамдарды қара.`; } }
   }
+  PR.ok = ok;
   PR.res = `<div class="${ok ? 'good' : 'bad'}"><b>${ok ? `Дұрыс! +${PTS[p.level]} ұпай` : 'Қате.'}</b>${ok ? '' : `<br>Дұрыс жауап: <b>${esc(p.truth)}</b>`}${msg ? `<br><span class="why">Қатеңнің себебі: ${esc(msg)}</span>` : ''}${note ? `<br><i>${esc(note)}</i>` : ''}</div>
   <details open><summary>Толық шешу жолы</summary>${stepsHtml(p)}</details>`;
-  renderProb();
+  saveSt(); renderProb();
   const pe = $('.who b'); if (pe) pe.textContent = points();
 });
 
@@ -1491,7 +1529,7 @@ VIEWS.ubt = function () {
   $('#ub').onclick = ubtStart;
 };
 function ubtStart() {
-  const take = (lv, n) => { const used = new Set(); const out = []; let g = 0; while (out.length < n && g++ < 500) { const mt = myTopics(), t = mt[(out.length + g) % mt.length]; const p = pick(OI.bank[t].filter(x => x.level === lv)); if (!used.has(p.id)) { used.add(p.id); out.push(p); } } return out; };
+  const take = (lv, n) => { const used = new Set(); const out = []; let g = 0; while (out.length < n && g++ < 500) { const mt = myTopics(), t = mt[(out.length + g) % mt.length]; const p = pick(OI.bank[t].filter(x => x.level === lv)); if (p && !used.has(p.id)) { used.add(p.id); out.push(p); } } return out; };
   const seen = new Set();
   UB.qs = [...take('A', 6), ...take('B', 8), ...take('C', 6)].filter(p => !seen.has(p.id) && seen.add(p.id));
   UB.ans = UB.qs.map(() => -1); UB.left = 1800; UB.t0 = Date.now();
@@ -1529,7 +1567,7 @@ VIEWS.mistakes = function () {
   const bad = Object.values(last).filter(a => !a.correct && OI.byId[a.qid]).sort((a, b) => b.created_at.localeCompare(a.created_at));
   main().innerHTML = `<div class="card"><h2>Қателермен жұмыс</h2><p class="m">Мұнда әлі дұрыс шығара алмаған есептерің. Қайта шығарсаң, тізімнен жоғалады.</p></div>` +
     (bad.length ? bad.map(a => { const p = OI.byId[a.qid]; return `<div class="card"><div class="meta">${esc(topicName(p.topic))} · деңгей ${p.level}</div>${mathHtml(p)}<p>Сенің жауабың: <b>${esc(a.chosen)}</b><br>Дұрыс жауап: <b>${esc(p.truth)}</b>${a.tag ? `<br><span class="why">${esc(OI.TAGS[a.tag] || '')}</span>` : ''}</p><details><summary>Шешу жолы</summary>${stepsHtml(p)}</details><button data-q="${p.id}">Қайта шығару</button></div>`; }).join('') : '<div class="card"><p>Қате жоқ. Керемет! Практикада жаңа есептер шығарып көр.</p></div>');
-  $$('[data-q]').forEach(b => b.onclick = () => { const p = OI.byId[b.dataset.q]; PR.topic = p.topic; PR.cur = p; PR.hint = 0; PR.sel = -1; PR.done = false; PR.res = ''; PR.assign = null; location.hash = '#/practice'; });
+  $$('[data-q]').forEach(b => b.onclick = () => { const p = OI.byId[b.dataset.q]; PR.topic = p.topic; PR.level = p.level; PR.L = p.level; PR.list = [p.id]; PR.st = {}; goTo(0); PR.assign = null; location.hash = '#/practice'; });
 };
 
 /* ================= Статистика ================= */
@@ -1556,6 +1594,30 @@ VIEWS.teacher = async function () {
   TS.data = { all: pr.filter(p => p.role !== 'teacher'), att, tests, asg };
   teacherRender();
 };
+
+/* ===== Ата-анаға арналған қысқа есеп ===== */
+const BIG = [['Тригонометрия', [1, 2, 3, 4, 5, 6, 7, 8]], ['Көрсеткіштік', [9]], ['Логарифм', [10]]];
+function parentInfo(s, att, tests) {
+  const a = att.filter(x => x.user_id === s.id), st = statsOf(a);
+  const ts = tests.filter(x => x.user_id === s.id), lt = ts[ts.length - 1];
+  const wk = Date.now() - 7 * 864e5, week = a.filter(x => new Date(x.created_at).getTime() >= wk).length;
+  const big = BIG.map(([name, ids]) => { let n = 0, c = 0; ids.forEach(i => { n += st.topics[i].n; c += st.topics[i].c; }); return { name, n, c, p: n ? Math.round(100 * c / n) : null }; });
+  const tried = big.filter(b => b.n >= 3);
+  const good = tried.filter(b => b.p >= 75).map(b => b.name), weak = tried.filter(b => b.p < 60).map(b => b.name);
+  const grade = st.n < 5 ? 'Белсенділік аз' : st.pct >= 75 ? 'Жақсы' : st.pct >= 50 ? 'Орташа' : 'Көмек керек';
+  const todo = st.n < 5 ? 'Платформада жүйелі есеп шығару керек' : weak.length ? weak.join(', ') + ' тақырыбын қайталау' : week < 10 ? 'Жақсы, бірақ жиірек шығару керек' : 'Жақсы, осылай жалғастыру';
+  const test = lt ? `${lt.score}/${lt.total} (${Math.round(100 * lt.score / lt.total)}%)` : '—';
+  return { st, week, big, good, weak, grade, todo, test };
+}
+function parentMsg(s, i) {
+  return `Сәлеметсіз бе! ${s.full_name} — математика нәтижесі (KUANMATH)\n` +
+    `• Шығарған есеп: ${i.st.n}, дұрысы ${i.st.n ? i.st.pct + '%' : '—'}\n` +
+    `• Соңғы 7 күнде: ${i.week} есеп\n` +
+    `• Соңғы ҰБТ тест: ${i.test}\n` +
+    (i.good.length ? `• Жақсы меңгерген: ${i.good.join(', ')}\n` : '') +
+    (i.weak.length ? `• Қайталау керек: ${i.weak.join(', ')}\n` : '') +
+    `• Жалпы баға: ${i.grade}\n• Ұсыныс: ${i.todo}`;
+}
 const act0 = g => (TS.codes || []).some(c => c.grp === g && c.active);
 function teacherRender() {
   const { all: allS, att, tests, asg } = TS.data;
@@ -1575,7 +1637,7 @@ function teacherRender() {
     <div class="tw"><table class="ft"><tr><th>Аты-жөні</th><th>Сынып</th><th>Тапсырма</th><th>Дұрыс</th><th>Қате</th><th>%</th>${cols.map(t => `<th title="${esc(t.name)}">Т${t.id}</th>`).join('')}<th>Соңғы тест</th><th>Қиналатын тақырып</th></tr>
     ${rows.map(r => `<tr><td>${esc(r.s.full_name)}</td><td>${esc(r.s.class || '')}</td><td>${r.st.n}</td><td>${r.st.c}</td><td>${r.st.w}</td><td>${r.st.n ? r.st.pct + '%' : '–'}</td>${cols.map(t => { const x = r.st.topics[t.id]; return `<td class="${pctCls(x.n, x.c)}">${x.n ? Math.round(100 * x.c / x.n) + '%' : '–'}</td>`; }).join('')}<td>${r.lt ? r.lt.score + '/' + r.lt.total : '–'}</td><td>${r.weak.length ? r.weak.map(i => 'Т' + i).join(', ') : '–'}</td></tr>`).join('') || '<tr><td colspan="${9 + cols.length}">Оқушы жоқ</td></tr>'}</table></div>
     <p class="m">Тақырыптар: ${cols.map(t => `Т${t.id} ${esc(t.name)}`).join('; ')}. Қызыл — 50%-дан төмен, сары — 75%-ға дейін, жасыл — жақсы.</p>
-    <div class="actions"><button id="xl">Excel есебін жүктеу (CSV)</button><button class="g" id="rf">Жаңарту</button></div></div>`;
+    <div class="actions"><button id="xp">Ата-анаға арналған Excel</button><button class="g" id="xl">Толық есеп (мұғалімге)</button><button class="g" id="rf">Жаңарту</button></div></div>`;
   }
   if (TS.tab === 'student') {
     const r = rows.find(x => x.s.id === TS.sel);
@@ -1585,7 +1647,7 @@ function teacherRender() {
       a.filter(x => !x.correct).forEach(x => { const k = x.tag || 'other'; tags[k] = (tags[k] || 0) + 1; });
       const last = {}; a.forEach(x => last[x.qid] = x);
       const bad = Object.values(last).filter(x => !x.correct && OI.byId[x.qid]).slice(-15).reverse();
-      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><label>Тобы<select id="gs">${grpOpts(r.s.class)}</select></label><div class="actions"><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
+      body += `<div class="card"><h2>${esc(r.s.full_name)}</h2><label>Тобы<select id="gs">${grpOpts(r.s.class)}</select></label><div class="actions"><a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(parentMsg(r.s, parentInfo(r.s, att, tests)))}">Ата-анаға WhatsApp</a><button class="g sm" id="ds">Оқушыны өшіру</button></div><div class="kpis"><div><b>${r.st.n}</b><span>тапсырма</span></div><div><b>${r.st.c}</b><span>дұрыс</span></div><div><b>${r.st.w}</b><span>қате</span></div><div><b>${r.st.n ? r.st.pct + '%' : '–'}</b><span>пайыз</span></div></div>
       ${cols.map(t => { const x = r.st.topics[t.id], p = x.n ? Math.round(100 * x.c / x.n) : 0; return `<div class="bar2"><div class="lbl">${esc(t.name)} <span class="m">${x.n ? `${x.c}/${x.n}` : 'әлі жоқ'}</span></div><div class="trk"><div class="fill ${pctCls(x.n, x.c)}" style="width:${p}%"></div></div><b>${x.n ? p + '%' : '–'}</b></div>`; }).join('')}</div>
       <div class="card"><h2>Қате түрлері</h2>${Object.keys(tags).length ? Object.entries(tags).sort((x, y) => y[1] - x[1]).map(([k, v]) => `<div class="row"><span>${esc(TAGL[k] || k)}</span><b>${v}</b></div>`).join('') : '<p class="m">Қате жоқ.</p>'}</div>
       <div class="card"><h2>Шешілмеген қателер (соңғы 15)</h2>${bad.length ? bad.map(x => { const p = OI.byId[x.qid]; return `<div class="row col"><div class="meta">${esc(topicName(p.topic))} · ${p.level}</div>${mathHtml(p)}<span>Жауабы: <b>${esc(x.chosen)}</b> · Дұрысы: <b>${esc(p.truth)}</b></span><span class="why">${esc(OI.TAGS[x.tag] || '')}</span></div>`; }).join('') : '<p class="m">Жоқ.</p>'}</div>`;
@@ -1611,6 +1673,14 @@ function teacherRender() {
   main().innerHTML = grpBar + `<div class="tabs t2">${tabs.map(([k, t]) => `<button class="${TS.tab === k ? 'on' : ''}" data-t="${k}">${t}</button>`).join('')}</div>${body}`;
   $$('.t2 button[data-t]').forEach(b => b.onclick = () => { TS.tab = b.dataset.t; teacherRender(); });
   $$('.gb button').forEach(b => b.onclick = () => { TS.grp = b.dataset.g; teacherRender(); });
+  if ($('#xp')) $('#xp').onclick = () => {
+    const d = new Date().toLocaleDateString('kk-KZ');
+    const head = ['№', 'Оқушы', 'Тобы', 'Шығарған есеп', 'Дұрыс жауап', 'Соңғы 7 күнде', ...BIG.map(b => b[0]), 'Соңғы ҰБТ тест', 'Жалпы баға', 'Ұсыныс'];
+    const body = rows.map((r, k) => { const i = parentInfo(r.s, att, tests); return [k + 1, r.s.full_name, r.s.class || '', i.st.n, i.st.n ? i.st.pct + '%' : '—', i.week, ...i.big.map(b => b.p === null ? '—' : b.p + '%'), i.test, i.grade, i.todo]; });
+    const lines = [['KUANMATH — математикадан нәтиже' + (TS.grp ? ' (' + TS.grp + ')' : '')], ['Күні: ' + d], [], head, ...body, [],
+      ['Жалпы баға: Жақсы — 75% және жоғары; Орташа — 50–74%; Көмек керек — 50%-дан төмен; Белсенділік аз — 5 есептен аз шығарған.']];
+    dl('ata-anaga-' + (TS.grp || 'barlyq') + '.csv', lines.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'));
+  };
   if ($('#xl')) $('#xl').onclick = () => {
     const head = ['Аты-жөні', 'Сынып', 'Тапсырма', 'Дұрыс', 'Қате', 'Пайыз', ...cols.map(t => 'Т' + t.id + ' ' + t.name), 'Соңғы тест', 'Қиналатын тақырыптар'];
     const lines = [head, ...rows.map(r => [r.s.full_name, r.s.class || '', r.st.n, r.st.c, r.st.w, r.st.n ? r.st.pct + '%' : '', ...cols.map(t => { const x = r.st.topics[t.id]; return x.n ? Math.round(100 * x.c / x.n) + '%' : ''; }), r.lt ? r.lt.score + '/' + r.lt.total : '', r.weak.map(i => 'Т' + i).join(' ')])];
@@ -1643,6 +1713,59 @@ function teacherRender() {
     TS.data.all = (await DB.profiles()).filter(p => p.role !== 'teacher'); teacherRender();
   });
 }
+
+
+/* ================= Калькулятор ================= */
+const CALC = { e: '', r: '0', done: false };
+function calcEval(src) {
+  const t = []; let i = 0;
+  const FN = ['log₂', 'sin', 'cos', 'tg', 'lg', 'ln', '√'];
+  while (i < src.length) {
+    const ch = src[i];
+    if (/[0-9.]/.test(ch)) { let j = i; while (j < src.length && /[0-9.]/.test(src[j])) j++; const v = parseFloat(src.slice(i, j)); if (isNaN(v)) throw 0; t.push({ n: v }); i = j; continue; }
+    if (ch === 'π') { t.push({ n: Math.PI }); i++; continue; }
+    const f = FN.find(x => src.startsWith(x, i)); if (f) { t.push({ f }); i += f.length; continue; }
+    if ('+−×÷^()'.includes(ch)) { t.push({ o: ch }); i++; continue; }
+    if (ch === ' ') { i++; continue; }
+    throw 0;
+  }
+  let p = 0;
+  const pk = () => t[p], isO = c => pk() && pk().o === c;
+  const R = Math.PI / 180;
+  const F = { sin: x => Math.sin(x * R), cos: x => Math.cos(x * R), tg: x => Math.abs(Math.cos(x * R)) < 1e-12 ? NaN : Math.tan(x * R), lg: Math.log10, ln: Math.log, 'log₂': Math.log2, '√': Math.sqrt };
+  function expr() { let v = term(); while (isO('+') || isO('−')) { const o = t[p++].o, r = term(); v = o === '+' ? v + r : v - r; } return v; }
+  function term() { let v = unary(); for (; ;) { if (isO('×') || isO('÷')) { const o = t[p++].o, r = unary(); v = o === '×' ? v * r : v / r; } else if (pk() && (pk().n !== undefined || pk().f || isO('('))) v *= unary(); else break; } return v; }
+  function unary() { if (isO('−')) { p++; return -unary(); } if (isO('+')) { p++; return unary(); } return power(); }
+  function power() { const b = prim(); if (isO('^')) { p++; return Math.pow(b, unary()); } return b; }
+  function prim() { const k = t[p++]; if (!k) throw 0; if (k.n !== undefined) return k.n; if (k.o === '(') { const v = expr(); if (isO(')')) p++; return v; } if (k.f) return F[k.f](power()); throw 0; }
+  const v = expr(); if (p < t.length) throw 0; return v;
+}
+const calcFmt = v => { if (!isFinite(v)) return 'Қате'; if (Math.abs(v) < 1e-12) v = 0; let s = String(+v.toPrecision(10)); if (/e/.test(s)) s = v.toExponential(6); return s.replace('-', '−'); };
+function calcShow() { $('#cE').textContent = CALC.e || ' '; $('#cR').textContent = CALC.r; }
+function calcKey(k) {
+  const OPS = ['+', '−', '×', '÷', '^'];
+  if (k === 'C') { CALC.e = ''; CALC.r = '0'; CALC.done = false; }
+  else if (k === '⌫') { if (CALC.done) { CALC.done = false; } const m = CALC.e.match(/(log₂\(|sin\(|cos\(|tg\(|lg\(|ln\(|√\()$/); CALC.e = m ? CALC.e.slice(0, -m[0].length) : CALC.e.slice(0, -1); }
+  else if (k === '=') { if (!CALC.e) return; try { CALC.r = calcFmt(calcEval(CALC.e)); } catch (e) { CALC.r = 'Қате'; } CALC.done = true; }
+  else {
+    if (CALC.done) { CALC.e = OPS.includes(k) && CALC.r !== 'Қате' ? CALC.r : ''; CALC.done = false; }
+    if (OPS.includes(k)) { if (!CALC.e && k !== '−') return; if (OPS.includes(CALC.e.slice(-1))) CALC.e = CALC.e.slice(0, -1); }
+    CALC.e += k;
+  }
+  calcShow();
+}
+function ensureCalc() {
+  if ($('#calcFab')) return;
+  const keys = [['C', 'cl'], ['⌫', 'cl'], ['÷', 'op'], ['×', 'op'], ['7'], ['8'], ['9'], ['−', 'op'], ['4'], ['5'], ['6'], ['+', 'op'], ['1'], ['2'], ['3'], ['=', 'eq'], ['0', 'z'], ['.']];
+  const fab = document.createElement('button'); fab.id = 'calcFab'; fab.className = 'calc-fab'; fab.title = 'Калькулятор'; fab.textContent = '🧮'; fab.hidden = true;
+  const box = document.createElement('div'); box.id = 'calcBox'; box.className = 'calc'; box.hidden = true;
+  box.innerHTML = `<div class="chd"><span>Калькулятор</span><button class="lnk" id="cX">Жабу ✕</button></div><div class="cd"><div class="ce" id="cE"> </div><div class="cres" id="cR">0</div></div><div class="ck">${keys.map(([k, c]) => `<button type="button" class="${c || ''}" data-k="${k}">${k}</button>`).join('')}</div>`;
+  document.body.appendChild(fab); document.body.appendChild(box);
+  fab.onclick = () => { box.hidden = !box.hidden; };
+  $('#cX').onclick = () => { box.hidden = true; };
+  box.querySelectorAll('[data-k]').forEach(b => b.onclick = e => { e.stopPropagation(); calcKey(b.dataset.k); });
+}
+function calcVisible(on) { ensureCalc(); $('#calcFab').hidden = !on; if (!on) $('#calcBox').hidden = true; }
 
 /* ================= Іске қосу ================= */
 async function boot() {
